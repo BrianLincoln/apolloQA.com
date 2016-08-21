@@ -11,6 +11,7 @@ var bodyParser   = require('body-parser');
 var session      = require('express-session');
 
 var configDB = require('./config/database.js');
+var sessionSecret = require('./config/session-secret.js');
 
 // configuration ===============================================================
 mongoose.connect(configDB.url); // connect to our database
@@ -26,7 +27,7 @@ app.use(bodyParser()); // get information from html forms
 app.set('view engine', 'ejs'); // set up ejs for templating
 
 // required for passport
-app.use(session({ secret: 'actually unique and secret' })); // session secret
+app.use(session({ secret: sessionSecret.secret })); // session secret
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
