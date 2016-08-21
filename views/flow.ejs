@@ -12,26 +12,11 @@
 <div class="container">
 
     <div class="page-header text-center">
-        <h1><span class="fa fa-anchor"></span> Profile Page</h1>
+        <h1><span class="fa fa-arrows-v"></span> <%= flow.name %></h1>
+        <a href="/flows" class="btn btn-default btn-sm"><span class="fa fa-angle-left"></span> Flows</a>
         <a href="/logout" class="btn btn-default btn-sm">Logout</a>
     </div>
 
-    <div class="row">
-
-        <!-- LOCAL INFORMATION -->
-        <div class="col-sm-6">
-            <div class="well">
-                <h3><span class="fa fa-user"></span> Local</h3>
-
-                    <p>
-                        <strong>id</strong>: <%= user._id %><br>
-                        <strong>email</strong>: <%= user.local.email %><br>
-                        <strong>password</strong>: <%= user.local.password %>
-                    </p>
-
-            </div>
-        </div>
-    </div>
     <div class="row">
         <div class="col-sm-12">
             <div id="content"></div>
@@ -39,6 +24,6 @@
     </div>
 
 </div>
-<script async src="./app.bundle.js" ></script>
+<script src="../app.bundle.js"></script>
 </body>
 </html>

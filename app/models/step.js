@@ -1,0 +1,37 @@
+var mongoose = require('mongoose');
+var bcrypt   = require('bcrypt-nodejs');
+
+// define the schema for our user model
+var stepSchema = mongoose.Schema({
+    pageLoad: {
+        url: String
+    },
+    input: {
+        inputType: String,
+        inputValue: String,
+        selectorType: String,
+        selectorValue: String
+    },
+    click: {
+        selectorType: String,
+        selectorValue: String
+    },
+    confirmElementExists: {
+        selectorType: String,
+        selectorValue: String
+    }
+});
+
+// methods ======================
+// generating a hash
+stepSchema.methods.generateHash = function(inputValue) {
+    return bcrypt.hashSync(inputValue, bcrypt.genSaltSync(8), null);
+};
+
+// checking if password is valid
+stepSchema.methods.validPassword = function(inputValue) {
+    return bcrypt.compareSync(inputValue, this.local.password);
+};
+
+// create the model for users and expose it to our app
+module.exports = mongoose.model('Step', stepSchema);
