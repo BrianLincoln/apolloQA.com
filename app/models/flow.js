@@ -1,11 +1,11 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt-nodejs');
-var Steps = require('./step');
+var Step = require('./step').schema;
 
 // define the schema for our user model
 var flowSchema = mongoose.Schema({
     name: String,
-    steps: [Steps],
+    steps: [Step],
     userId: String
 });
 

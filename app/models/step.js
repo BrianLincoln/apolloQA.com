@@ -3,23 +3,12 @@ var bcrypt   = require('bcrypt-nodejs');
 
 // define the schema for our user model
 var stepSchema = mongoose.Schema({
-    pageLoad: {
-        url: String
-    },
-    input: {
-        inputType: String,
-        inputValue: String,
-        selectorType: String,
-        selectorValue: String
-    },
-    click: {
-        selectorType: String,
-        selectorValue: String
-    },
-    confirmElementExists: {
-        selectorType: String,
-        selectorValue: String
-    }
+    stepType: String,
+    url: String,
+    inputType: String,
+    inputValue: String,
+    selectorType: String,
+    selectorValue: String
 });
 
 // methods ======================

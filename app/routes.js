@@ -1,4 +1,5 @@
 var Flow = require('./models/flow');
+var Step = require('./models/step');
 
 // app/routes.js
 module.exports = function(app, passport) {
@@ -84,7 +85,6 @@ module.exports = function(app, passport) {
 
     // write new flow
     app.post('/flow', function (req, res, next) {
-        console.log(req);
         var flow = new Flow({
             name: req.body.name,
             steps: req.body.steps,
@@ -124,11 +124,51 @@ module.exports = function(app, passport) {
         failureFlash : true // allow flash messages
     }));
 
+
+
+
+    // =====================================
+    // API ==============================
+    // =====================================
+    //get flow
+    app.get('/api/flows/:flowId', function(req, res) {
+        //todo: check user
+        Flow.findOne({_id: req.params.flowId}).exec(function(error, flow) {
+            if (error) {
+                return next(error)
+            }
+            return res.json({
+                flow: flow
+            });
+        });
+    });
+
+    //update a flow
+    app.post('/api/flows/:flowId', function (req, res, next) {
+        console.log(req.body);
+        console.log(req.user);
+
+        //todo check user and flow
+        var query = {_id: req.params.flowId};
+        var update = {steps: {stepType: "pageLoad", url: "http://localhost:8080"}};
+        Flow.update(
+            query,
+            {$push: update},
+            function(err) {
+                if (err) {
+                    res.send(err);
+                }
+                res.send("updated");
+            }
+        );
+    });
 };
 
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {
 
+    console.log("isLoggedIn");
+    console.log(req.user);
     // if user is authenticated in the session, carry on
     if (req.isAuthenticated())
         return next();
