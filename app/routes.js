@@ -135,19 +135,14 @@ module.exports = function(app, passport) {
         //todo: check user
         Flow.findOne({_id: req.params.flowId}).exec(function(error, flow) {
             if (error) {
-                return next(error)
+                res.send(error);
             }
-            return res.json({
-                flow: flow
-            });
+            res.send(flow);
         });
     });
 
     //update a flow
     app.post('/api/flows/:flowId', function (req, res, next) {
-        console.log(req.body);
-        console.log(req.user);
-
         //todo check user and flow
         var query = {_id: req.params.flowId};
         var update = {steps: {stepType: "pageLoad", url: "http://localhost:8080"}};
@@ -162,13 +157,43 @@ module.exports = function(app, passport) {
             }
         );
     });
+
+    app.delete('/api/flows/:flowId', function (req, res) {
+        var query = {_id: req.params.flowId};
+        Flow.remove(query,
+            function(err) {
+                if (err) {
+                    res.send(err);
+                }
+                res.send("deleted");
+            });
+    });
+
+
+
+
+
+    //steps api
+
+    app.delete('/api/flows/:flowId/steps/:stepId', function (req, res) {
+        var query = {_id: req.params.flowId};
+        var update = {steps: {_id: req.params.stepId}};
+
+        Flow.update(
+            query,
+            {$pull: update},
+            function(err) {
+                if (err) {
+                    res.send(err);
+                }
+                res.send("deleted");
+            }
+        );
+    });
 };
 
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {
-
-    console.log("isLoggedIn");
-    console.log(req.user);
     // if user is authenticated in the session, carry on
     if (req.isAuthenticated())
         return next();
