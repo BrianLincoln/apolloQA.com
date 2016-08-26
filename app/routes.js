@@ -175,6 +175,22 @@ module.exports = function(app, passport) {
 
     //steps api
 
+    //update step
+    app.put('/api/flows/:flowId/steps/:stepId', function (req, res) {
+        Flow.findById(req.params.flowId, function (err, flow) {
+            var step = flow.steps.id(req.params.stepId);
+            step.url = req.body.url || undefined;
+
+            flow.save(function (err) {
+                if (err) {
+                    res.send(err);
+                }
+                res.send("updated");
+            });
+        });
+    });
+
+    //delete step
     app.delete('/api/flows/:flowId/steps/:stepId', function (req, res) {
         var query = {_id: req.params.flowId};
         var update = {steps: {_id: req.params.stepId}};
