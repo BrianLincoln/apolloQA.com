@@ -180,8 +180,22 @@ module.exports = function(app, passport) {
         Flow.findById(req.params.flowId, function (err, flow) {
             var step = flow.steps.id(req.params.stepId);;
             step.stepType = req.body.stepType;
-            step.url = req.body.url || undefined;
-            step.selector = req.body.selector || undefined;
+
+            switch (step.stepType) {
+                case 'pageload':
+                    step.selector = undefined;
+                    step.url = req.body.url || undefined;
+                    break;
+                case 'confirmElementExists':
+                case 'click':
+                    step.selector = req.body.selector || undefined;
+                    step.url = undefined;
+                    break;
+                case 'input':
+                    step.selector = req.body.selector || undefined;
+                    step.inputValue = req.body.inputValue || undefined;
+                    break;
+            }
 
             flow.save(function (err) {
                 if (err) {
