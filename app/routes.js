@@ -173,13 +173,15 @@ module.exports = function(app, passport) {
 
 
 
-    //steps api
+    //-------------steps api-----
 
     //update step
     app.put('/api/flows/:flowId/steps/:stepId', function (req, res) {
         Flow.findById(req.params.flowId, function (err, flow) {
-            var step = flow.steps.id(req.params.stepId);
+            var step = flow.steps.id(req.params.stepId);;
+            step.stepType = req.body.stepType;
             step.url = req.body.url || undefined;
+            step.selector = req.body.selector || undefined;
 
             flow.save(function (err) {
                 if (err) {
