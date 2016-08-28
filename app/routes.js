@@ -1,3 +1,4 @@
+var http = require('http');
 var Flow = require('./models/flow');
 var Step = require('./models/step');
 
@@ -180,7 +181,7 @@ module.exports = function(app, passport) {
         Flow.findById(req.params.flowId, function (err, flow) {
             var step = flow.steps.id(req.params.stepId);;
             step.stepType = req.body.stepType;
-            console.log(step);
+
             switch (step.stepType) {
                 case 'pageLoad':
                     step.inputValue = undefined;
@@ -234,15 +235,28 @@ module.exports = function(app, passport) {
 
     //start test
     app.post('/api/test-runner', function (req, res, next) {
-
-
-        res.send("run a test");
+        var postData = JSON.stringify(req.body);
+        var options = {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            host: 'localhost',
+            port: 8181,
+            path: '/',
+            method: 'POST'
+        };
+        var req = http.request(options, function(res) {
+            res.setEncoding('utf8');
+        });
+        req.on('error', function(e) {
+            res.send(e);
+        });
+        req.write(postData);
+        req.end();
+        res.send("success");
     });
 };
-
-
-
-
 
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {

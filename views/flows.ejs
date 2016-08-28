@@ -28,7 +28,7 @@
                 </div>
             </form>
             <% flows.forEach( function ( flow ){ %>
-                <a class="list-group-item" href="/flow/<%= flow._id %>"><%= flow.name %></a>
+                <a class="list-group-item" data-tar="flow-<%= flow._id %>" href="/flow/<%= flow._id %>"><%= flow.name %></a>
             <% }); %>
         </div>
     </div>
