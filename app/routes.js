@@ -185,17 +185,17 @@ module.exports = function(app, passport) {
                 case 'pageLoad':
                     step.inputValue = undefined;
                     step.selector = undefined;
-                    step.url = req.body.url || undefined;
+                    step.url = req.body.url || '';
                     break;
                 case 'confirmElementExists':
                 case 'click':
                     step.inputValue = undefined;
-                    step.selector = req.body.selector || undefined;
+                    step.selector = req.body.selector || '';
                     step.url = undefined;
                     break;
                 case 'input':
-                    step.inputValue = req.body.inputValue || undefined;
-                    step.selector = req.body.selector || undefined;
+                    step.inputValue = req.body.inputValue || '';
+                    step.selector = req.body.selector || '';
                     step.url = undefined;
                     break;
             }
