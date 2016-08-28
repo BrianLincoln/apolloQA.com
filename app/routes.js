@@ -180,20 +180,23 @@ module.exports = function(app, passport) {
         Flow.findById(req.params.flowId, function (err, flow) {
             var step = flow.steps.id(req.params.stepId);;
             step.stepType = req.body.stepType;
-
+            console.log(step);
             switch (step.stepType) {
-                case 'pageload':
+                case 'pageLoad':
+                    step.inputValue = undefined;
                     step.selector = undefined;
                     step.url = req.body.url || undefined;
                     break;
                 case 'confirmElementExists':
                 case 'click':
+                    step.inputValue = undefined;
                     step.selector = req.body.selector || undefined;
                     step.url = undefined;
                     break;
                 case 'input':
-                    step.selector = req.body.selector || undefined;
                     step.inputValue = req.body.inputValue || undefined;
+                    step.selector = req.body.selector || undefined;
+                    step.url = undefined;
                     break;
             }
 
@@ -222,7 +225,24 @@ module.exports = function(app, passport) {
             }
         );
     });
+
+
+
+
+
+    //-------------Test runner API
+
+    //start test
+    app.post('/api/test-runner', function (req, res, next) {
+
+
+        res.send("run a test");
+    });
 };
+
+
+
+
 
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {
