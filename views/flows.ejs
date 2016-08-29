@@ -2,37 +2,34 @@
 <html>
 <head>
     <title>Node Authentication</title>
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
-    <style>
-        body        { padding-top:80px; word-wrap:break-word; }
-    </style>
+    <% include ./partials/resources %>
 </head>
 <body>
-<div class="container">
+    <% include ./partials/header %>
+    <div class="container">
 
-    <div class="page-header text-center">
-        <h1><span class="fa fa-arrows-v"></span> Flows</h1>
-        <a href="/logout" class="btn btn-default btn-sm">Logout</a>
-    </div>
-
-    <!-- New Flow Form -->
-    <div class="row">
-        <div class="list-group">
-            <form class="list-group-item list-group-item-info" action="/flow" method="post">
-                <div class="input-group">
-                    <input type="text" class="form-control" data-tar="newflow-name-field" name="name" placeholder="E.g. contact us userflow">
-                    <span class="input-group-btn">
-                        <button type="submit" class="btn btn-default">New Flow</button>
-                    </span>
-                </div>
-            </form>
-            <% flows.forEach( function ( flow ){ %>
-                <a class="list-group-item" data-tar="flow-<%= flow._id %>" href="/flow/<%= flow._id %>"><%= flow.name %></a>
-            <% }); %>
+        <div class="page-header text-center">
+            <h1><span class="fa fa-arrows-v"></span> Flows</h1>
+            <a href="/logout" class="btn btn-default btn-sm">Logout</a>
         </div>
-    </div>
 
-</div>
+        <!-- New Flow Form -->
+        <div class="row">
+            <div class="list-group">
+                <form class="list-group-item list-group-item-info" action="/flow" method="post">
+                    <div class="input-group">
+                        <input type="text" class="form-control" data-tar="newflow-name-field" name="name" placeholder="E.g. contact us userflow">
+                        <span class="input-group-btn">
+                            <button type="submit" class="btn btn-default">New Flow</button>
+                        </span>
+                    </div>
+                </form>
+                <% flows.forEach( function ( flow ){ %>
+                    <a class="list-group-item" data-tar="flow-<%= flow._id %>" href="/flow/<%= flow._id %>"><%= flow.name %></a>
+                <% }); %>
+            </div>
+        </div>
+
+    </div>
 </body>
 </html>
