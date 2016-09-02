@@ -7,7 +7,8 @@ var stepSchema = mongoose.Schema({
     url: String,
     inputType: String,
     inputValue: String,
-    selector: String
+    selector: String,
+    stepNumber: Number
 });
 
 // methods ======================

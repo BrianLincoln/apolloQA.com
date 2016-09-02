@@ -181,6 +181,7 @@ module.exports = function(app, passport) {
         Flow.findById(req.params.flowId, function (err, flow) {
             var step = flow.steps.id(req.params.stepId);;
             step.stepType = req.body.stepType;
+            step.stepNumber = req.body.stepNumer;
 
             switch (step.stepType) {
                 case 'pageLoad':
