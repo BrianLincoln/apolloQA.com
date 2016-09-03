@@ -179,9 +179,9 @@ module.exports = function(app, passport) {
     //update step
     app.put('/api/flows/:flowId/steps/:stepId', function (req, res) {
         Flow.findById(req.params.flowId, function (err, flow) {
-            var step = flow.steps.id(req.params.stepId);;
+            var step = flow.steps.id(req.params.stepId);
             step.stepType = req.body.stepType;
-            step.stepNumber = req.body.stepNumer;
+            step.stepNumber = req.body.stepNumber || 0;
 
             switch (step.stepType) {
                 case 'pageLoad':
