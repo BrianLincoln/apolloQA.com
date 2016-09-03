@@ -1,15 +1,15 @@
 
 html, body {
-    background-color: #daeeff;
+    background-color: #887c74;
 }
 .site-header {
     padding: 20px;
 }
 .logo {
-    color: #446f94;
+    color: #444;
     font-size: 60px;
     text-decoration: underline;
 }
 .logo:hover {
-    color: #33404c;
+    color: #444;
 }
