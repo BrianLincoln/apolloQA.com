@@ -181,7 +181,6 @@ module.exports = function(app, passport) {
         Flow.findById(req.params.flowId, function (err, flow) {
             var step = flow.steps.id(req.params.stepId);
             step.stepType = req.body.stepType;
-            step.stepNumber = req.body.stepNumber || 0;
 
             switch (step.stepType) {
                 case 'pageLoad':
@@ -201,6 +200,35 @@ module.exports = function(app, passport) {
                     step.url = undefined;
                     break;
             }
+
+            flow.save(function (err) {
+                if (err) {
+                    res.send(err);
+                }
+                res.send("updated");
+            });
+        });
+    });
+
+    //reorder steps
+    app.put('/api/flows/:flowId/reorder/:stepId', function (req, res) {
+        Flow.findById(req.params.flowId, function (err, flow) {
+            var step = flow.steps.id(req.params.stepId);
+            var originalIndex = flow.steps.indexOf(step);
+            var newIndex = originalIndex;
+
+            if (req.body.direction === "down" && originalIndex < flow.steps.length) {
+                newIndex++;
+            }
+            else if (req.body.direction === "up" && originalIndex > 0) {
+                newIndex--;
+            }
+            else {
+                res.send("not updated");
+            }
+
+            var stepsClone = moveStep(flow.steps, originalIndex, newIndex);
+            flow.steps = stepsClone;
 
             flow.save(function (err) {
                 if (err) {
@@ -267,4 +295,21 @@ function isLoggedIn(req, res, next) {
 
     // if they aren't redirect them to the home page
     res.redirect('/');
+}
+
+function moveStep(arr, srcIndex, destIndex) {
+    while (srcIndex < 0) {
+        srcIndex += arr.length;
+    }
+    while (destIndex < 0) {
+        destIndex += arr.length;
+    }
+    if (destIndex >= arr.length) {
+        var k = destIndex - arr.length;
+        while ((k--) + 1) {
+            arr.push(undefined);
+        }
+    }
+     arr.splice(destIndex, 0, arr.splice(srcIndex, 1)[0]);
+   return arr;
 }
