@@ -7,21 +7,9 @@
 <body>
     <% include ./partials/header %>
     <div class="container">
-
-        <div class="page-header text-center">
-            <h1><span class="fa fa-arrows-v"></span> <%= flow.name %></h1>
-            <a href="/flows" class="btn btn-default btn-sm"><span class="fa fa-angle-left"></span> Flows</a>
-            <a href="/logout" class="btn btn-default btn-sm">Logout</a>
-        </div>
-
         <div class="row">
             <div class="col-sm-12">
                 <div id="content"></div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-12">
-                <a class="btn btn-danger btn-sm" href="/flow/<%= flow.id %>/delete"><span class="fa fa-trash"></span> Delete Flow</a>
             </div>
         </div>
     </div>
