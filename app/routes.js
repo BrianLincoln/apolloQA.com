@@ -81,7 +81,6 @@ module.exports = function(app, passport) {
                 flow: flow
             });
         });
-
     });
 
     // write new flow
@@ -100,6 +99,19 @@ module.exports = function(app, passport) {
                 user: req.user
             })
         });
+    });
+
+    //this probably doesn't make sense as a get. refactor at some point
+    app.get('/flow/:flowId/delete', function (req, res, next) {
+        var query = {_id: req.params.flowId};
+        Flow.remove(query,
+            function(err) {
+                if (err) {
+                    res.send(err);
+                }
+                res.redirect("/flows");
+            }
+        );
     });
 
     // =====================================
