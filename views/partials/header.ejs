@@ -1,3 +1,5 @@
-<header class="site-header">
-    <a class="logo" href="/"><span class="fa fa-gears"></span>QA</a>
-</header>
+<% if (isLoggedInUser === true) { %>
+    <% include ./header-logged-in %>
+<% } else {%>
+    <% include ./header-logged-out %>
+<% } %>

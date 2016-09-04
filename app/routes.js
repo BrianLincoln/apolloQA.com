@@ -8,7 +8,17 @@ module.exports = function(app, passport) {
     // HOME PAGE (with login links) ========
     // =====================================
     app.get('/', function(req, res) {
-        res.render('index.ejs'); // load the index.ejs file
+        var isLoggedInUser = req.isAuthenticated();
+
+        if (isLoggedInUser) {
+            res.redirect('/flows');
+        }
+        else {
+            res.render('index.ejs', {
+                isLoggedInUser: req.isAuthenticated(),
+            });
+        }
+
     });
 
     // =====================================
@@ -16,9 +26,11 @@ module.exports = function(app, passport) {
     // =====================================
     // show the login form
     app.get('/login', function(req, res) {
-
         // render the page and pass in any flash data if it exists
-        res.render('login.ejs', { message: req.flash('loginMessage') });
+        res.render('login.ejs', {
+            isLoggedInUser: req.isAuthenticated(),
+            message: req.flash('loginMessage')
+        });
     });
 
     // process the login form
@@ -29,9 +41,11 @@ module.exports = function(app, passport) {
     // =====================================
     // show the signup form
     app.get('/signup', function(req, res) {
-
         // render the page and pass in any flash data if it exists
-        res.render('signup.ejs', { message: req.flash('signupMessage') });
+        res.render('signup.ejs', {
+            isLoggedInUser: req.isAuthenticated(),
+            message: req.flash('signupMessage')
+        });
     });
 
     // process the signup form
@@ -44,6 +58,7 @@ module.exports = function(app, passport) {
     // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/profile', isLoggedIn, function(req, res) {
         res.render('profile.ejs', {
+            isLoggedInUser: req.isAuthenticated(),
             user : req.user // get the user out of session and pass to template
         });
     });
@@ -54,29 +69,26 @@ module.exports = function(app, passport) {
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/flows', isLoggedIn, function(req, res) {
-        var user = req.user;
-
         Flow.find({userId: req.user._id}).exec(function(error, flows) {
             if (error) {
                 return next(error)
             }
             res.render('flows.ejs', {
+                isLoggedInUser: req.isAuthenticated(),
                 user : req.user, // get the user out of session and pass to template
                 flows: flows
             });
         });
-
     });
 
     //flow page
     app.get('/flow/:flowId', isLoggedIn, function(req, res) {
-        var user = req.user;
-
         Flow.findOne({_id: req.params.flowId}).exec(function(error, flow) {
             if (error) {
                 return next(error)
             }
             res.render('flow.ejs', {
+                isLoggedInUser: req.isAuthenticated(),
                 user : req.user, // get the user out of session and pass to template
                 flow: flow
             });
@@ -96,12 +108,13 @@ module.exports = function(app, passport) {
             }
             res.render('flow.ejs', {
                 flow: flow,
-                user: req.user
+                user: req.user,
+                isLoggedInUser: req.isAuthenticated(),
             })
         });
     });
 
-    //this probably doesn't make sense as a get. refactor at some point
+//TODO --------------- this probably doesn't make sense as a get. refactor at some point
     app.get('/flow/:flowId/delete', function (req, res, next) {
         var query = {_id: req.params.flowId};
         Flow.remove(query,
@@ -154,7 +167,7 @@ module.exports = function(app, passport) {
         });
     });
 
-    //update a flow
+//TODO ---- this is really adding a step, should not be a POST on the /flows/ level -- should be totally redone
     app.post('/api/flows/:flowId', function (req, res, next) {
         //todo check user and flow
         var query = {_id: req.params.flowId};
@@ -169,6 +182,27 @@ module.exports = function(app, passport) {
                 res.send("updated");
             }
         );
+    });
+
+    //update a flow
+    app.put('/api/flows/:flowId', function (req, res, next) {
+        console.log("name from client:")
+        console.log(req.body.name);
+
+        Flow.findById(req.params.flowId, function (err, flow) {
+
+            var name = flow.name;
+            flow.name = req.body.name;
+
+            console.log(flow);
+
+            flow.save(function (err) {
+                if (err) {
+                    res.send(err);
+                }
+                res.send("updated");
+            });
+        });
     });
 
     app.delete('/api/flows/:flowId', function (req, res) {
@@ -276,7 +310,10 @@ module.exports = function(app, passport) {
 
     //start test
     app.post('/api/test-runner', function (req, res, next) {
+        console.log(req.body);
         var postData = JSON.stringify(req.body);
+        console.log(postData);
+
         var options = {
             headers: {
                 'Accept': 'application/json',
