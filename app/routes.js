@@ -1,6 +1,7 @@
 var http = require('http');
 var Flow = require('./models/flow');
 var Step = require('./models/step');
+var Test = require('./models/test');
 
 // app/routes.js
 module.exports = function(app, passport) {
@@ -185,17 +186,11 @@ module.exports = function(app, passport) {
     });
 
     //update a flow
-    app.put('/api/flows/:flowId', function (req, res, next) {
-        console.log("name from client:")
-        console.log(req.body.name);
-
+    app.put('/api/flows/:flowId', function (req, res, next) {        
         Flow.findById(req.params.flowId, function (err, flow) {
 
             var name = flow.name;
             flow.name = req.body.name;
-
-            console.log(flow);
-
             flow.save(function (err) {
                 if (err) {
                     res.send(err);
@@ -310,10 +305,7 @@ module.exports = function(app, passport) {
 
     //start test
     app.post('/api/test-runner', function (req, res, next) {
-        console.log(req.body);
         var postData = JSON.stringify(req.body);
-        console.log(postData);
-
         var options = {
             headers: {
                 'Accept': 'application/json',
@@ -334,7 +326,20 @@ module.exports = function(app, passport) {
         req.end();
         res.send("success");
     });
+
+    //get test status
+    app.get('/api/tests/:flowId', function(req, res) {
+        //todo: check user
+        Test.findOne({flowId: req.params.flowId}, {}, {sort: {'start': 1}}).exec(function(error, test) {
+            if (error) {
+                res.send(error);
+            }
+            res.send(test);
+        });
+    });
+
 };
+
 
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {
