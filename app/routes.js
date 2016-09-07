@@ -1,4 +1,5 @@
 var http = require('http');
+var secrets = require('./../config/secrets.js');
 var Flow = require('./models/flow');
 var Step = require('./models/step');
 var Test = require('./models/test');
@@ -43,7 +44,9 @@ module.exports = function(app, passport) {
     // show the signup form
     app.get('/signup', function(req, res) {
         // render the page and pass in any flash data if it exists
-        res.render('signup.ejs', {
+
+        //TEMP BETA res.render('signup.ejs', {
+        res.render('beta-user-signup.ejs', {
             isLoggedInUser: req.isAuthenticated(),
             message: req.flash('signupMessage')
         });
@@ -137,7 +140,7 @@ module.exports = function(app, passport) {
     });
 
     // process the signup form
-    app.post('/signup', passport.authenticate('local-signup', {
+    app.post('/signup', checkBetaValue, passport.authenticate('local-signup', {
         successRedirect : '/profile', // redirect to the secure profile section
         failureRedirect : '/signup', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
@@ -186,7 +189,8 @@ module.exports = function(app, passport) {
     });
 
     //update a flow
-    app.put('/api/flows/:flowId', function (req, res, next) {        
+    app.put('/api/flows/:flowId', function (req, res, next) {
+
         Flow.findById(req.params.flowId, function (err, flow) {
 
             var name = flow.name;
@@ -349,6 +353,16 @@ function isLoggedIn(req, res, next) {
 
     // if they aren't redirect them to the home page
     res.redirect('/');
+}
+
+function checkBetaValue(req, res, next) {
+    // if user is authenticated in the session, carry on
+    if (req.body.betaKey === secrets.betaSecret) {
+        return next();
+    }
+
+    // if they aren't redirect them
+    res.redirect('https://gfycat.com/AmpleActualEasteuropeanshepherd');
 }
 
 function moveStep(arr, srcIndex, destIndex) {

@@ -9,24 +9,16 @@
     <div class="container">
 
         <div class="page-header text-center">
-            <h1><span class="fa fa-anchor"></span> Profile Page</h1>
-            <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+            <h1><span class="fa fa-anchor"></span> You in beta</h1>
+            <p>Seriously... don't expect this account or any of your tests to be permanent. Stuff is changing a lot and quickly.</p>
         </div>
 
         <div class="row">
 
             <!-- LOCAL INFORMATION -->
-            <div class="col-sm-6">
-                <div class="well">
-                    <h3><span class="fa fa-user"></span> Local</h3>
-
-                        <p>
-                            <strong>id</strong>: <%= user._id %><br>
-                            <strong>email</strong>: <%= user.local.email %><br>
-                            <strong>password</strong>: <%= user.local.password %>
-                        </p>
-
-                </div>
+            <div class="col-sm-12 text-center">
+                <h3>Creat a flow to get started</h3>
+                <a class="btn btn-large btn-primary" href="/flows" data-tar="logout"><span class="fa fa-exchange"></span> Flows</a>
             </div>
         </div>
         <div class="row">

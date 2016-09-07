@@ -11,7 +11,7 @@ var bodyParser   = require('body-parser');
 var session      = require('express-session');
 
 var configDB = require('./config/database.js');
-var sessionSecret = require('./config/session-secret.js');
+var sessionSecret = require('./config/secrets.js');
 
 // configuration ===============================================================
 mongoose.connect(configDB.url); // connect to our database
