@@ -24,6 +24,20 @@
     margin-bottom: 50px;
 }
 
+.flow-playback {
+    position: relative;
+}
+.flow-playback-slide {
+    background: white;
+    position: absolute;
+}
+.flow-playback-slide.active {
+    z-index: 2;
+}
+.flow-playback-slide img {
+    max-width: 100%;
+}
+
 .loader {
   margin: 60px auto;
   font-size: 10px;
