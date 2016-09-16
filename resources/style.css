@@ -28,7 +28,6 @@
     position: relative;
 }
 .flow-playback-slide {
-    background: white;
     position: absolute;
 }
 .flow-playback-slide.active {
