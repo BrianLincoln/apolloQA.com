@@ -3,8 +3,14 @@ var mongoose = require('mongoose');
 // define the schema for our user model
 var testSchema = mongoose.Schema({
     flowId: String,
+    start: Date,
+    finished: Date,
     status: String,
-    result: String
+    result: String,
+    failure: {
+        stepId: String,
+        reason: String
+    }
 });
 
 // create the model for users and expose it to our app
