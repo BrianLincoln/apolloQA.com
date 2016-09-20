@@ -1,5 +1,7 @@
 .container {
     margin-top: 100px;
+    overflow: hidden;
+    padding-bottom: 30px;
 }
 
 .homepage-hero h1 {
@@ -15,6 +17,22 @@
     font-size: 200px;
 }
 
+
+
+
+
+
+
+.flow-manager h1 {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.flow-edit-name {
+    margin-bottom: 30px;
+}
+
 .flows-empty-arrow {
     font-size: 100px;
     margin-top: 30px;
@@ -24,18 +42,99 @@
     margin-bottom: 50px;
 }
 
+
+
+.flow-editor-step {
+    display: flex;
+    justify-content: space-between;
+}
+
+.flow-editor-step-name-wrapper {
+    min-width: 0;
+}
+
+.flow-editor-step-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.flow-editor-step-value {
+    display: block;
+}
+
+.flow-editor-step-button-wrapper {
+    display: flex;
+}
+
+.flow-editor-step-button {
+    cursor: pointer;
+    padding: 0 .2em;
+}
+
+.flow-editor-step-button:hover {
+    opacity: .7;
+}
+
+.flow-editor-step-button:first-child {
+    padding-left: 0;
+}
+.flow-editor-step-button:last-child {
+    padding-right: 0;
+}
+
+
+
+
+.flow-result {
+    margin-bottom: 30px;
+}
+
+
+
+
+
 .flow-playback {
     position: relative;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none;   /* Chrome/Safari/Opera */
+    -khtml-user-select: none;    /* Konqueror */
+    -moz-user-select: none;      /* Firefox */
+    -ms-user-select: none;       /* Internet Explorer/Edge */
+    user-select: none;           /* Non-prefixed version, currently */
+}
+.flow-playback-header {
+    border-bottom:  solid 1px #000;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
 }
 .flow-playback-slide {
-    position: absolute;
-}
-.flow-playback-slide.active {
-    z-index: 2;
+    box-shadow: 1px 1px 3px #ccc;
+    width: 100%;
 }
 .flow-playback-slide img {
     max-width: 100%;
+    user-select: none;
 }
+.flow-playback-control {
+    cursor: pointer;
+    padding: .2em;
+}
+.flow-playback-control:hover {
+    opacity: .7;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 .loader {
   margin: 60px auto;
