@@ -175,7 +175,7 @@ module.exports = function(app, passport) {
     app.post('/api/flows/:flowId', function (req, res, next) {
         //todo check user and flow
         var query = {_id: req.params.flowId};
-        var update = {steps: {stepType: "pageLoad", url: "http://localhost:8080"}};
+        var update = {steps: {stepType: "pageLoad", url: "http://example.com"}};
         Flow.update(
             query,
             {$push: update},
@@ -235,6 +235,7 @@ module.exports = function(app, passport) {
                     break;
                 case 'confirmElementExists':
                 case 'click':
+                case 'hover':
                     step.inputValue = undefined;
                     step.selector = req.body.selector || '';
                     step.url = undefined;
