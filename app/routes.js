@@ -110,11 +110,9 @@ module.exports = function(app, passport) {
             if (error) {
                 return next(error)
             }
-            res.render('flow.ejs', {
-                flow: flow,
-                user: req.user,
-                isLoggedInUser: req.isAuthenticated(),
-            })
+            console.log(flow);
+
+            res.redirect("/flow/" + flow._id);
         });
     });
 
