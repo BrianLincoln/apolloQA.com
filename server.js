@@ -10,11 +10,11 @@ var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
 var session      = require('express-session');
 
-var configDB = require('./config/database.js');
+var config = require('./config/config.js');
 var sessionSecret = require('./config/secrets.js');
 
 // configuration ===============================================================
-mongoose.connect(configDB.url); // connect to our database
+mongoose.connect(config.dbUrl); // connect to our database
 
 require('./config/passport')(passport); // pass passport for configuration
 

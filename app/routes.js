@@ -1,5 +1,5 @@
 var http = require('http');
-var secrets = require('./../config/secrets.js');
+var config = require('./../config/config.js');
 var Flow = require('./models/flow');
 var Step = require('./models/step');
 var Test = require('./models/test');
@@ -332,11 +332,11 @@ module.exports = function(app, passport) {
 
     //get test status
     app.get('/api/tests/:flowId', function(req, res) {
-        //todo: check user
         Test.findOne({flowId: req.params.flowId}, {}, {sort: {'start': 1}}).exec(function(error, test) {
             if (error) {
                 res.send(error);
             }
+
             res.send(test);
         });
     });
@@ -356,7 +356,7 @@ function isLoggedIn(req, res, next) {
 
 function checkBetaValue(req, res, next) {
     // if user is authenticated in the session, carry on
-    if (req.body.betaKey === secrets.betaSecret) {
+    if (req.body.betaKey === config.betaSecret) {
         return next();
     }
 

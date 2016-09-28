@@ -7,6 +7,7 @@ var testSchema = mongoose.Schema({
     finished: Date,
     status: String,
     result: String,
+    screenshots: Array,
     failure: {
         stepId: String,
         reason: String
