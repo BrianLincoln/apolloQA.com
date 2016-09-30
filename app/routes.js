@@ -20,7 +20,6 @@ module.exports = function(app, passport) {
                 isLoggedInUser: req.isAuthenticated(),
             });
         }
-
     });
 
     // =====================================
@@ -35,6 +34,17 @@ module.exports = function(app, passport) {
         });
     });
 
+
+    app.get('/help/selectors', function(req, res) {
+        var isLoggedInUser = req.isAuthenticated();
+
+        if (isLoggedInUser) {
+            res.render('help/selectors.ejs', {
+                isLoggedInUser: isLoggedInUser,
+            });
+        }
+        }
+    });
     // process the login form
     // app.post('/login', do all our passport stuff here);
 
@@ -151,6 +161,8 @@ module.exports = function(app, passport) {
         failureRedirect : '/login', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
     }));
+
+
 
 
 
