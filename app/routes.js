@@ -42,8 +42,7 @@ module.exports = function(app, passport) {
             res.render('help/selectors.ejs', {
                 isLoggedInUser: isLoggedInUser,
             });
-        }
-        }
+        }        
     });
     // process the login form
     // app.post('/login', do all our passport stuff here);

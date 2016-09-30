@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+<head>
+    <title>Signup - QA Automation Bot</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <% include ./../partials/resources %>
+</head>
+<body>
+    <% include ./../partials/header %>
+    <div class="page-container">
+        <h1 class="text-center"><span class="fa fa-code"></span> Selectors</h1>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 col-md-8 col-md-offset-2">
+                        <h2>Developers and people familiar with CSS selectors:</h2>
+                        <p>We need a <b>unique</b> css selector. Just about any should work. <a href="http://webdriver.io/guide/usage/selectors.html">More info here</a></p>
+                </div>
+                <div class="col-xs-12 col-md-8 col-md-offset-2">
+                    <h2>Everyone else:</h2>
+                    <p>We need a way to target specific parts of the page. In some cases your developer will need to make that possible.</p>
+                    <h4>Try xpath first</h3>
+                    <p>In most cases, using chrome dev tools to get an element's xpath will work just fine.</p>
+                    <ol>
+                        <li>Navigate to the page in Chrome</li>
+                        <li>Right click on the element, click "Inspect"</li>
+                        <li>In the dev tool window, right click on the selected line.</li>
+                        <li>Select copy > xpath</li>
+                    </ol>
+                    <img src="../xpath.png" />
+                    <h4>If that doesn't work</h4>
+                    <p>Talk to a developer about how to get unique CSS selectors. Ask them to consider adding a standard data attribute to the element, such as data-targetID="unique-value" (they will know what that means). You would then be able to target the elment with a selector like: [data-targetID="unique-value"] </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h1>Working on ways to improve this part. Would love feedback.</h1>
+</body>
+</html>
