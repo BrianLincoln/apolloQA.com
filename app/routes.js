@@ -42,7 +42,7 @@ module.exports = function(app, passport) {
             res.render('help/selectors.ejs', {
                 isLoggedInUser: isLoggedInUser,
             });
-        }        
+        }
     });
     // process the login form
     // app.post('/login', do all our passport stuff here);
@@ -180,7 +180,7 @@ module.exports = function(app, passport) {
         });
     });
 
-//TODO ---- this is really adding a step, should not be a POST on the /flows/ level -- should be totally redone
+//TODO ---- this is really adding a step, should not be a POST on the /flows/ level -- should be totally rethought out
     app.post('/api/flows/:flowId', function (req, res, next) {
         //todo check user and flow
         var query = {_id: req.params.flowId};
