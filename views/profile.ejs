@@ -7,26 +7,22 @@
 </head>
 <body>
     <% include ./partials/header %>
-    <div class="container">
+    <div class="page-container">
+        <h1 class="text-center"><span class="fa fa-heart"></span> Welcome to beta.</h1>
+        <p class="text-center">Seriously though... this is not ready. Don't expect this account or any of your tests to stick around. Stuff is changing a lot and quickly.</p>
+        <div class="container col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4">
 
-        <div class="page-header text-center">
-            <h1><span class="fa fa-anchor"></span> You in beta</h1>
-            <p>Seriously... don't expect this account or any of your tests to be permanent. Stuff is changing a lot and quickly.</p>
-        </div>
-
-        <div class="row">
-
-            <!-- LOCAL INFORMATION -->
-            <div class="col-sm-12 text-center">
-                <h3>Creat a flow to get started</h3>
-                <a class="btn btn-large btn-primary" href="/flows" data-tar="logout"><span class="fa fa-exchange"></span> Flows</a>
+            <div class="row">
+                <!-- LOCAL INFORMATION -->
+                <div class="col-sm-12 text-center">
+                    <a class="btn btn-lg btn-primary" href="/flows" data-tar="logout">Get Started <span class="fa fa-rocket"></span></a>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-12">
-                <div id="content"></div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div id="content"></div>
+                </div>
             </div>
-        </div>
 
     </div>
     <script async src="./app.bundle.js" ></script>

@@ -1,20 +1,61 @@
 <!doctype html>
 <html>
     <head>
-        <title>QA Automation Bot</title>
+        <title>Super Automator - QA Automation for functional and end </title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <% include ./partials/resources %>
     </head>
     <body>
-        <div class="container">
-            <div class="homepage-hero text-center">
-                <div class="fa fa-gears homepage-hero-icon"></div>
-                <h1>QA Automation</h1>
-                <h2><code>Automation for everyone.</code></h2>
-                <a href="/login" class="btn btn-large btn-link" data-tar="login"><span class="fa fa-user"></span> Login</a>
-                <a href="/signup" class="btn btn-large btn-primary" data-tar="signup"><span class="fa fa-heart"></span> Try it out</a>
+        <% include ./partials/header %>
+        <div class="page-container">
+            <div class="homepage-hero clearfix">
+                <div class="homepage-hero-content">
+                    <div class="container ">
+                        <div class="row">
+                            <div class="col-xs-12 col-md-8 col-lg-6">
+                                <h1>QA automation for everyone.</h1>
+                                <h2>Automate your website testing without writing code.</h2>
+                                <div>
+                                    <a href="/signup" class="btn btn-lg btn-primary" data-tar="signup"><span class="fa fa-heart"></span> Try it out</a>
+                                    <a href="/login" class="btn btn-lg" data-tar="login"><span class="fa fa-user"></span> Login</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container ">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-4 text-center">
+                        <div class="col-xs-12">
+                            <h1><span class="fa fa-heartbeat"></span></h1>
+                            <h3>Uptime monitoring</h3>
+                            <p>Schedule your automated tests so you can be sure that customers can access critical functionality. We'll let you know if anything doesn't look right.</p>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-4 text-center">
+                        <div class="col-xs-12 ">
+                            <h1><span class="fa fa-bug"></span></h1>
+                            <h3>Find bugs faster</h3>
+                            <p>Automate your QA process by eleminating manual testing of common functionality.</p>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-4 text-center">
+                        <div class="col-xs-12 ">
+                            <h1><span class="fa fa-rocket"></span></h1>
+                            <h3>Speed up your release process</h3>
+                            <p>Check that all of your website's functionality is up and working as intended in minutes.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
 
+            <div class="bg-black">
+                <div class="container text-center">
+                    <h1>Just try it okay?</h1>
+                    <a href="/signup" class="btn btn-danger btn-lg" data-tar="signup">Okay okay, I'll try it</a>
+                </div>
+            </div>
         </div>
     </body>
 </html>
