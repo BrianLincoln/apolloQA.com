@@ -1,3 +1,6 @@
+body {
+    background: #fafafa;
+}
 .page-container {
     padding-top: 100px;
 }
@@ -58,6 +61,9 @@ h1 {
     font-size: 40px;
     margin-bottom: 25px;
 }
+h2 {
+
+}
 .homepage-hero h2 {
     font-size: 16px;
     font-weight: normal;
@@ -67,6 +73,40 @@ h1 {
 .homepage-hero-icon {
     font-size: 200px;
 }
+
+.homepage-howitworks {
+    background-image: url(how-it-works.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+.homepage-howitworks-content {
+    background: rgba(0, 0, 0, .8);
+    color: white;
+}
+
+
+.homepage-howitworks-steps {
+    color: white;
+    padding: 30px;
+}
+.homepage-howitworks-step {
+    align-items: center;
+    display: flex;
+    font-size: 16px;
+    margin-bottom: 30px;
+}
+.homepage-howitworks-step:last-child {
+    margin-bottom: 0px;
+}
+.homepage-howitworks-step h3 {
+    margin: 0;
+}
+.homepage-howitworks-step-icon {
+    font-size: 50px;
+    padding-right: 30px;
+}
+
 
 @media (min-width: 640px) {
 h1 {
@@ -79,7 +119,30 @@ h1 {
 }
 
 
+.flow-page {
+    position: relative;
+}
 
+.flow-page:before {
+    background-image: url(hero.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0px 1px 3px #ccc;
+    content: " ";
+    height: 500px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+.flow-manager {
+    background: #fff;
+    box-shadow: 0px 1px 3px #ccc;
+    margin-top: 200px;
+    padding: 15px;
+}
 
 .flow-manager h1 {
     display: block;
@@ -103,22 +166,46 @@ h1 {
 
 
 .flow-editor-step {
+    border-bottom: solid 1px #ccc;
+    color: black;
+    cursor: pointer;
     display: flex;
     justify-content: space-between;
+    padding: 15px;
 }
-
+.flow-editor-step:hover {
+    background: rgba(255,255,255, .8);
+    color: black;
+    text-decoration: none;
+}
+.flow-editor-step:last-child {
+    border-bottom: none;
+}
 .flow-editor-step-name-wrapper {
     min-width: 0;
 }
-
-.flow-editor-step-name {
-    white-space: nowrap;
+.flow-editor-step-number {
+    border-right: solid 1px #ccc;
+    display: flex;
+    flex-direction: column;
+    font-size: 20px;
+    font-weight: bold;
+    justify-content: center;
+    margin-right: 15px;
+    padding-right: 15px;
+    vertical-align: middle;
+}
+.flow-editor-step-info {
+    flex: 1;
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
 }
-
-.flow-editor-step-value {
+.flow-editor-step-type {
     display: block;
+}
+.flow-editor-step-value {
+
 }
 
 .flow-editor-step-button-wrapper {
@@ -141,6 +228,22 @@ h1 {
     padding-right: 0;
 }
 
+
+
+
+.step-list {
+    margin-bottom: 15px;
+}
+.step-editor {
+    background: white;
+    padding: 15px;
+}
+.step-editor-heading {
+    border-bottom: solid 1px #ccc;
+    font-size: 16px;
+    margin: 0 0 15px 0;
+    padding-bottom: 5px;
+}
 
 
 
