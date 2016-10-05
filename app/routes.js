@@ -3,6 +3,9 @@ var config = require('./../config/config.js');
 var Flow = require('./models/flow');
 var Step = require('./models/step');
 var Test = require('./models/test');
+var stripe = require("stripe")(
+  config.stripeTestSecret
+);
 
 // app/routes.js
 module.exports = function(app, passport) {
@@ -56,6 +59,18 @@ module.exports = function(app, passport) {
 
         //TEMP BETA res.render('signup.ejs', {
         res.render('beta-user-signup.ejs', {
+            isLoggedInUser: req.isAuthenticated(),
+            message: req.flash('signupMessage')
+        });
+    });
+
+
+    // show the signup form
+    app.get('/signup-payment', function(req, res) {
+        // render the page and pass in any flash data if it exists
+
+        //TEMP BETA res.render('signup.ejs', {
+        res.render('signup-payment.ejs', {
             isLoggedInUser: req.isAuthenticated(),
             message: req.flash('signupMessage')
         });
@@ -152,6 +167,20 @@ module.exports = function(app, passport) {
         failureRedirect : '/signup', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
     }));
+    app.post('/signup-payment', function (req, res, next) {
+        stripe.customers.create(
+            {
+                email: 'customer@example.com'
+            }, function(err, customer) {
+                err; // null if no error occurred
+                customer; // the created customer object
+                console.log(err);
+                console.log(customer);
+
+                res.send("done");
+            }
+        );
+    });
 
 
     // process the login form
