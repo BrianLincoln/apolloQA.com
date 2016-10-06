@@ -66,11 +66,11 @@ module.exports = function(app, passport) {
 
 
     // show the signup form
-    app.get('/signup-payment', function(req, res) {
+    app.get('/pricing', function(req, res) {
         // render the page and pass in any flash data if it exists
 
         //TEMP BETA res.render('signup.ejs', {
-        res.render('signup-payment.ejs', {
+        res.render('pricing.ejs', {
             isLoggedInUser: req.isAuthenticated(),
             message: req.flash('signupMessage')
         });

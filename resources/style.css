@@ -247,6 +247,10 @@ h1 {
 
 
 
+
+
+
+
 .flow-result {
     margin-bottom: 30px;
 }
@@ -290,7 +294,79 @@ h1 {
 
 
 
+.pricing-plan-list {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
 
+.pricng-plan {
+    align-items: center;
+    background: white;
+    border: solid 1px #ccc;
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+    margin: 15px;
+    min-height: 200px;
+    min-width: 320px;
+    text-align: center;
+}
+
+.pricng-plan h3 {
+    margin: 0 0 30px 0;
+}
+
+.pricng-plan h2 {
+    font-size: 48px;
+    margin: 0 0 60px 0;
+}
+
+.pricing-plan-month {
+    font-size: 14px;
+}
+
+.pricng-plan ul {
+    list-style-type: none;
+    margin: 0 auto 15px auto;
+    padding: 0;
+    text-align: left;
+}
+
+.pricing-plan-include {
+    margin: 0 0 15px 0;
+    padding: 0;
+}
+.pricing-plan-include > span {
+    display: inline-block;
+    padding-right: 15px;
+    min-width: 50px;
+    min-width: 4s0px;
+    font-size: 24px;
+    vertical-align: middle;
+}
+
+
+.pricng-plan .btn {
+    margin: 15px 0;
+}
+
+@media (min-width: 1240px) {
+    .pricing-plan-list {
+        align-items: stretch;;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    .pricng-plan:first-child {
+        margin-left: 0;
+    }
+    .pricng-plan:last-child {
+        margin-right: 0;
+    }
+    .pricng-plan .btn {
+        margin: auto 0 0 0;
+    }
+}
 
 
 
