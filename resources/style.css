@@ -14,7 +14,7 @@ body {
     color: white;
 }
 .header-logo.navbar-brand {
-    font-family: Lucida Sans Typewriter, Courier New;
+    font-family: Courier New;
     padding: 10px 15px;
     max-width: 250px;
 }
@@ -57,7 +57,7 @@ body {
     min-height: 400px;
 }
 h1 {
-    font-family: Lucida Sans Typewriter, Courier New;
+    font-family: Courier New;
     font-size: 40px;
     margin-bottom: 25px;
 }
@@ -110,7 +110,6 @@ h2 {
 
 @media (min-width: 640px) {
 h1 {
-        font-family: Lucida Sans Typewriter, Courier New;
         font-size: 60px;
     }
     .homepage-hero h2 {
@@ -294,32 +293,31 @@ h1 {
 
 
 
-.pricing-plan-list {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-}
 
 .pricng-plan {
     align-items: center;
     background: white;
     border: solid 1px #ccc;
+    box-shadow: 0px 2px 3px #ddd;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     padding: 30px;
-    margin: 15px;
-    min-height: 200px;
-    min-width: 320px;
+    margin-bottom: 15px;
     text-align: center;
 }
 
+.pricing-plan-list > div, .pricing-plan-list > div > div {
+    display: flex;
+}
+
 .pricng-plan h3 {
-    margin: 0 0 30px 0;
+    margin: 0 0 15px 0;
 }
 
 .pricng-plan h2 {
     font-size: 48px;
-    margin: 0 0 60px 0;
+    margin: 0 0 15px 0;
 }
 
 .pricing-plan-month {
@@ -341,34 +339,26 @@ h1 {
     display: inline-block;
     padding-right: 15px;
     min-width: 50px;
-    min-width: 4s0px;
     font-size: 24px;
     vertical-align: middle;
 }
 
 
-.pricng-plan .btn {
-    margin: 15px 0;
-}
 
-@media (min-width: 1240px) {
+
+
+
+@media (min-width: 990px) {
     .pricing-plan-list {
-        align-items: stretch;;
-        flex-direction: row;
-        justify-content: space-between;
+        align-items: stretch;
+        display: flex;
+        padding: 30px 0;
     }
-    .pricng-plan:first-child {
-        margin-left: 0;
-    }
-    .pricng-plan:last-child {
-        margin-right: 0;
-    }
-    .pricng-plan .btn {
-        margin: auto 0 0 0;
+    .pricng-plan-featured {
+        margin: -15px -15px;
+        z-index: 2;
     }
 }
-
-
 
 
 
