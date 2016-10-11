@@ -62,19 +62,30 @@ module.exports = function(app, passport) {
             message: req.flash('loginMessage')
         });
     });
+    // process the login form
+    app.post('/login', passport.authenticate('local-login', {
+        successRedirect : '/flows', // redirect to the secure flows section
+        failureRedirect : '/login', // redirect back to the signup page if there is an error
+        failureFlash : true // allow flash messages
+    }));
 
-
-    app.get('/help/selectors', function(req, res) {
-        var isLoggedInUser = req.isAuthenticated();
-
-        if (isLoggedInUser) {
-            res.render('help/selectors.ejs', {
-                isLoggedInUser: isLoggedInUser,
-            });
-        }
+    // =====================================
+    // RESET PASSWORD ===============================
+    // =====================================
+    app.get('/reset-password', function(req, res) {
+        // render the page and pass in any flash data if it exists
+        res.render('reset-password.ejs', {
+            isLoggedInUser: req.isAuthenticated(),
+        });
     });
     // process the login form
-    // app.post('/login', do all our passport stuff here);
+    app.post('/reset-password', function(req, res) {
+        console.log(req.body.email);
+
+        res.render('reset-password-sent.ejs', {
+            isLoggedInUser: req.isAuthenticated()
+        });
+    });
 
     // =====================================
     // SIGNUP ==============================
@@ -209,16 +220,15 @@ module.exports = function(app, passport) {
     });
 
 
-    // process the login form
-    app.post('/login', passport.authenticate('local-login', {
-        successRedirect : '/flows', // redirect to the secure flows section
-        failureRedirect : '/login', // redirect back to the signup page if there is an error
-        failureFlash : true // allow flash messages
-    }));
 
 
 
 
+    app.get('/help/selectors', function(req, res) {
+        res.render('help/selectors.ejs', {
+            isLoggedInUser: isLoggedInUser,
+        });
+    });
 
 
     // =====================================
