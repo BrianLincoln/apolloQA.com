@@ -11,13 +11,18 @@ var stripe = require("stripe")(
 module.exports = function(app, passport) {
     app.get('*', function(req, res, next) {
         //http://docs.aws.amazon.com/ElasticLoadBalancing/latest/DeveloperGuide/TerminologyandKeyConcepts.html#x-forwarded-proto
-        if (config.httpsRedirection === true && req.get('x-forwarded-proto') != "https") {
+        if (req.get('x-forwarded-proto') != "https" && config.httpsRedirection === true && req.url !== "health-check") {
             res.set('x-forwarded-proto', 'https');
-            res.redirect('https://' + req.get('host') + req.url);
+            res.redirect(301, 'https://' + req.get('host') + req.url);
         } else {
             next();
         }
     });
+
+    app.get('/health-check', function(req, res) {
+        res.status(200)
+    });
+
 
     // =====================================
     // HOME PAGE (with login links) ========
