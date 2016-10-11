@@ -10,8 +10,9 @@ var stripe = require("stripe")(
 // app/routes.js
 module.exports = function(app, passport) {
     app.get('*', function(req, res, next) {
+        console.log(req.url);
         //http://docs.aws.amazon.com/ElasticLoadBalancing/latest/DeveloperGuide/TerminologyandKeyConcepts.html#x-forwarded-proto
-        if (req.get('x-forwarded-proto') != "https" && config.httpsRedirection === true && req.url !== "health-check") {
+        if (req.get('x-forwarded-proto') != "https" && config.httpsRedirection === true && req.url !== "/health-check") {
             res.set('x-forwarded-proto', 'https');
             res.redirect(301, 'https://' + req.get('host') + req.url);
         } else {
@@ -20,7 +21,7 @@ module.exports = function(app, passport) {
     });
 
     app.get('/health-check', function(req, res) {
-        res.status(200)
+        res.status(200).json({status:"ok"})
     });
 
 
