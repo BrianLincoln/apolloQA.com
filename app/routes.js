@@ -152,7 +152,7 @@ module.exports = function(app, passport) {
                     }
                     res.render('login.ejs', {
                         isLoggedInUser: false
-                    }
+                    });
                 });
             }
             else {
