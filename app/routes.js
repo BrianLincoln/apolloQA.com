@@ -1,8 +1,10 @@
 var http = require('http');
 var config = require('./../config/config.js');
+var sendEmail = require('./send-email.js');
 var Flow = require('./models/flow');
 var Step = require('./models/step');
 var Test = require('./models/test');
+var User = require('./models/user');
 var stripe = require("stripe")(
   config.stripeTestSecret
 );
@@ -72,16 +74,59 @@ module.exports = function(app, passport) {
     // =====================================
     // RESET PASSWORD ===============================
     // =====================================
+
+    //intial page
     app.get('/reset-password', function(req, res) {
         // render the page and pass in any flash data if it exists
         res.render('reset-password.ejs', {
             isLoggedInUser: req.isAuthenticated(),
         });
     });
+
+    //page linked from email
+    app.get('/reset-password/:guid', function(req, res) {
+        var validResetPasswordRequest = false;
+        var currentDateTime = new Date();
+        var query = {
+            "resetPasswordToken": req.params.guid
+        };
+
+        User.findOne(query).exec(function(error, user) {
+            if (user && user.resetPasswordExpiration && (currentDateTime <= user.resetPasswordExpiration)) {
+                res.render('reset-password-valid.ejs', {
+                    isLoggedInUser: false
+                });
+            } else {
+                res.render('reset-password-expired.ejs', {
+                    isLoggedInUser: false
+                });
+            }
+        });
+    });
+
     // process the login form
     app.post('/reset-password', function(req, res) {
-        console.log(req.body.email);
+        var guid = guidGenerator();
+        var expiration = new Date(); expiration.setMinutes(expiration.getMinutes() + config.passwordResetExpirationMintes);
+        var query = {
+            "local.email": req.body.email
+        };
+        var update = {
+            'resetPasswordToken': guid,
+            'resetPasswordExpiration': expiration
+        };
+        User.update (
+            query,
+            update,
+            function(err) {
+                if (err) {
+                    res.send(err);
+                }
+                res.send("updated");
+            }
+        );
 
+        sendEmail(req.body.email, 'brian@apolloqa.com', 'Apollo - Password Reset', 'Eventually there will be a link here for you to click, with which you can reset your password. It will be great');
         res.render('reset-password-sent.ejs', {
             isLoggedInUser: req.isAuthenticated()
         });
@@ -250,7 +295,7 @@ module.exports = function(app, passport) {
         //todo check user and flow
         var query = {_id: req.params.flowId};
         var update = {steps: {stepType: "pageLoad", url: "http://example.com"}};
-        Flow.update(
+        Flow.update (
             query,
             {$push: update},
             function(err) {
@@ -438,6 +483,13 @@ function checkBetaValue(req, res, next) {
 
     // if they aren't redirect them
     res.redirect('https://gfycat.com/AmpleActualEasteuropeanshepherd');
+}
+
+function guidGenerator() {
+    var S4 = function() {
+       return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+    };
+    return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
 }
 
 function moveStep(arr, srcIndex, destIndex) {
