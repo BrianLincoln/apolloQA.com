@@ -32,9 +32,6 @@ module.exports = function(to, from, subject, body) {
     }, function(err, data) {
         if(err) {
             console.log(err);
-        } else {
-            console.log('Email sent:');
-            console.log(data);
         }
     });
 }

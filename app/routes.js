@@ -94,7 +94,8 @@ module.exports = function(app, passport) {
         User.findOne(query).exec(function(error, user) {
             if (user && user.resetPasswordExpiration && (currentDateTime <= user.resetPasswordExpiration)) {
                 res.render('reset-password-valid.ejs', {
-                    isLoggedInUser: false
+                    isLoggedInUser: false,
+                    guid: req.params.guid
                 });
             } else {
                 res.render('reset-password-expired.ejs', {
@@ -104,9 +105,10 @@ module.exports = function(app, passport) {
         });
     });
 
-    // process the login form
+    // reset pw - process entered email
     app.post('/reset-password', function(req, res) {
         var guid = guidGenerator();
+        var link = config.url + '/reset-password/' + guid;
         var expiration = new Date(); expiration.setMinutes(expiration.getMinutes() + config.passwordResetExpirationMintes);
         var query = {
             "local.email": req.body.email
@@ -121,14 +123,43 @@ module.exports = function(app, passport) {
             function(err) {
                 if (err) {
                     res.send(err);
+                } else {
+                    sendEmail(req.body.email, 'brian@apolloqa.com', 'Apollo - Password Reset', 'Reset your password here: ' + link);
                 }
-                res.send("updated");
             }
         );
 
-        sendEmail(req.body.email, 'brian@apolloqa.com', 'Apollo - Password Reset', 'Eventually there will be a link here for you to click, with which you can reset your password. It will be great');
         res.render('reset-password-sent.ejs', {
             isLoggedInUser: req.isAuthenticated()
+        });
+    });
+
+
+    // reset pw - process actual reset form
+    app.post('/reset-password-submit', function(req, res) {
+        var query = {
+            "resetPasswordToken": req.body.guid
+        };
+
+        User.findOne(query, function (err, user) {
+            var currentDateTime = new Date();
+            if (user && user.resetPasswordExpiration && (currentDateTime <= user.resetPasswordExpiration)) {
+                var hashedPassword = user.generateHash(req.body.password);
+                user.local.password = hashedPassword;
+                user.save(function (err) {
+                    if (err) {
+                        res.send(err);
+                    }
+                    res.render('login.ejs', {
+                        isLoggedInUser: false
+                    }
+                });
+            }
+            else {
+                res.render('reset-password-expired.ejs', {
+                    isLoggedInUser: false
+                });
+            }
         });
     });
 
@@ -216,8 +247,6 @@ module.exports = function(app, passport) {
             if (error) {
                 return next(error)
             }
-            console.log(flow);
-
             res.redirect("/flow/" + flow._id);
         });
     });
@@ -256,8 +285,6 @@ module.exports = function(app, passport) {
             }, function(err, customer) {
                 err; // null if no error occurred
                 customer; // the created customer object
-                console.log(err);
-                console.log(customer);
 
                 res.send("done");
             }
