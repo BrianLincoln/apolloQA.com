@@ -120,10 +120,10 @@ module.exports = function(app, passport) {
         User.update (
             query,
             update,
-            function(err) {
+            function(err, userExists) {
                 if (err) {
                     res.send(err);
-                } else {
+                } else if(userExists) {
                     sendEmail(req.body.email, 'brian@apolloqa.com', 'Apollo - Password Reset', 'Reset your password here: ' + link);
                 }
             }
