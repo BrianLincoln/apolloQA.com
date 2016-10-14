@@ -150,9 +150,7 @@ module.exports = function(app, passport) {
                     if (err) {
                         res.send(err);
                     }
-                    res.render('login.ejs', {
-                        isLoggedInUser: false
-                    });
+                    res.redirect('/login');
                 });
             }
             else {
