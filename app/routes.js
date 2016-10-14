@@ -11,6 +11,8 @@ var stripe = require("stripe")(
 
 // app/routes.js
 module.exports = function(app, passport) {
+
+    //check for https and www -- redirect appropriately
     app.get('*', function(req, res, next) {
 		var httpsUri = req.get('x-forwarded-proto') === "https";
 		var wwwUri = req.headers.host.slice(0, 4) === 'www.';
@@ -32,9 +34,12 @@ module.exports = function(app, passport) {
 
     });
 
+    //health check for aws
     app.get('/health-check', function(req, res) {
         res.status(200).json({status:"ok"})
     });
+
+
 
 
     // =====================================
@@ -53,6 +58,10 @@ module.exports = function(app, passport) {
         }
     });
 
+
+
+
+
     // =====================================
     // LOGIN ===============================
     // =====================================
@@ -70,6 +79,10 @@ module.exports = function(app, passport) {
         failureRedirect : '/login', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
     }));
+
+
+
+
 
     // =====================================
     // RESET PASSWORD ===============================
@@ -161,6 +174,10 @@ module.exports = function(app, passport) {
         });
     });
 
+
+
+
+
     // =====================================
     // SIGNUP ==============================
     // =====================================
@@ -168,46 +185,114 @@ module.exports = function(app, passport) {
     app.get('/signup', function(req, res) {
         // render the page and pass in any flash data if it exists
 
-        //TEMP BETA res.render('signup.ejs', {
-        res.render('beta-user-signup.ejs', {
-            isLoggedInUser: req.isAuthenticated(),
-            message: req.flash('signupMessage')
-        });
+        if (config.beta === true) {
+            //TEMP BETA
+            res.render('beta-user-signup.ejs', {
+                isLoggedInUser: req.isAuthenticated(),
+                message: req.flash('signupMessage')
+            });
+        } else {
+            res.render('signup.ejs', {
+                isLoggedInUser: req.isAuthenticated(),
+                message: req.flash('signupMessage')
+            });
+        }
+
+    });
+
+    // process the signup form
+    app.post('/signup', passport.authenticate('local-signup', {
+        successRedirect : '/profile', // redirect to the secure profile section
+        failureRedirect : '/signup', // redirect back to the signup page if there is an error
+        failureFlash : true // allow flash messages
+    }));
+    // process the signup form
+    app.post('/signup-beta', checkBetaValue, passport.authenticate('local-signup', {
+        successRedirect : '/profile', // redirect to the secure profile section
+        failureRedirect : '/signup', // redirect back to the signup page if there is an error
+        failureFlash : true // allow flash messages
+    }));
+    app.post('/signup-payment', function (req, res, next) {
+        stripe.customers.create(
+            {
+                email: 'customer@example.com'
+            }, function(err, customer) {
+                err; // null if no error occurred
+                customer; // the created customer object
+
+                res.send("done");
+            }
+        );
     });
 
 
-    // show the signup form
-    app.get('/pricing', function(req, res) {
-        // render the page and pass in any flash data if it exists
+    // =====================================
+    // LOGOUT ==============================
+    // =====================================
+    app.get('/logout', function(req, res) {
+        req.logout();
+        res.redirect('/');
+    });
 
-        //TEMP BETA res.render('signup.ejs', {
+
+
+    // =====================================
+    // Pricing Page ========================
+    // =====================================
+    app.get('/pricing', function(req, res) {
         res.render('pricing.ejs', {
             isLoggedInUser: req.isAuthenticated(),
             message: req.flash('signupMessage')
         });
     });
 
-    // process the signup form
-    // app.post('/signup', do all our passport stuff here);
+
+    // =====================================
+    // Help Center =========================
+    // =====================================
+    app.get('/help/selectors', function(req, res) {
+        res.render('help/selectors.ejs', {
+            isLoggedInUser: isLoggedInUser,
+        });
+    });
+
+
+
+
 
     // =====================================
     // PROFILE SECTION =====================
     // =====================================
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
-    app.get('/profile', isLoggedIn, function(req, res) {
+    app.get('/profile', isLoggedIn, checkSubscriptionStatus, function(req, res) {
         res.render('profile.ejs', {
             isLoggedInUser: req.isAuthenticated(),
             user : req.user // get the user out of session and pass to template
         });
     });
 
+
+
+    // =====================================
+    // SUBSCRIPTION PAGE =====================
+    // =====================================
+    // we will want this protected so you have to be logged in to visit
+    // we will use route middleware to verify this (the isLoggedIn function)
+    app.get('/subscription', isLoggedIn, function(req, res) {
+        res.render('subscription.ejs', {
+            isLoggedInUser: req.isAuthenticated(),
+            user : req.user // get the user out of session and pass to template
+        });
+    });
+
+
     // =====================================
     // FLOW LIST =====================
     // =====================================
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
-    app.get('/flows', isLoggedIn, function(req, res) {
+    app.get('/flows', isLoggedIn, checkSubscriptionStatus, function(req, res) {
         Flow.find({userId: req.user._id}).exec(function(error, flows) {
             if (error) {
                 return next(error)
@@ -262,43 +347,11 @@ module.exports = function(app, passport) {
         );
     });
 
-    // =====================================
-    // LOGOUT ==============================
-    // =====================================
-    app.get('/logout', function(req, res) {
-        req.logout();
-        res.redirect('/');
-    });
-
-    // process the signup form
-    app.post('/signup', checkBetaValue, passport.authenticate('local-signup', {
-        successRedirect : '/profile', // redirect to the secure profile section
-        failureRedirect : '/signup', // redirect back to the signup page if there is an error
-        failureFlash : true // allow flash messages
-    }));
-    app.post('/signup-payment', function (req, res, next) {
-        stripe.customers.create(
-            {
-                email: 'customer@example.com'
-            }, function(err, customer) {
-                err; // null if no error occurred
-                customer; // the created customer object
-
-                res.send("done");
-            }
-        );
-    });
 
 
 
 
 
-
-    app.get('/help/selectors', function(req, res) {
-        res.render('help/selectors.ejs', {
-            isLoggedInUser: isLoggedInUser,
-        });
-    });
 
 
     // =====================================
@@ -508,6 +561,18 @@ function checkBetaValue(req, res, next) {
 
     // if they aren't redirect them
     res.redirect('https://gfycat.com/AmpleActualEasteuropeanshepherd');
+}
+
+function checkSubscriptionStatus(req, res, next) {
+
+    //switch: trial, basic, etc.
+    if (!config.beta) {
+        res.redirect('/subscription');
+    }
+
+    //valid subscription
+    return next();
+
 }
 
 function guidGenerator() {

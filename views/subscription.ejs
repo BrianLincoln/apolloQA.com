@@ -8,29 +8,51 @@
 <body>
     <% include ./partials/header %>
     <div class="page-container">
-        <h1 class="text-center"><span class="fa fa-sign-in"></span> Signup</h1>
+        <h1 class="text-center"><span class="fa fa-sign-in"></span> Subscription</h1>
         <div class="narrow-form col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-md-4 col-offset-3 col-lg-4 col-lg-offset-4">
-            <!-- show any messages that come back with authentication -->
-            <% if (message.length > 0) { %>
-                <div class="alert alert-danger"><%= message %></div>
-            <% } %>
 
-            <!-- Sign up FORM -->
-            <form action="/signup" method="post" id="signup-form">
+            <!-- LOGIN FORM -->
+            <form action="/subscription" method="post" id="payment-form">
+                <h2>Free for 7 days</h2>
+                <h4>Then $25 /month</h4>
                 <span class="payment-errors"></span>
-                <div class="form-group">
-                    <label>Email</label>
-                    <input type="text" class="form-control" name="email">
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" class="form-control" name="password">
+
+                <div class="row">
+                    <div class="col-xs-12 col-lg-9">
+                        <div class="form-group">
+                            <label>Card Number</label>
+                            <input type="text" class="form-control" data-stripe="number">
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-lg-3">
+                        <div class="form-group">
+                            <label>CVC</label>
+                            <input type="text" class="form-control" data-stripe="cvc">
+                        </div>
+                    </div>
                 </div>
 
+                <div class="row">
+                    <div class="col-xs-12 col-lg-6">
+                        <div class="form-group">
+                            <label>Expiration (MM - YY)</label>
+                            <div class="payment-expiration">
+                                <input type="text" class="form-control" data-stripe="exp_month">
+                                <span class="payment-form-expiration-dash">&mdash;</span>
+                                <input type="text" class="form-control" data-stripe="exp_year">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 col-lg-6">
+                        <div class="form-group">
+                            <label>Zip</label>
+                            <input type="text" class="form-control" data-stripe="address_zip">
+                        </div>
+                    </div>
+                </div>
                 <button type="submit" class="btn btn-primary">Signup</button>
             </form>
-            <hr>
-            <p>Already have an account? <a href="/login">Login</a></p>
         </div>
     </div>
 

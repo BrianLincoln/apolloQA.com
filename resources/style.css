@@ -376,6 +376,15 @@ h1 {
 
 
 
+.payment-expiration > input {
+    display: inline-block;
+    max-width: 4em;
+}
+
+
+
+
+
 .loader {
   margin: 60px auto;
   font-size: 10px;
