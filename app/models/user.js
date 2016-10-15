@@ -9,7 +9,9 @@ var userSchema = mongoose.Schema({
         password     : String,
     },
     resetPasswordToken: String,
-    resetPasswordExpiration: Date
+    resetPasswordExpiration: Date,
+    accountStatus: String,
+    trialExpirationDate: Date
 
 });
 

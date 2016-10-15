@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <% include ./partials/resources %>
 </head>
-<body>
+<body class="page-full-bg bg-top signup-page">
     <% include ./partials/header %>
     <div class="page-container">
-        <h1 class="text-center"><span class="fa fa-sign-in"></span> Signup</h1>
+        <h1 class="signup-page-header text-center"><span class="fa fa-sign-in"></span> Signup</h1>
         <div class="narrow-form col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-md-4 col-offset-3 col-lg-4 col-lg-offset-4">
             <!-- show any messages that come back with authentication -->
             <% if (message.length > 0) { %>

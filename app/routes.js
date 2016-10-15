@@ -1,4 +1,5 @@
 var http = require('http');
+var moment = require('moment');
 var config = require('./../config/config.js');
 var sendEmail = require('./send-email.js');
 var Flow = require('./models/flow');
@@ -122,7 +123,8 @@ module.exports = function(app, passport) {
     app.post('/reset-password', function(req, res) {
         var guid = guidGenerator();
         var link = config.url + '/reset-password/' + guid;
-        var expiration = new Date(); expiration.setMinutes(expiration.getMinutes() + config.passwordResetExpirationMintes);
+        var expiration = new Date();
+        expiration.setMinutes(expiration.getMinutes() + config.passwordResetExpirationMintes);
         var query = {
             "local.email": req.body.email
         };
@@ -202,13 +204,13 @@ module.exports = function(app, passport) {
 
     // process the signup form
     app.post('/signup', passport.authenticate('local-signup', {
-        successRedirect : '/profile', // redirect to the secure profile section
+        successRedirect : '/flows', // redirect to the secure profile section
         failureRedirect : '/signup', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
     }));
     // process the signup form
     app.post('/signup-beta', checkBetaValue, passport.authenticate('local-signup', {
-        successRedirect : '/profile', // redirect to the secure profile section
+        successRedirect : '/flows', // redirect to the secure profile section
         failureRedirect : '/signup', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
     }));
@@ -265,10 +267,24 @@ module.exports = function(app, passport) {
     // =====================================
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
-    app.get('/profile', isLoggedIn, checkSubscriptionStatus, function(req, res) {
+    app.get('/profile', isLoggedIn, function(req, res) {
+        console.log(req.user);
+
+        var accountStatus = req.user.accountStatus;
+        var trialPeriodRemaining = null;
+
+        switch (accountStatus) {
+            case "trial":
+                trialPeriodRemaining = calculateTrialPeriodInDays(req.user.trialExpirationDate, new Date());
+                break;
+            default:
+                break;
+        }
+
         res.render('profile.ejs', {
             isLoggedInUser: req.isAuthenticated(),
-            user : req.user // get the user out of session and pass to template
+            user : req.user, // get the user out of session and pass to template
+            trialPeriodRemaining: trialPeriodRemaining
         });
     });
 
@@ -566,8 +582,16 @@ function checkBetaValue(req, res, next) {
 function checkSubscriptionStatus(req, res, next) {
 
     //switch: trial, basic, etc.
-    if (!config.beta) {
-        res.redirect('/subscription');
+    if (!config.beta && req.user && req.user.accountStatus) {
+        switch(req.user.accountStatus) {
+            case 'trial':
+                trialPeriodRemaining = calculateTrialPeriodInDays(req.user.trialExpirationDate, new Date());
+                if (trialPeriodRemaining > 0) {
+                    return next();
+                }
+                break;
+        }
+        res.redirect('/profile');
     }
 
     //valid subscription
@@ -597,4 +621,11 @@ function moveStep(arr, srcIndex, destIndex) {
     }
      arr.splice(destIndex, 0, arr.splice(srcIndex, 1)[0]);
    return arr;
+}
+
+function calculateTrialPeriodInDays(endDate, currentDate) {
+    var trialEndDate = moment(endDate);
+    var currentDate = moment(currentDate);
+
+    return trialEndDate.diff(currentDate, 'days');
 }

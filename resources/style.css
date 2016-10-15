@@ -1,8 +1,32 @@
+html {
+    height: 100%;
+}
+
 body {
     background: #fafafa;
+    height: 100%;
 }
 .page-container {
     padding-top: 100px;
+    z-index: 2;
+}
+
+.page-full-bg:before {
+    background-attachment:fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-x: center;
+    background-position-y: center;
+    content: ' ';
+    display: block;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: -1;
+}
+.page-full-bg.bg-top::before {
+    background-position-y: top;
 }
 .container {
     overflow: hidden;
@@ -14,12 +38,29 @@ body {
     color: white;
 }
 
-
-
 .narrow-form {
     background: white;
     box-shadow: 0px 1px 3px #ccc;
     padding: 30px;
+}
+
+
+h1 {
+    font-family: Courier New;
+    font-size: 40px;
+    margin-bottom: 25px;
+}
+h2 {
+    font-family: monospace;
+    font-size: 18px;
+}
+@media (min-width: 640px) {
+    h1 {
+        font-size: 60px;
+    }
+    h2 {
+        font-size: 22px;
+    }
 }
 
 
@@ -52,53 +93,63 @@ body {
 
 
 
+
+
+
+
+
 .homepage-hero {
-    background-image: url(hero.jpg);
+    background-image: url(earth-bottom.jpg);
     background-repeat: no-repeat;
     background-size: cover;
-    background-position: center;
+    background-position: bottom right;
     margin-top: -50px;
 }
 .homepage-hero-content {
-    background: linear-gradient(to right, rgba(0, 0, 0, .8), rgba(0, 0, 0, 0));
+    background: linear-gradient(to right, rgba(0, 0, 0, .8), rgba(0, 0, 0, .5));
     color: white;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding-bottom: 90px;
-    padding-top: 90px;
     min-height: 400px;
+    padding: 60px 0;
 }
-h1 {
-    font-family: Courier New;
-    font-size: 40px;
-    margin-bottom: 25px;
-}
-h2 {
-
-}
-.homepage-hero h2 {
-    font-size: 16px;
-    font-weight: normal;
-    margin-bottom: 50px;
-}
-
 .homepage-hero-icon {
     font-size: 200px;
 }
+.homepage-hero-content h1, h2 {
+    margin: 0 0 30px 0;
+}
+@media (min-width: 1200px) {
+    .homepage-hero {
+        background-image: url(earth.jpg);
+        background-position: top;
+    }
+    .homepage-hero-content {
+        background: none;
+        min-height: 600px;
+    }
+    .homepage-hero-content h1 {
+        margin: 0 0 30px 0;
+    }
+    .homepage-hero-content h2 {
+        margin: 0 0 60px 0;
+    }
+}
+
+
+
 
 .homepage-howitworks {
-    background-image: url(how-it-works.jpg);
+    background-image: url(assembly.jpg);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
 }
 .homepage-howitworks-content {
-    background: rgba(0, 0, 0, .8);
+    background: rgba(0, 0, 0, .7);
     color: white;
 }
-
-
 .homepage-howitworks-steps {
     color: white;
     padding: 30px;
@@ -121,39 +172,39 @@ h2 {
 }
 
 
-@media (min-width: 640px) {
-h1 {
-        font-size: 60px;
-    }
-    .homepage-hero h2 {
-        font-size: 20px;
-    }
+
+
+
+
+
+
+.flowlist-page {
+    background-color: black;
+    color: white;
+}
+.page-full-bg.flowlist-page:before {
+    background-position: bottom right;
+    background-image: url(earth.jpg);
+}
+.page-full-bg.flow-page:before {
+     background-position: top left;
+     background-image: url(astronaut.jpg);
+ }
+.signup-page:before, .login-page:before {
+    background-image: url(launch.jpg);
+}
+.signup-page-header, .login-page-header {
+    color: white;
 }
 
 
-.flow-page {
-    position: relative;
-}
 
-.flow-page:before {
-    background-image: url(hero.jpg);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    box-shadow: 0px 1px 3px #ccc;
-    content: " ";
-    height: 500px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-}
 
 .flow-manager {
     background: #fff;
     box-shadow: 0px 1px 3px #ccc;
     margin-top: 200px;
-    padding: 15px;
+    padding: 30px;
 }
 
 .flow-manager h1 {
@@ -175,8 +226,14 @@ h1 {
     margin-bottom: 50px;
 }
 
-
-
+.flow-editor-empty {
+    margin-bottom: 30px;
+}
+.flow-editor-empty-arrow {
+    font-size: 38px;
+    margin: 0 15px 0 0;
+    vertical-align: middle;
+}
 .flow-editor-step {
     border-bottom: solid 1px #ccc;
     color: black;
@@ -303,6 +360,12 @@ h1 {
 
 
 
+
+
+
+.trial-limit-disclaimer {
+    margin-bottom: 60px;
+}
 
 
 

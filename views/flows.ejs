@@ -5,14 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <% include ./partials/resources %>
 </head>
-<body>
+<body class="page-full-bg bg-top flowlist-page">
     <% include ./partials/header %>
-    <div class="page-container">
-        <h1 class="text-center"><span class="fa fa-exchange"></span> User Flows</h1>
-        <div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4">
+    <div class="page-container ">
 
-        <!-- New Flow Form -->
-        <div class="row">
+        <div class="col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-offset-1">
+            <div class="flowlist-header">
+                <% if (typeof trialPeriodRemaining != 'undefined') { %>
+                    <h2 class="trial-limit-disclaimer"><%= trialPeriodRemaining %> days left in your free trial <a class="subhead-button" href="/subscription" data-tar="subscribe">buy a subscription</span></a></h2>
+                <% } %>
+                <h1><span class="fa fa-exchange"></span> User Flows</h1>
+            </div>
             <div class="list-group">
                 <form class="list-group-item list-group-item-info" action="/flow" method="post">
                     <div class="input-group">
@@ -26,7 +29,7 @@
                 <% if (flows.length <= 0) { %>
                     <div class="flows-empty text-center">
                         <div class="flows-empty-arrow"><span class="fa fa-hand-o-up"></span></div>
-                        <h2 class="">Make a user flow to get started</h2>
+                        <h2>Make a user flow to get started</h2>
                     </div>
                 <% } %>
 
