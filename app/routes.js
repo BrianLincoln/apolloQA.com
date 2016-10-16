@@ -312,8 +312,6 @@ module.exports = function(app, passport) {
 
         subscriptionManager.subscribeNewCustomer(req.user._id, token, subscription, req.body.email)
         .then(function(customerId) {
-            console.log("customerId");
-            console.log(customerId);
             subscriptionManager.updateUser(req.user._id, customerId, subscription, 'active')
             .then(function() {
                 res.redirect("/profile");

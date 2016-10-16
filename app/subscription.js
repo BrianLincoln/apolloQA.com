@@ -32,8 +32,6 @@ module.exports = {
             stripe.customers.retrieve (
                 stripeCustomerId,
                 function(err, customer) {
-                    console.log(err);
-                    console.log(customer);
                     if (!err && customer) {
                         var subscriptions = customer.subscriptions.data;
                         var deletions = subscriptions.map(scope.deleteSubscription);
