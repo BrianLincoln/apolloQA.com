@@ -200,6 +200,60 @@ h2 {
 
 
 
+.profile-page {
+    background-color: black;
+    color: white;
+}
+.page-full-bg.profile-page:before {
+    background-position: bottom left;
+    background-image: url(earth.jpg);
+}
+.profile-info {
+    margin: 30px 0;
+}
+.profile-info label {
+    margin-bottom: 0px;
+}
+.profile-info-item {
+    margin-bottom: 15px;
+}
+
+
+
+
+.subscription-page {
+    background-color: black;
+    color: white;
+}
+.page-full-bg.subscription-page:before {
+    background-position: bottom left;
+    background-image: url(earth.jpg);
+}
+.payment-form {
+    background-color: white;
+    color: black;
+    padding: 30px;
+}
+.payment-form-header {
+}
+.payment-form-header h2 {
+    font-size: 32px;
+    margin-bottom: 5px;
+}
+
+.payment-form-header p {
+    color: #aaa;
+}
+
+.payment-errors:empty {
+    display: none;
+}
+.payment-form-cards {
+    font-size: 22px;
+}
+
+
+
 .flow-manager {
     background: #fff;
     box-shadow: 0px 1px 3px #ccc;

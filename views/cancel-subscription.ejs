@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+<head>
+    <title>Cancel Subscription - Apollo QA</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <% include ./partials/resources %>
+</head>
+<body class="page-full-bg bg-top subscription-page">
+    <% include ./partials/header %>
+    <div class="page-container">
+        <div class="col-sm-6 col-sm-offset-3 col-md-5 col-md-offset-1">
+            <h1>It's okay, we understand</h1>
+            <h2>Are you sure you want to cancel? We had some good times.</h2>
+            <form class="btn-group" action="/cancel-subscription" method="post">
+                <button value="cancel" name="submitButton" type="submit" class="btn btn-danger">end subscription</button>
+                <button value="stay" name="submitButton" type="submit" class="btn btn-primary"><span class="fa fa-heart"></span> stay with apollo <span class="fa fa-heart"></span></button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

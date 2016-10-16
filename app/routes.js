@@ -7,8 +7,9 @@ var Step = require('./models/step');
 var Test = require('./models/test');
 var User = require('./models/user');
 var stripe = require("stripe")(
-  config.stripeTestSecret
+    config.stripeTestSecret
 );
+var subscriptionManager = require('./subscription.js');
 
 // app/routes.js
 module.exports = function(app, passport) {
@@ -214,18 +215,7 @@ module.exports = function(app, passport) {
         failureRedirect : '/signup', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
     }));
-    app.post('/signup-payment', function (req, res, next) {
-        stripe.customers.create(
-            {
-                email: 'customer@example.com'
-            }, function(err, customer) {
-                err; // null if no error occurred
-                customer; // the created customer object
 
-                res.send("done");
-            }
-        );
-    });
 
 
     // =====================================
@@ -268,23 +258,37 @@ module.exports = function(app, passport) {
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/profile', isLoggedIn, function(req, res) {
-        console.log(req.user);
-
         var accountStatus = req.user.accountStatus;
         var trialPeriodRemaining = null;
+        var accountStatusDisplayName = null;
+        var subscriptionDisplayName = null;
 
         switch (accountStatus) {
             case "trial":
                 trialPeriodRemaining = calculateTrialPeriodInDays(req.user.trialExpirationDate, new Date());
+                accountStatus = trialPeriodRemaining > 0 ? "trial" : "trialExpired";
+                subscriptionDisplayName = trialPeriodRemaining > 0 ? "Trial" : "Trial Expired";
+                break;
+            case "active":
+                accountStatus = "active";
+                subscriptionDisplayName = req.user.subscription;
+                break;
+            case "cancelled":
+                accountStatus = "cancelled";
+                subscriptionDisplayName = "Cancelled";
                 break;
             default:
+                accountStatus = accountStatus;
+                subscriptionDisplayName = req.user.subscription;
                 break;
         }
 
         res.render('profile.ejs', {
             isLoggedInUser: req.isAuthenticated(),
             user : req.user, // get the user out of session and pass to template
-            trialPeriodRemaining: trialPeriodRemaining
+            trialPeriodRemaining: trialPeriodRemaining,
+            accountStatus: accountStatus,
+            subscriptionDisplayName: subscriptionDisplayName
         });
     });
 
@@ -300,6 +304,45 @@ module.exports = function(app, passport) {
             isLoggedInUser: req.isAuthenticated(),
             user : req.user // get the user out of session and pass to template
         });
+    });
+    // process the payment form
+    app.post('/subscription', isLoggedIn, function(req, res) {
+        var token = req.body.stripeToken;
+        var subscription = 'basic'; //eventually will be passed in via form
+
+        subscriptionManager.subscribeNewCustomer(req.user._id, token, subscription, req.body.email)
+        .then(function(customerId) {
+            console.log("customerId");
+            console.log(customerId);
+            subscriptionManager.updateUser(req.user._id, customerId, subscription, 'active')
+            .then(function() {
+                res.redirect("/profile");
+            });
+        });
+    });
+
+
+    // =====================================
+    // UNSUBSCRIBE PAGE =====================
+    // =====================================
+    // we will want this protected so you have to be logged in to visit
+    // we will use route middleware to verify this (the isLoggedIn function)
+    app.get('/cancel-subscription', isLoggedIn, function(req, res) {
+        res.render('cancel-subscription.ejs', {
+            isLoggedInUser: req.isAuthenticated(),
+            user : req.user // get the user out of session and pass to template
+        });
+    });
+    app.post('/cancel-subscription', isLoggedIn, function(req, res) {
+        var submitButton = req.body.submitButton;
+
+        if (submitButton === "cancel") {
+            subscriptionManager.cancelSubscriptions(req.user._id, req.user.stripeCustomerId);
+            subscriptionManager.updateUser(req.user._id, req.user.stripeCustomerId, undefined, 'cancelled');
+            res.redirect("/profile");
+        } else {
+            res.redirect("/profile");
+        }
     });
 
 
@@ -322,7 +365,7 @@ module.exports = function(app, passport) {
     });
 
     //flow page
-    app.get('/flow/:flowId', isLoggedIn, function(req, res) {
+    app.get('/flow/:flowId', isLoggedIn, checkSubscriptionStatus, function(req, res) {
         Flow.findOne({_id: req.params.flowId}).exec(function(error, flow) {
             if (error) {
                 return next(error)
@@ -336,7 +379,7 @@ module.exports = function(app, passport) {
     });
 
     // write new flow
-    app.post('/flow', function (req, res, next) {
+    app.post('/flow', checkSubscriptionStatus, function (req, res, next) {
         var flow = new Flow({
             name: req.body.name,
             steps: req.body.steps,
@@ -351,7 +394,7 @@ module.exports = function(app, passport) {
     });
 
 //TODO --------------- this probably doesn't make sense as a get. refactor at some point
-    app.get('/flow/:flowId/delete', function (req, res, next) {
+    app.get('/flow/:flowId/delete', checkSubscriptionStatus, function (req, res, next) {
         var query = {_id: req.params.flowId};
         Flow.remove(query,
             function(err) {
@@ -374,7 +417,7 @@ module.exports = function(app, passport) {
     // API ==============================
     // =====================================
     //get flow
-    app.get('/api/flows/:flowId', function(req, res) {
+    app.get('/api/flows/:flowId', checkSubscriptionStatus, function(req, res) {
         //todo: check user
         Flow.findOne({_id: req.params.flowId}).exec(function(error, flow) {
             if (error) {
@@ -385,7 +428,7 @@ module.exports = function(app, passport) {
     });
 
 //TODO ---- this is really adding a step, should not be a POST on the /flows/ level -- should be totally rethought out
-    app.post('/api/flows/:flowId', function (req, res, next) {
+    app.post('/api/flows/:flowId', checkSubscriptionStatus, function (req, res, next) {
         //todo check user and flow
         var query = {_id: req.params.flowId};
         var update = {steps: {stepType: "pageLoad", url: "http://example.com"}};
@@ -402,7 +445,7 @@ module.exports = function(app, passport) {
     });
 
     //update a flow
-    app.put('/api/flows/:flowId', function (req, res, next) {
+    app.put('/api/flows/:flowId', checkSubscriptionStatus, function (req, res, next) {
 
         Flow.findById(req.params.flowId, function (err, flow) {
 
@@ -417,7 +460,7 @@ module.exports = function(app, passport) {
         });
     });
 
-    app.delete('/api/flows/:flowId', function (req, res) {
+    app.delete('/api/flows/:flowId', checkSubscriptionStatus, function (req, res) {
         var query = {_id: req.params.flowId};
         Flow.remove(query,
             function(err) {
@@ -435,7 +478,7 @@ module.exports = function(app, passport) {
     //-------------steps api-----
 
     //update step
-    app.put('/api/flows/:flowId/steps/:stepId', function (req, res) {
+    app.put('/api/flows/:flowId/steps/:stepId', checkSubscriptionStatus, function (req, res) {
         Flow.findById(req.params.flowId, function (err, flow) {
             var step = flow.steps.id(req.params.stepId);
             step.stepType = req.body.stepType;
@@ -470,7 +513,7 @@ module.exports = function(app, passport) {
     });
 
     //reorder steps
-    app.put('/api/flows/:flowId/reorder/:stepId', function (req, res) {
+    app.put('/api/flows/:flowId/reorder/:stepId', checkSubscriptionStatus, function (req, res) {
         Flow.findById(req.params.flowId, function (err, flow) {
             var step = flow.steps.id(req.params.stepId);
             var originalIndex = flow.steps.indexOf(step);
@@ -499,7 +542,7 @@ module.exports = function(app, passport) {
     });
 
     //delete step
-    app.delete('/api/flows/:flowId/steps/:stepId', function (req, res) {
+    app.delete('/api/flows/:flowId/steps/:stepId', checkSubscriptionStatus, function (req, res) {
         var query = {_id: req.params.flowId};
         var update = {steps: {_id: req.params.stepId}};
 
@@ -522,7 +565,7 @@ module.exports = function(app, passport) {
     //-------------Test runner API
 
     //start test
-    app.post('/api/test-runner', function (req, res, next) {
+    app.post('/api/test-runner', checkSubscriptionStatus, function (req, res, next) {
         var postData = JSON.stringify(req.body);
         var options = {
             headers: {
@@ -546,7 +589,7 @@ module.exports = function(app, passport) {
     });
 
     //get test status
-    app.get('/api/tests/:flowId', function(req, res) {
+    app.get('/api/tests/:flowId', checkSubscriptionStatus, function(req, res) {
         Test.findOne({flowId: req.params.flowId}, {}, {sort: {'start': 1}}).exec(function(error, test) {
             if (error) {
                 res.send(error);
@@ -590,6 +633,8 @@ function checkSubscriptionStatus(req, res, next) {
                     return next();
                 }
                 break;
+            case 'active':
+                return next();
         }
         res.redirect('/profile');
     }
