@@ -7,7 +7,7 @@ var Step = require('./models/step');
 var Test = require('./models/test');
 var User = require('./models/user');
 var stripe = require("stripe")(
-    config.stripeTestSecret
+    config.stripeSecret
 );
 var subscriptionManager = require('./subscription.js');
 
