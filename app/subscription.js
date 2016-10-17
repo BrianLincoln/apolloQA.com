@@ -1,7 +1,7 @@
 var config = require('./../config/config.js');
 var User = require('./models/user');
 var stripe = require("stripe")(
-    config.stripeSecret
+    config.stripeSecretKey
 );
 
 module.exports = {

@@ -7,7 +7,7 @@ var Step = require('./models/step');
 var Test = require('./models/test');
 var User = require('./models/user');
 var stripe = require("stripe")(
-    config.stripeSecret
+    config.stripeSecretKey
 );
 var subscriptionManager = require('./subscription.js');
 
@@ -302,7 +302,8 @@ module.exports = function(app, passport) {
     app.get('/subscription', isLoggedIn, function(req, res) {
         res.render('subscription.ejs', {
             isLoggedInUser: req.isAuthenticated(),
-            user : req.user // get the user out of session and pass to template
+            user : req.user, // get the user out of session and pass to template
+            stripePublicKey: config.stripePublicKey
         });
     });
     // process the payment form
