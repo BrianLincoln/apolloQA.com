@@ -20,6 +20,9 @@
                 <a class="btn btn-primary btn-lg" href="/subscription">Buy a subscription</a>
             <% } else if (accountStatus === 'active') { %>
                 <h1><%= subscriptionDisplayName %></h1>
+            <% } else { %>
+                <h1>Hmm... </h1>
+                <a class="btn btn-primary btn-lg" href="/subscription">Buy a subscription</a>
             <% } %>
             <div class="profile-info">
                 <div class="profile-info-item">
