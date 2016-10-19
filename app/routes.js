@@ -313,11 +313,18 @@ module.exports = function(app, passport) {
 
         }
 
-        res.render('subscription.ejs', {
-            isLoggedInUser: req.isAuthenticated(),
-            user : req.user, // get the user out of session and pass to template
-            stripePublicKey: config.stripePublicKey,
-            failMessage: failMessage ? failMessage : undefined
+        User.findById(req.user._id, function (err, user) {
+            if (user && user.accountStatus && user.accountStatus === 'active' && user.subscription === 'basic') {
+                res.redirect("/profile");
+                return;
+            } else {
+                res.render('subscription.ejs', {
+                    isLoggedInUser: req.isAuthenticated(),
+                    user : req.user, // get the user out of session and pass to template
+                    stripePublicKey: config.stripePublicKey,
+                    failMessage: failMessage ? failMessage : undefined
+                });
+            }
         });
     });
     // process the payment form
