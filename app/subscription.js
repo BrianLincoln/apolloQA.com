@@ -14,9 +14,29 @@ module.exports = {
                 email: email
             }, function(err, customer) {
                 if (!err) {
-                    resolve(customer.id);
+                    var result = {
+                        status: "success",
+                        customerId: customer.id
+                    }
+                    resolve(result);
                 }
                 else {
+                    switch (err.rawType) {
+                        case 'card_error':
+                            var result = {
+                                status: "fail",
+                                reaonCode: "card-error"
+                            }
+                            resolve(result);
+                            break;
+                        default:
+                            var result = {
+                                status: "fail",
+                                reaonCode: "server-error"
+                            }
+                            resolve(result);
+                            break;
+                    }
                     reject(err);
                     console.log("ERROR: failed to create stripe customer");
                 }

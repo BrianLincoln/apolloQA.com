@@ -300,10 +300,24 @@ module.exports = function(app, passport) {
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/subscription', isLoggedIn, function(req, res) {
+        var failMessage;
+
+        switch (req.query.fail) {
+            case 'card-error':
+                failMessage = "We weren't able to charge your card, try a different card or contact us.";
+                break;
+            case 'server-error':
+                failMessage = "Something went wrong on our side. Your card was not charged, try again in a bit.";
+                break;
+            default:
+
+        }
+
         res.render('subscription.ejs', {
             isLoggedInUser: req.isAuthenticated(),
             user : req.user, // get the user out of session and pass to template
-            stripePublicKey: config.stripePublicKey
+            stripePublicKey: config.stripePublicKey,
+            failMessage: failMessage ? failMessage : undefined
         });
     });
     // process the payment form
@@ -312,11 +326,20 @@ module.exports = function(app, passport) {
         var subscription = 'basic'; //eventually will be passed in via form
 
         subscriptionManager.subscribeNewCustomer(req.user._id, token, subscription, req.body.email)
-        .then(function(customerId) {
-            subscriptionManager.updateUser(req.user._id, customerId, subscription, 'active')
-            .then(function() {
-                res.redirect("/profile");
-            });
+        .then(function(result) {
+            switch(result.status) {
+                case 'success':
+                    subscriptionManager.updateUser(req.user._id, result.customerId, subscription, 'active')
+                    .then(function() {
+                        res.redirect("/profile");
+                    });
+                    break;
+                case 'fail':
+                default:
+                    res.redirect("/subscription?fail=" + result.reaonCode);
+                    break;
+
+            }
         });
     });
 
