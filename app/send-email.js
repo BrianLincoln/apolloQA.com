@@ -1,4 +1,5 @@
 var AWS = require('aws-sdk');
+var emailTemplate = require('./email-template.js');
 var config = require('./../config/config.js');
 var ses = new AWS.SES({
     accessKeyId: config.AWSAccessKeyId,
@@ -7,7 +8,7 @@ var ses = new AWS.SES({
 });
 
 // app/routes.js
-module.exports = function(to, from, subject, body) {
+module.exports = function(to, from, subject, bodyTitle, bodyMainContent) {
 
     var toFormatted = [];
     if (to.isArray) {
@@ -15,6 +16,10 @@ module.exports = function(to, from, subject, body) {
     } else {
         toFormatted.push(to);
     }
+
+    var body = emailTemplate;
+    body = body.replace("^TITLE^", bodyTitle);
+    body = body.replace("^MAIN_CONTENT^", bodyMainContent);
 
     ses.sendEmail( {
         Source: from,
@@ -24,8 +29,8 @@ module.exports = function(to, from, subject, body) {
                 Data: subject
             },
             Body: {
-                Text: {
-                    Data: body,
+                Html: {
+                    Data: body
                 }
             }
         }
@@ -34,4 +39,6 @@ module.exports = function(to, from, subject, body) {
             console.log(err);
         }
     });
+
+    var templay = "";
 }
