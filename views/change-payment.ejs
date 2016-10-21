@@ -1,0 +1,117 @@
+<!doctype html>
+<html>
+<head>
+    <title>Payment - Apollo QA</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <% include ./partials/resources %>
+</head>
+<body class="page-full-bg bg-top subscription-page">
+    <% include ./partials/header %>
+    <div class="page-container">
+        <div class="col-sm-6 col-sm-offset-3 col-md-5 col-md-offset-1">
+            <h1>Change Payment <span class="fa fa-credit-card"></span></h1>
+            <!-- Payment FORM -->
+            <div class="row">
+                <form class="col-xs-12 col-lg-7 payment-form" action="/change-payment" method="post" id="payment-form">
+                    <div class="payment-form-header">
+                        <h2>$25 /month</h2>
+                        <p>Basic subscription<p>
+                    </div>
+                    <hr>
+                    <div class="alert alert-danger payment-errors"><%= typeof failMessage!='undefined' ? failMessage : '' %></div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input required name="email" type="email" class="form-control" value="<%= user.local.email %>" data-stripe="email">
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-lg-9">
+                            <div class="form-group">
+                                <label>Card Number</label>
+                                <input required type="text" class="form-control" data-stripe="number">
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-lg-3">
+                            <div class="form-group">
+                                <label>CVC</label>
+                                <input required type="text" class="form-control" data-stripe="cvc">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12 col-lg-8">
+                            <div class="form-group">
+                                <label>Expiration (MM - YY)</label>
+                                <div class="payment-expiration">
+                                    <input type="text" class="form-control" data-stripe="exp_month">
+                                    <span class="payment-form-expiration-dash">&mdash;</span>
+                                    <input required type="text" class="form-control" data-stripe="exp_year">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-lg-4">
+                            <div class="form-group">
+                                <label>Zip</label>
+                                <input required type="text" class="form-control" data-stripe="address_zip">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">change payment method</button>
+                    </div>
+                    <div class="clearfix"> </div>
+                    <hr>
+                    <p>You will be charged $25 automatically every month until you cancel.</p>
+                    <p>Questions? <a href="mailto:support@apolloqa.com">support@apolloqa.com</a></p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+    <script type="text/javascript">
+      Stripe.setPublishableKey('<%= stripePublicKey %>');
+
+      $(function() {
+        var $form = $('#payment-form');
+        $form.submit(function(event) {
+          // Disable the submit button to prevent repeated clicks:
+          $form.find('.submit').prop('disabled', true);
+
+          // Request a token from Stripe:
+          Stripe.card.createToken($form, stripeResponseHandler);
+
+          // Prevent the form from being submitted:
+          return false;
+        });
+      });
+
+      function stripeResponseHandler(status, response) {
+        // Grab the form:
+        var $form = $('#payment-form');
+
+        if (response.error) { // Problem!
+
+          // Show the errors on the form:
+          $form.find('.payment-errors').text(response.error.message);
+          $form.find('.submit').prop('disabled', false); // Re-enable submission
+
+        } else { // Token was created!
+
+          // Get the token ID:
+          var token = response.id;
+
+          // Insert the token ID into the form so it gets submitted to the server:
+          $form.append($('<input type="hidden" name="stripeToken">').val(token));
+
+          // Submit the form:
+          $form.get(0).submit();
+        }
+      };
+    </script>
+</body>
+</html>

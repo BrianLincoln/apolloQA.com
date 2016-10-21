@@ -270,26 +270,41 @@ module.exports = function(app, passport) {
                 subscriptionDisplayName = trialPeriodRemaining > 0 ? "Trial" : "Trial Expired";
                 break;
             case "active":
-                accountStatus = "active";
-                subscriptionDisplayName = req.user.subscription;
+                subscriptionDisplayName = req.user.subscription + " $25/month";
                 break;
             case "cancelled":
-                accountStatus = "cancelled";
                 subscriptionDisplayName = "Cancelled";
                 break;
             default:
-                accountStatus = accountStatus;
                 subscriptionDisplayName = req.user.subscription;
                 break;
         }
 
-        res.render('profile.ejs', {
-            isLoggedInUser: req.isAuthenticated(),
-            user : req.user, // get the user out of session and pass to template
-            trialPeriodRemaining: trialPeriodRemaining,
-            accountStatus: accountStatus,
-            subscriptionDisplayName: subscriptionDisplayName
-        });
+        if (accountStatus === 'active' && req.user.stripeCustomerId) {
+
+            stripe.customers.retrieve( req.user.stripeCustomerId, function(err, customer) {
+                if (!err && customer) {
+                    var subscriptions = customer.subscriptions.data;
+
+                    res.render('profile.ejs', {
+                        isLoggedInUser: req.isAuthenticated(),
+                        user : req.user, // get the user out of session and pass to template
+                        trialPeriodRemaining: trialPeriodRemaining,
+                        accountStatus: accountStatus,
+                        subscriptions: customer.subscriptions.data,
+                        cardOnFile: "**** **** **** " + customer.sources.data[0].last4
+                    });
+                } else {
+                    res.render('profile.ejs', {
+                        isLoggedInUser: req.isAuthenticated(),
+                        user : req.user, // get the user out of session and pass to template
+                        trialPeriodRemaining: trialPeriodRemaining,
+                        accountStatus: accountStatus,
+                        subscriptionDisplayName: subscriptionDisplayName,
+                    });
+                }
+            });
+        }
     });
 
 
@@ -304,13 +319,11 @@ module.exports = function(app, passport) {
 
         switch (req.query.fail) {
             case 'card-error':
-                failMessage = "We weren't able to charge your card, try a different card or contact us.";
+                failMessage = "We weren't able to update your card, try a different card or contact us.";
                 break;
             case 'server-error':
-                failMessage = "Something went wrong on our side. Your card was not charged, try again in a bit.";
+                failMessage = "Something went wrong on our side. Your card was not updated, try again in a bit.";
                 break;
-            default:
-
         }
 
         User.findById(req.user._id, function (err, user) {
@@ -373,6 +386,73 @@ module.exports = function(app, passport) {
             res.redirect("/profile");
         }
     });
+
+
+
+
+
+
+
+
+        // =====================================
+        // CHANGE PAYMENT PAGE =====================
+        // =====================================
+        // we will want this protected so you have to be logged in to visit
+        // we will use route middleware to verify this (the isLoggedIn function)
+        app.get('/change-payment', isLoggedIn, function(req, res) {
+            var failMessage;
+
+            switch (req.query.fail) {
+                case 'card-error':
+                    failMessage = "We weren't able to charge your card, try a different card or contact us.";
+                    break;
+                case 'server-error':
+                    failMessage = "Something went wrong on our side. Your card was not charged, try again in a bit.";
+                    break;
+            }
+
+            User.findById(req.user._id, function (err, user) {
+                if (user && user.accountStatus && user.accountStatus === 'active' && user.subscription === 'basic') {
+
+                    stripe.customers.retrieve(
+                        user.stripeCustomerId,
+                        function(err, customer) {
+                            if (!err && customer) {
+                                res.render('change-payment.ejs', {
+                                    isLoggedInUser: req.isAuthenticated(),
+                                    user : req.user, // get the user out of session and pass to template
+                                    stripePublicKey: config.stripePublicKey,
+                                    stripeCustomer: customer,
+                                    failMessage: failMessage ? failMessage : undefined
+                                });
+                            } else {
+                                res.redirect("/profile");
+                            }
+                        }
+                    );
+                } else {
+                    res.redirect("/profile");
+                }
+            });
+        });
+        app.post('/change-payment', isLoggedIn, function(req, res) {
+            var token = req.body.stripeToken;
+            subscriptionManager.changePaymentMethod(req.user.stripeCustomerId, token)
+            .then(function(result) {
+                switch(result.status) {
+                    case 'success':
+                        res.redirect("/profile");
+                        break;
+                    case 'fail':
+                    default:
+                        res.redirect("/change-payment?fail=" + result.reaonCode);
+                        break;
+
+                }
+            });
+        });
+
+
 
 
     // =====================================

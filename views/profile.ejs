@@ -19,7 +19,7 @@
                 <h1><%= subscriptionDisplayName %></h1>
                 <a class="btn btn-primary btn-lg" href="/subscription">Buy a subscription</a>
             <% } else if (accountStatus === 'active') { %>
-                <h1><%= subscriptionDisplayName %></h1>
+                <h1>Profile</h1>
             <% } else { %>
                 <h1>Hmm... </h1>
                 <a class="btn btn-primary btn-lg" href="/subscription">Buy a subscription</a>
@@ -27,13 +27,27 @@
             <div class="profile-info">
                 <div class="profile-info-item">
                     <label>Email:</label>
-                    <div><%=user.local.email %></div>
+                    <span><%=user.local.email %></span>
                 </div>
                 <div class="profile-info-item">
-                    <label>Subscription:</label>
-                    <div><%=subscriptionDisplayName %></div>
+                    <label>Payment method:</label>
+                    <span><%=cardOnFile %></span>
+                    <br /><a href="/change-payment">(change)</a>
                 </div>
+
                 <% if (accountStatus === 'active') { %>
+                        <% subscriptions.forEach(function(subscription) { %>
+                            <div class="profile-info-item">
+                                <div>
+                                    <label>Plan:</label>
+                                    <span><%= subscription.plan.name %></span>
+                                </div>
+                                <div>
+                                    <label>Next Charge:</label>
+                                    <span><%= new Date(subscription.current_period_end * 1000).toDateString() %></span>
+                                </div>
+                            </div>
+                        <% }); %>
                     <div class="profile-info-item">
                         <a class="btn btn-sm btn-danger" href="/cancel-subscription">cancel subscription</a>
                     </div>

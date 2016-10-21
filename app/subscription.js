@@ -44,6 +44,42 @@ module.exports = {
         });
     },
 
+    changePaymentMethod: function(stripeCustomerId, token) {
+        return new Promise(function(resolve, reject) {
+            stripe.customers.update(stripeCustomerId, {
+                source: token
+            }, function(err, customer) {
+                if (!err) {
+                    var result = {
+                        status: "success",
+                        customerId: customer.id
+                    }
+                    resolve(result);
+                }
+                else {
+                    switch (err.rawType) {
+                        case 'card_error':
+                            var result = {
+                                status: "fail",
+                                reaonCode: "card-error"
+                            }
+                            resolve(result);
+                            break;
+                        default:
+                            var result = {
+                                status: "fail",
+                                reaonCode: "server-error"
+                            }
+                            resolve(result);
+                            break;
+                    }
+                    reject(err);
+                    console.log("ERROR: failed to update payment method");
+                }
+            });
+        });
+    },
+
     cancelSubscriptions: function(userId, stripeCustomerId) {
         var scope = this;
 
