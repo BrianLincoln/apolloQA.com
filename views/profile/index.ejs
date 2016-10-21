@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+<head>
+    <title>Profile - Apollo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <% include ./../partials/resources %>
+</head>
+<body class="page-full-bg bg-top profile-page">
+    <% include ./../partials/header %>
+    <div class="page-container">
+        <div class="container col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-1">
+            <h1><%= copy.title %></h1>
+            <% if (typeof copy.subTitle !== 'undefined') { %>
+                <h2><%= copy.subTitle %></h2>
+            <% } %>
+            <% if (showSubscribeButton === true) { %>
+                <a class="btn btn-primary btn-lg" href="/subscription">Buy a subscription</a>
+            <% } %>
+            <div class="profile-info">
+                <div class="profile-info-item">
+                    <label><%= email %></label>
+                    <div><a href="/reset-password">change password</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

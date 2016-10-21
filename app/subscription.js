@@ -5,6 +5,38 @@ var stripe = require("stripe")(
 );
 
 module.exports = {
+    getStripeCustomer: function(stripeCustomerId) {
+        return new Promise(function(resolve, reject) {
+            stripe.customers.retrieve(
+                stripeCustomerId,
+                function(err, customer) {
+                    if (!err) {
+                        console.log(customer);
+                        resolve(customer);
+                    } else {
+                        resolve(err);
+                        console.log("ERROR -- Couldn't get stripe customer for id: " + stripeCustomerId)
+                    }
+                }
+            );
+        });
+    },
+
+    getStripeCustomerSubscriptions: function(customer) {
+        if (customer && customer.subscriptions) {
+            console.log(customer.subscriptions.data);
+            return customer.subscriptions.data;
+        }
+        return;
+    },
+
+    getStripeCustomerMaskedPaymentMethod: function(customer) {
+        if (customer && customer.sources) {
+            console.log(customer.sources.data);
+            return customer.sources.data;
+        }
+        return;
+    },
 
     subscribeNewCustomer: function(userId, token, subscription, email) {
         return new Promise(function(resolve, reject) {

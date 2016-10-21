@@ -1,5 +1,10 @@
 var mongoose = require('mongoose');
+var moment = require('moment');
 var bcrypt   = require('bcrypt-nodejs');
+var config = require('./../../config/config.js');
+var stripe = require("stripe")(
+    config.stripeSecretKey
+);
 
 // define the schema for our user model
 var userSchema = mongoose.Schema({
@@ -10,11 +15,8 @@ var userSchema = mongoose.Schema({
     },
     resetPasswordToken: String,
     resetPasswordExpiration: Date,
-    accountStatus: String,
     trialExpirationDate: Date,
-    stripeCustomerId: String,
-    subscription: String
-
+    stripeCustomerId: String
 });
 
 // methods ======================
@@ -26,6 +28,17 @@ userSchema.methods.generateHash = function(password) {
 // checking if password is valid
 userSchema.methods.validPassword = function(password) {
     return bcrypt.compareSync(password, this.local.password);
+};
+
+userSchema.methods.activeTrial = function() {
+    return false;
+};
+
+userSchema.methods.trialDaysRemaining = function(endDate, currentDate) {
+    var trialEndDate = moment(endDate);
+    var currentDate = moment(currentDate);
+
+    return trialEndDate.diff(currentDate, 'days');
 };
 
 // create the model for users and expose it to our app
