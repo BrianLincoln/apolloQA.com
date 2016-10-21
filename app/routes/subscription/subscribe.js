@@ -15,22 +15,19 @@ module.exports = function(app, config, subscriptionManager, User) {
             case 'server-error':
                 failMessage = "Something went wrong on our side. Your card was not updated, try again in a bit.";
                 break;
+            case 'duplicate-subscription':
+                failMessage = "It looks like you are already subscribed... This seems weird, contact us if you are having an issue";
+                break;
         }
 
-        User.findById(req.user._id, function (err, user) {
-            if (user && user.accountStatus && user.accountStatus === 'active' && user.subscription === 'basic') {
-                res.redirect("/profile");
-                return;
-            } else {
-                res.render('subscription.ejs', {
-                    isLoggedInUser: req.isAuthenticated(),
-                    user : req.user, // get the user out of session and pass to template
-                    stripePublicKey: config.stripePublicKey,
-                    failMessage: failMessage ? failMessage : undefined
-                });
-            }
+        res.render('subscription.ejs', {
+            isLoggedInUser: req.isAuthenticated(),
+            email : req.user.local.email,
+            stripePublicKey: config.stripePublicKey,
+            failMessage: failMessage ? failMessage : undefined
         });
     });
+
     // process the payment form
     app.post('/subscription', function(req, res) {
         if (!req.isAuthenticated()) {
@@ -39,22 +36,20 @@ module.exports = function(app, config, subscriptionManager, User) {
         }
 
         var token = req.body.stripeToken;
-        var subscription = 'basic'; //eventually will be passed in via form
 
-        subscriptionManager.subscribeNewCustomer(req.user._id, token, subscription, req.body.email)
+        subscriptionManager.subscribeUser(req.user._id, req.user.stripeCustomerId, token, req.body.email)
         .then(function(result) {
             switch(result.status) {
                 case 'success':
-                    subscriptionManager.updateUser(req.user._id, result.customerId, subscription, 'active')
+                    subscriptionManager.updateUserWithStripeCustomerId(req.user._id, result.customerId)
                     .then(function() {
                         res.redirect("/profile");
                     });
                     break;
                 case 'fail':
                 default:
-                    res.redirect("/subscription?fail=" + result.reaonCode);
+                    res.redirect("/subscription?fail=" + result.reasonCode);
                     break;
-
             }
         });
     });

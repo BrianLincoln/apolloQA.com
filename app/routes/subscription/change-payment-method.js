@@ -17,8 +17,7 @@ module.exports = function(app, subscriptionManager, User) {
         }
 
         User.findById(req.user._id, function (err, user) {
-            if (user && user.accountStatus && user.accountStatus === 'active' && user.subscription === 'basic') {
-
+            if (user) {
                 stripe.customers.retrieve(
                     user.stripeCustomerId,
                     function(err, customer) {

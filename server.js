@@ -13,7 +13,7 @@ var session      = require('express-session');
 
 var config = require('./config/config.js');
 var sendEmail = require('./app/send-email.js');
-var subscriptionManager = require('./app/subscription.js');
+var subscriptionManager = require('./app/subscription-manager.js');
 
 var UserSchema = require('./app/models/user');
 var FlowSchema = require('./app/models/flow');

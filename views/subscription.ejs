@@ -18,12 +18,12 @@
                         <p>Basic subscription<p>
                     </div>
                     <hr>
-                    <div class="alert alert-danger payment-errors"><%= typeof failMessage!='undefined' ? failMessage : '' %></div>                    
+                    <div class="alert alert-danger payment-errors"><%= typeof failMessage!='undefined' ? failMessage : '' %></div>
                     <div class="row">
                         <div class="col-xs-12">
                             <div class="form-group">
                                 <label>Email</label>
-                                <input required name="email" type="email" class="form-control" value="<%= user.local.email %>" data-stripe="email">
+                                <input required name="email" type="email" class="form-control" value="<%= email %>" data-stripe="email">
                             </div>
                         </div>
                         <div class="col-xs-12 col-lg-9">

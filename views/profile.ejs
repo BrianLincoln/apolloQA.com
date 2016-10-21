@@ -3,10 +3,10 @@
 <head>
     <title>Profile - Apollo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <% include ./../partials/resources %>
+    <% include ./partials/resources %>
 </head>
 <body class="page-full-bg bg-top profile-page">
-    <% include ./../partials/header %>
+    <% include ./partials/header %>
     <div class="page-container">
         <div class="container col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-1">
             <h1><%= copy.title %></h1>
@@ -22,6 +22,20 @@
                     <div><a href="/reset-password">change password</a></div>
                 </div>
             </div>
+            <% if (showSubscriptionSection === true) { %>
+                <div class="profile-info-item">
+                    <label>Next Charge:</label>
+                    <span><%= nextPaymentDate %></span>
+                </div>
+                <div class="profile-info-item">
+                    <label>Payment method:</label>
+                    <% if (typeof maskedLast4 !== 'undefined') { %>
+                        <span><%= maskedLast4 %></span>
+                    <% } %>
+                    <br /><a href="/change-payment">(change)</a>
+                </div>
+                <a class="btn btn-sm btn-danger" href="/cancel-subscription">cancel subscription</a>
+            <% } %>
         </div>
     </div>
 </body>

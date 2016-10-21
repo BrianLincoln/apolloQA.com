@@ -6,21 +6,20 @@ module.exports = function(app, config, subscriptionManager, UserSchema) {
         }
 
         var stripeCustomerId = req.user.stripeCustomerId;
-        var trialDaysRemaining = req.user.trialDaysRemaining(req.user.trialExpirationDate, new Date());
-        var copy = {
-            title: "Profile"
-        }
+        var copy = {}
 
         //no stripeCustomerId, assume trial user
         if (!stripeCustomerId) {
+            var trialDaysRemaining = req.user.trialDaysRemaining(req.user.trialExpirationDate, new Date());
+
             if (trialDaysRemaining > 0) {
-                copy.title = trialDaysRemaining + "days remaining in your trial";
+                copy.title = trialDaysRemaining + " days remaining in your trial";
             } else {
                 copy.title = "Trial Expired";
                 copy.subTitle = "Get full access for just $25 /month.";
             }
 
-            res.render('profile/index.ejs', {
+            res.render('profile.ejs', {
                 isLoggedInUser: req.isAuthenticated(),
                 copy: copy,
                 email: req.user.local.email,
@@ -29,29 +28,31 @@ module.exports = function(app, config, subscriptionManager, UserSchema) {
                 showSubscribeButton: true
             });
         } else {
-            var stripeCustomer = stripeCustomerId ? subscriptionManager.getStripeCustomer(stripeCustomerId) : undefined;
-            var subscriptions;
-            var maskedDefaultCard;
+            //stripeCustomerId found, get customer and check subscription
+            subscriptionManager.getStripeCustomer(stripeCustomerId)
+            .then(function(customer) {
+                var subscription = subscriptionManager.getStripeCustomerSubscription(customer);
+                var showSubscribeButton = true;
+                var showSubscriptionSection = false;
 
-            if (stripeCustomer) {
-                subscriptions = subscriptionManager.getStripeCustomerSubscriptions(stripeCustomer);
-                maskedDefaultCard = subscriptionManager.getStripeCustomerMaskedPaymentMethod(stripeCustomer);
-            }
+                if (subscription) {
+                    copy.title = "Active Subscription";
+                    showSubscribeButton = false;
+                    showSubscriptionSection = true;
+                    nextPaymentDate = new Date(subscription.current_period_end * 1000).toDateString();
+                    maskedLast4 = subscriptionManager.getStripeCustomerMaskedPaymentMethod(customer);
+                } else {
+                    copy.title = "Expired Subscription";
+                }
 
-            console.log(stripeCustomerId);
-            console.log(stripeCustomer);
-            console.log(subscriptions);
-            console.log(maskedDefaultCard);
-
-
-            res.render('profile/index.ejs', {
-                isLoggedInUser: req.isAuthenticated(),
-                copy: copy,
-                email: req.user.local.email,
-                stripeCustomerId: stripeCustomerId,
-                subscriptions: subscriptions,
-                maskedDefaultCard:  maskedDefaultCard,
-                showSubscribeButton: true
+                res.render('profile.ejs', {
+                    isLoggedInUser: req.isAuthenticated(),
+                    copy: copy,
+                    email: req.user.local.email,
+                    stripeCustomerId: stripeCustomerId,
+                    showSubscribeButton: showSubscribeButton,
+                    showSubscriptionSection: showSubscriptionSection
+                });
             });
         }
     });

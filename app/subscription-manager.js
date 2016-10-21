@@ -11,7 +11,6 @@ module.exports = {
                 stripeCustomerId,
                 function(err, customer) {
                     if (!err) {
-                        console.log(customer);
                         resolve(customer);
                     } else {
                         resolve(err);
@@ -22,55 +21,72 @@ module.exports = {
         });
     },
 
-    getStripeCustomerSubscriptions: function(customer) {
+    getStripeCustomerSubscription: function(customer) {
         if (customer && customer.subscriptions) {
-            console.log(customer.subscriptions.data);
-            return customer.subscriptions.data;
+            if (customer.subscriptions.data.length > 1) {
+                console.log("ERROR: Found more than one user for this customer");
+            } else if (customer.subscriptions.data.length === 1) {
+                return customer.subscriptions.data[0];
+            }
         }
         return;
     },
 
     getStripeCustomerMaskedPaymentMethod: function(customer) {
         if (customer && customer.sources) {
-            console.log(customer.sources.data);
-            return customer.sources.data;
+            if (customer.sources.data.length > 1) {
+                console.log("ERROR: Found more than one card for this customer");
+            } else if (customer.sources.data.length === 1) {
+                return "**** **** **** " + customer.sources.data[0].last4;
+            }
         }
         return;
     },
 
-    subscribeNewCustomer: function(userId, token, subscription, email) {
+    subscribeUser: function(userId, existingCustomerId, token, email) {
+        var scope = this;
+        var result = {
+            status: "fail"
+        };
+
         return new Promise(function(resolve, reject) {
-            stripe.customers.create({
-                source: token,
-                plan: subscription,
-                email: email
-            }, function(err, customer) {
-                if (!err) {
-                    var result = {
-                        status: "success",
-                        customerId: customer.id
-                    }
+            scope.getStripeCustomer(existingCustomerId)
+            .then(function(customer) {
+                if (customer.subscriptions.data.length > 0) {
+                    //customer exists, and they have an active subscription.
+                    result.reasonCode = "duplicate-subscription";
                     resolve(result);
-                }
-                else {
-                    switch (err.rawType) {
-                        case 'card_error':
-                            var result = {
-                                status: "fail",
-                                reaonCode: "card-error"
-                            }
+                } else {
+                    stripe.customers.create({
+                        source: token,
+                        plan: "basic",
+                        email: email
+                    }, function(err, customer) {
+                        if (!err) {
+                            result.status = "success";
+                            result.customerId = customer.id
+
                             resolve(result);
-                            break;
-                        default:
-                            var result = {
-                                status: "fail",
-                                reaonCode: "server-error"
+                        }
+                        else {
+                            switch (err.rawType) {
+                                case 'card_error':
+                                    result.status = "fail";
+                                    result.reaonCode = "card-error";
+
+                                    resolve(result);
+                                    break;
+                                default:
+                                    result.status = "fail";
+                                    result.reaonCode = "server-error";
+
+                                    resolve(result);
+                                    break;
                             }
-                            resolve(result);
-                            break;
-                    }
-                    reject(err);
-                    console.log("ERROR: failed to create stripe customer");
+                            reject(err);
+                            console.log("ERROR: failed to create stripe customer");
+                        }
+                    });
                 }
             });
         });
@@ -152,16 +168,10 @@ module.exports = {
         });
     },
 
-    updateUser: function(userId, stripeCustomerId, subscription, status) {
+    updateUserWithStripeCustomerId: function(userId, stripeCustomerId) {
         return new Promise(function(resolve, reject) {
             User.findById(userId, function (err, user) {
                 user.stripeCustomerId = stripeCustomerId;
-                if (status) {
-                    user.accountStatus = status;
-                }
-                if (subscription) {
-                    user.subscription = subscription;
-                }
 
                 user.save(function (err) {
                     if (!err) {
