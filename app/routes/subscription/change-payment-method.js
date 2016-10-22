@@ -1,4 +1,4 @@
-module.exports = function(app, stripe, subscriptionManager, User) {
+module.exports = function(app, config, subscriptionManager, User) {
     app.get('/change-payment', function(req, res) {
         if (!req.isAuthenticated()) {
             res.redirect('/');
@@ -16,34 +16,21 @@ module.exports = function(app, stripe, subscriptionManager, User) {
                 break;
         }
 
-        User.findById(req.user._id, function (err, user) {
-            if (user) {
-                stripe.customers.retrieve(
-                    user.stripeCustomerId,
-                    function(err, customer) {
-                        if (!err && customer) {
-                            res.render('change-payment.ejs', {
-                                isLoggedInUser: req.isAuthenticated(),
-                                user : req.user, // get the user out of session and pass to template
-                                stripePublicKey: config.stripePublicKey,
-                                stripeCustomer: customer,
-                                failMessage: failMessage ? failMessage : undefined
-                            });
-                        } else {
-                            res.redirect("/profile");
-                        }
-                    }
-                );
-            } else {
-                res.redirect("/profile");
-            }
+        res.render('change-payment.ejs', {
+            isLoggedInUser: req.isAuthenticated(),
+            email : req.user.local.email, // get the user out of session and pass to template
+            stripePublicKey: config.stripePublicKey,
+            stripeCustomer: req.user.stripeCustomerId,
+            failMessage: failMessage ? failMessage : undefined
         });
     });
+
     app.post('/change-payment', function(req, res) {
         if (!req.isAuthenticated()) {
             res.redirect('/');
             return;
         }
+
         var token = req.body.stripeToken;
         subscriptionManager.changePaymentMethod(req.user.stripeCustomerId, token)
         .then(function(result) {

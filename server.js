@@ -58,7 +58,7 @@ require('./app/routes/account/profile.js')(app, config, subscriptionManager, Use
 
 //subscription management
 require('./app/routes/subscription/subscribe.js')(app, config, subscriptionManager, UserSchema);
-require('./app/routes/subscription/change-payment-method.js')(app, subscriptionManager, UserSchema);
+require('./app/routes/subscription/change-payment-method.js')(app, config, subscriptionManager, UserSchema);
 require('./app/routes/subscription/unsubscribe.js')(app, subscriptionManager);
 require('./app/routes/subscription/renew-cancelled-subscription.js')(app, subscriptionManager);
 
