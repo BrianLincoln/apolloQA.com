@@ -17,7 +17,6 @@ module.exports = {
                             resolve(customer);
                         } else {
                             resolve(err);
-                            console.log("~~~~~xxx");
                             console.log("ERROR -- Couldn't get stripe customer for id: " + stripeCustomerId)
                         }
                     }

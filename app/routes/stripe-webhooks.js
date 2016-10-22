@@ -1,27 +1,61 @@
-module.exports = function(app) {
+module.exports = function(app, sendEmail, User) {
     app.post("/stripe-test-webhooks", function(req, res) {
-        console.log("______________~~~~~~~~~~~~~~EVENT");
-        console.log(req.body);
-        // Retrieve the request's body and parse it as JSON
-        var event_json = JSON.parse(req.body);
+		var event = req.body;
 
+		switch(event.type) {
+			case "invoice.payment_succeeded":
+                if (event && event.data && event.data.object && event.data.customer) {
+                    var query = {
+                        "stripeCustomerId": event.data.customer
+                    };
 
-        console.log(event_json);
-        // Do something with event_json
+                    User.findOne(query).exec(function(error, user) {
+                        if (user && user.local.email) {
+                            var emailBodyContent = "\
+                                <p>Your subscription to Apollo has renewed</p>\
+                                <a href=\"https://apolloqa.com/profile\">Manage your subscription</a>\
+                            ";
 
-        res.send(200);
+                            sendEmail(user.local.email, config.emailDefaultFromAddress, "Payment Confirmation", "Thank you.", emailBodyContent);
+                            res.send(200);
+                        } else {
+                            res.send(500);
+                        }
+                    });
+        		}
+				break;
+		}
+
+        res.send(500);
     });
 
     app.post("/stripe-webhooks", function(req, res) {
-        console.log("______________~~~~~~~~~~~~~~EVENT");
-        console.log(req.body);
-        // Retrieve the request's body and parse it as JSON
-        var event_json = JSON.parse(req.body);
+        var event = req.body;
 
+		switch(event.type) {
+			case "invoice.payment_succeeded":
+                if (event && event.data && event.data.object && event.data.customer) {
+                    var query = {
+                        "stripeCustomerId": event.data.customer
+                    };
 
-        console.log(event_json);
-        // Do something with event_json
+                    User.findOne(query).exec(function(error, user) {
+                        if (user && user.local.email) {
+                            var emailBodyContent = "\
+                                <p>Your subscription to Apollo has renewed</p>\
+                                <a href=\"https://apolloqa.com/profile\">Manage your subscription</a>\
+                            ";
 
-        res.send(200);
+                            sendEmail(user.local.email, config.emailDefaultFromAddress, "Payment Confirmation", "Thank you.", emailBodyContent);
+                            res.send(200);
+                        } else {
+                            res.send(500);
+                        }
+                    });
+        		}
+				break;
+		}
+
+        res.send(500);
     });
 }

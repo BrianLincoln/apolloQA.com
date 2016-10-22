@@ -49,7 +49,7 @@ module.exports = function(app, config, sendEmail, UserSchema) {
                 if (err) {
                     res.send(err);
                 } else if(userExists) {
-                    sendEmail(req.body.email, '\"Apollo QA\" <support@apolloqa.com>', 'Apollo - Password Reset', 'Rest your password', 'Reset your password here: ' + link);
+                    sendEmail(req.body.email, config.emailDefaultFromAddress, 'Apollo - Password Reset', 'Rest your password', 'Reset your password here: ' + link);
                 }
             }
         );

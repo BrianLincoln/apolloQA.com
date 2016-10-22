@@ -11,10 +11,15 @@ var ses = new AWS.SES({
 module.exports = function(to, from, subject, bodyTitle, bodyMainContent) {
 
     var toFormatted = [];
-    if (to.isArray) {
-        toFormatted = to;
+
+    if (config.emailTestMode === true) {
+            toFormatted.push(config.emailTestAddress);
     } else {
-        toFormatted.push(to);
+        if (to.isArray) {
+            toFormatted = to;
+        } else {
+            toFormatted.push(to);
+        }
     }
 
     var body = emailTemplate;
