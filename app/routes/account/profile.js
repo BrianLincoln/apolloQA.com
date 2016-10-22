@@ -7,66 +7,60 @@ module.exports = function(app, config, subscriptionManager, UserSchema) {
 
         var stripeCustomerId = req.user.stripeCustomerId;
         var copy = {}
+        var properties = {
+            isLoggedInUser: req.isAuthenticated(),
+            copy: {},
+            email: req.user.local.email,
+            isTrialUser: true,
+            trialDaysRemaining: trialDaysRemaining,
+            showSubscribeButton: true,
+            showSubscriptionSection: false,
+            cancelAtPeriodEnd: false,
+            maskedLast4: undefined
+        }
 
-        //no stripeCustomerId, assume trial user
         if (!stripeCustomerId) {
+            //no stripeCustomerId, assume trial user
             var trialDaysRemaining = req.user.trialDaysRemaining(req.user.trialExpirationDate, new Date());
 
             if (trialDaysRemaining > 0) {
-                copy.title = trialDaysRemaining + " days remaining in your trial";
+                //active trial
+                properties.copy.title = trialDaysRemaining + " days remaining in your trial";
             } else {
-                copy.title = "Trial Expired";
-                copy.subTitle = "Get full access for just $25 /month.";
+                //expired trial
+                properties.copy.title = "Trial Expired";
+                properties.copy.subTitle = "Get full access for just $25 /month.";
             }
 
-            res.render('profile.ejs', {
-                isLoggedInUser: req.isAuthenticated(),
-                copy: copy,
-                email: req.user.local.email,
-                isTrialUser: true,
-                trialDaysRemaining: trialDaysRemaining,
-                showSubscribeButton: true
-            });
+            res.render('profile.ejs', properties);
         } else {
             //stripeCustomerId found, get customer and check subscription
             subscriptionManager.getStripeCustomer(stripeCustomerId)
             .then(function(customer) {
                 var subscription = subscriptionManager.getStripeCustomerSubscription(customer);
-                var showSubscribeButton = true;
-                var showSubscriptionSection = false;
-                var cancelAtPeriodEnd = false;
 
                 if (subscription) {
-
                     var periodEndDate = new Date(subscription.current_period_end * 1000).toDateString();
-                    //cancelled but waiting for period to expire
-                    if (subscription.cancel_at_period_end) {
-                        copy.title = "Cancelled Subscription";
-                        copy.subTitle = "You have access to your account until: " + periodEndDate;
 
-                        showSubscribeButton = false;
-                        cancelAtPeriodEnd = true;
+                    if (subscription.cancel_at_period_end) {
+                        //cancelled but valid until pay period expires
+                        properties.copy.title = "Cancelled Subscription";
+                        properties.copy.subTitle = "You have access to your account until: " + periodEndDate;
+                        properties.showSubscribeButton = false;
+                        properties.cancelAtPeriodEnd = true;
                     } else {
                         //normal, active account
-                        copy.title = "Active Subscription";
-                        showSubscribeButton = false;
-                        showSubscriptionSection = true;
-                        nextPaymentDate = periodEndDate;
-                        maskedLast4 = subscriptionManager.getStripeCustomerMaskedPaymentMethod(customer);
+                        properties.copy.title = "Active Subscription";
+                        properties.showSubscribeButton = false;
+                        properties.showSubscriptionSection = true;
+                        properties.nextPaymentDate = periodEndDate;
+                        properties.maskedLast4 = subscriptionManager.getStripeCustomerMaskedPaymentMethod(customer);
                     }
                 } else {
                     copy.title = "Expired Subscription";
                 }
 
-                res.render('profile.ejs', {
-                    isLoggedInUser: req.isAuthenticated(),
-                    copy: copy,
-                    email: req.user.local.email,
-                    stripeCustomerId: stripeCustomerId,
-                    showSubscribeButton: showSubscribeButton,
-                    showSubscriptionSection: showSubscriptionSection,
-                    cancelAtPeriodEnd: cancelAtPeriodEnd
-                });
+                res.render('profile.ejs', properties);
             });
         }
     });

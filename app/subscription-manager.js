@@ -7,17 +7,22 @@ var stripe = require("stripe")(
 module.exports = {
     getStripeCustomer: function(stripeCustomerId) {
         return new Promise(function(resolve, reject) {
-            stripe.customers.retrieve(
-                stripeCustomerId,
-                function(err, customer) {
-                    if (!err) {
-                        resolve(customer);
-                    } else {
-                        resolve(err);
-                        console.log("ERROR -- Couldn't get stripe customer for id: " + stripeCustomerId)
+            if (!stripeCustomerId) {
+                resolve();
+            } else {
+                stripe.customers.retrieve(
+                    stripeCustomerId,
+                    function(err, customer) {
+                        if (!err) {
+                            resolve(customer);
+                        } else {
+                            resolve(err);
+                            console.log("~~~~~xxx");
+                            console.log("ERROR -- Couldn't get stripe customer for id: " + stripeCustomerId)
+                        }
                     }
-                }
-            );
+                );
+            }
         });
     },
 
@@ -53,11 +58,13 @@ module.exports = {
         return new Promise(function(resolve, reject) {
             scope.getStripeCustomer(existingCustomerId)
             .then(function(customer) {
-                if (customer.subscriptions.data.length > 0) {
+                if (customer && customer.subscriptions.data.length > 0) {
+                    console.log("~~~1");
                     //customer exists, and they have an active subscription.
                     result.reasonCode = "duplicate-subscription";
                     resolve(result);
                 } else {
+                    console.log("~~~2");
                     stripe.customers.create({
                         source: token,
                         plan: "basic",
