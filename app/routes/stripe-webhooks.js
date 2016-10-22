@@ -16,10 +16,18 @@ module.exports = function(app, config, sendEmail, User) {
                     User.findOne(query).exec(function(error, user) {
                         if (user && user.local.email) {
                             var emailBodyContent = "\
-                                <p>Your subscription to Apollo has renewed</p>\
-								<div><label>Price: </label><span>" + amountCharged + "</span></div>\
-								<div><label>Order #: </label><span>" + orderNumber + "</span></div>\
-                                <a style=\"color: white;\" href=\"https://apolloqa.com/profile\">Manage your subscription</a>\
+                              <div style=\"font-size: 20px; font-family:'Courier New', Courier, 'Lucida Sans Typewriter', 'Lucida Typewriter', monospace; text-align: left; padding-bottom: 30px;\">Your subscription has renewed</div>\
+                              <table align=\"left\" style=\"font-size: 14px; padding-bottom: 50px; text-align: left; width: 100%;\">\
+                                <tr>\
+                                  <td>\<span style=\"font-weight: bold;\">Price: </span></td>\
+                                  <td>" + amountCharged + "</td>\
+                                </tr>\
+                                <tr>\
+                                  <td><span style=\"font-weight: bold;\">Order #: </span></td>\
+                                  <td>" + orderNumber + "</td>\
+                                </tr>\
+                              </table>\
+                              <div style=\"text-align: left;\"><a style=\"color: white;\" href=\"https://apolloqa.com/profile\">Manage your subscription</a><div>\
                             ";
 
                             sendEmail(user.local.email, config.emailDefaultFromAddress, "Payment Confirmation", "Thank you.", emailBodyContent);
