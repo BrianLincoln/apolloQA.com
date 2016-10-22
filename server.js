@@ -48,7 +48,7 @@ require('./app/routes/homepage.js')(app);
 require('./app/routes/pricing.js')(app);
 require('./app/routes/redirects.js')(app);
 require('./app/routes/health-check.js')(app);
-require('./app/routes/stripe-webhooks.js')(app, sendEmail, UserSchema);
+require('./app/routes/stripe-webhooks.js')(app, config, sendEmail, UserSchema);
 require('./app/routes/help/selectors.js')(app);
 
 //account management
