@@ -6,6 +6,8 @@ var stripe = require("stripe")(
 
 module.exports = {
     getStripeCustomer: function(stripeCustomerId) {
+        console.log("get customer");
+        console.log(stripeCustomerId);
         return new Promise(function(resolve, reject) {
             stripe.customers.retrieve(
                 stripeCustomerId,
@@ -22,13 +24,19 @@ module.exports = {
     },
 
     getStripeCustomerSubscription: function(customer) {
+        console.log("getStripeCustomerSubscription");
+        console.log("---1");
         if (customer && customer.subscriptions) {
+            console.log("---2");
             if (customer.subscriptions.data.length > 1) {
+                console.log();
                 console.log("ERROR: Found more than one user for this customer");
             } else if (customer.subscriptions.data.length === 1) {
+                console.log("---3");
                 return customer.subscriptions.data[0];
             }
         }
+        console.log("---4");
         return;
     },
 
@@ -128,6 +136,47 @@ module.exports = {
         });
     },
 
+    renewCanceledSubscriptions: function(stripeCustomerId) {
+        console.log("~~~~~~~~~~~renewCanceledSubscriptions");
+        var scope = this;
+
+        return new Promise(function(resolve, reject) {
+            scope.getStripeCustomer(stripeCustomerId)
+            .then(function(customer) {
+
+                console.log(customer);
+                if (customer) {
+                    console.log("~~~~~~~~ 1");
+                    var subscription = scope.getStripeCustomerSubscription(customer);
+                        console.log("~~~~~~~~ 2");
+
+                    if (subscription && subscription.cancel_at_period_end) {
+                        console.log("~~~~~~~~ 3");
+
+                        stripe.subscriptions.update(
+                            subscription.id,
+                            function(err, subscription) {
+
+                                    console.log("~~~~~~~~ 4");
+                                    console.log(err);
+                                    console.log(subscription);
+                                    console.log(subscription.cancel_at_period_end);
+                                if (!err && subscription) {
+
+                                        console.log("~~~~~~~~ 5");
+                                    resolve(subscription);
+                                } else {
+                                    console.log("ERROR: failed to renew cancelled subscription: " + subscription.id);
+                                    reject(err);
+                                }
+                            }
+                        );
+                    }
+                }
+            });
+        });
+    },
+
     cancelSubscriptions: function(userId, stripeCustomerId) {
         var scope = this;
 
@@ -156,7 +205,9 @@ module.exports = {
         return new Promise(function(resolve, reject) {
             stripe.subscriptions.del(
                 subscription.id,
-                function(err, confirmation) {
+                {
+                    at_period_end: true
+                }, function(err, confirmation) {
                     if (!err) {
                         resolve(confirmation);
                     } else {

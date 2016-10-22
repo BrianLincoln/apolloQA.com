@@ -1,4 +1,4 @@
-module.exports = function(app, subscriptionManager, User) {
+module.exports = function(app, stripe, subscriptionManager, User) {
     app.get('/change-payment', function(req, res) {
         if (!req.isAuthenticated()) {
             res.redirect('/');

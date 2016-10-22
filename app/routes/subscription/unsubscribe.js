@@ -17,8 +17,10 @@ module.exports = function(app, subscriptionManager) {
         var submitButton = req.body.submitButton;
 
         if (submitButton === "cancel") {
-            subscriptionManager.cancelSubscriptions(req.user._id, req.user.stripeCustomerId);
-            res.redirect("/profile");
+            subscriptionManager.cancelSubscriptions(req.user._id, req.user.stripeCustomerId)
+            .then(function() {
+                res.redirect("/profile");                
+            });
         } else {
             res.redirect("/profile");
         }

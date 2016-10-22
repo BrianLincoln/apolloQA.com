@@ -16,6 +16,13 @@
             <% if (showSubscribeButton === true) { %>
                 <a class="btn btn-primary btn-lg" href="/subscription">Buy a subscription</a>
             <% } %>
+            <% if (cancelAtPeriodEnd === true) { %>
+                <form action="/renew-cancelled-subscription" method="post">
+                    <button type="submit" class="btn btn-primary btn-lg">renew subscribtion</button>
+                </form>
+            <% } %>
+
+
             <div class="profile-info">
                 <div class="profile-info-item">
                     <label><%= email %></label>
@@ -28,11 +35,13 @@
                     <span><%= nextPaymentDate %></span>
                 </div>
                 <div class="profile-info-item">
-                    <label>Payment method:</label>
-                    <% if (typeof maskedLast4 !== 'undefined') { %>
-                        <span><%= maskedLast4 %></span>
-                    <% } %>
-                    <br /><a href="/change-payment">(change)</a>
+                    <label>
+                        Payment method:
+                        <% if (typeof maskedLast4 !== 'undefined') { %>
+                            <span><%= maskedLast4 %></span>
+                        <% } %>
+                    </label>
+                    <div><a href="/change-payment">change</a></div>
                 </div>
                 <a class="btn btn-sm btn-danger" href="/cancel-subscription">cancel subscription</a>
             <% } %>
