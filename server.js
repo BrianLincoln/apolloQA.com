@@ -14,6 +14,7 @@ var session      = require('express-session');
 var config = require('./config/config.js');
 var sendEmail = require('./app/send-email.js');
 var subscriptionManager = require('./app/subscription-manager.js');
+var subscriptionValidator = require('./app/subscription-validator.js');
 
 var UserSchema = require('./app/models/user');
 var FlowSchema = require('./app/models/flow');
@@ -58,12 +59,12 @@ require('./app/routes/account/profile.js')(app, config, subscriptionManager, Use
 
 //subscription management
 require('./app/routes/subscription/subscribe.js')(app, config, subscriptionManager, UserSchema);
-require('./app/routes/subscription/change-payment-method.js')(app, config, subscriptionManager, UserSchema);
+require('./app/routes/subscription/change-payment-method.js')(app, config, subscriptionManager, subscriptionValidator, UserSchema);
 require('./app/routes/subscription/unsubscribe.js')(app, subscriptionManager);
 require('./app/routes/subscription/renew-cancelled-subscription.js')(app, subscriptionManager);
 
 //flow manager
-require('./app/routes/flow-management.js')(app, FlowSchema, StepSchema);
+require('./app/routes/flow-management.js')(app, subscriptionValidator, FlowSchema, StepSchema);
 
 //test runner
 require('./app/routes/test-runner.js')(app, http, TestSchema);

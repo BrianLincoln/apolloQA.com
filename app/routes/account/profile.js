@@ -31,14 +31,12 @@ module.exports = function(app, config, subscriptionManager, UserSchema) {
             //stripeCustomerId found, get customer and check subscription
             subscriptionManager.getStripeCustomer(stripeCustomerId)
             .then(function(customer) {
-                console.log(customer);
                 var subscription = subscriptionManager.getStripeCustomerSubscription(customer);
                 var showSubscribeButton = true;
                 var showSubscriptionSection = false;
                 var cancelAtPeriodEnd = false;
 
                 if (subscription) {
-                    console.log(subscription);
 
                     var periodEndDate = new Date(subscription.current_period_end * 1000).toDateString();
                     //cancelled but waiting for period to expire

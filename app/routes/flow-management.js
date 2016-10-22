@@ -1,6 +1,6 @@
 //TODO this should be broken down farther.
-module.exports = function(app, Flow, Step) {
-    app.get('/flows', function(req, res) {
+module.exports = function(app, subscriptionValidator, Flow, Step) {
+    app.get('/flows', subscriptionValidator, function(req, res) {
         if (!req.isAuthenticated()) {
             res.redirect('/');
             return;
@@ -18,14 +18,14 @@ module.exports = function(app, Flow, Step) {
     });
 
     //flow page
-    app.get('/flow/:flowId', function(req, res) {
+    app.get('/flow/:flowId', subscriptionValidator, function(req, res) {
         if (!req.isAuthenticated()) {
             res.redirect('/');
             return;
         }
-        Flow.findOne({_id: req.params.flowId}).exec(function(error, flow) {
-            if (error) {
-                return next(error)
+        Flow.findOne({_id: req.params.flowId}).exec(function(err, flow) {
+            if (err) {
+                return next(err)
             }
             res.render('flow.ejs', {
                 isLoggedInUser: req.isAuthenticated(),
@@ -36,7 +36,7 @@ module.exports = function(app, Flow, Step) {
     });
 
     // write new flow
-    app.post('/flow', function (req, res, next) {
+    app.post('/flow', subscriptionValidator, function (req, res, next) {
         var flow = new Flow({
             name: req.body.name,
             steps: req.body.steps,
@@ -51,7 +51,7 @@ module.exports = function(app, Flow, Step) {
     });
 
     //TODO --------------- this probably doesn't make sense as a get. refactor at some point
-    app.get('/flow/:flowId/delete', function (req, res, next) {
+    app.get('/flow/:flowId/delete', subscriptionValidator, function (req, res, next) {
         var query = {_id: req.params.flowId};
         Flow.remove(query,
             function(err) {

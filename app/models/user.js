@@ -30,10 +30,6 @@ userSchema.methods.validPassword = function(password) {
     return bcrypt.compareSync(password, this.local.password);
 };
 
-userSchema.methods.activeTrial = function() {
-    return false;
-};
-
 userSchema.methods.trialDaysRemaining = function(endDate, currentDate) {
     var trialEndDate = moment(endDate);
     var currentDate = moment(currentDate);
