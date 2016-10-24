@@ -15,9 +15,12 @@ module.exports = function(app, config, sendEmail, User) {
                     };
 
                     User.findOne(query).exec(function(error, user) {
-                        var title = typeof user.lastStripePaymentId === undefined ? "Welcome!" : "Your subscription has renewed";
+                        var title = "Your subscription has renewed";
 
                         if (user && user.local.email) {
+                            if (typeof user.lastStripePaymentId === undefined) {
+                                title = "Welcome to Apollo!";
+                            }
                             user.lastStripePaymentId = orderNumber;
                             user.subscriptionExpirationDate = periodEnd;
                             user.save(function (err) {
@@ -27,7 +30,6 @@ module.exports = function(app, config, sendEmail, User) {
 
                                 }
                             });
-
 
                             var emailBodyContent = "\
                               <div style=\"font-size: 20px; font-family:'Courier New', Courier, 'Lucida Sans Typewriter', 'Lucida Typewriter', monospace; text-align: left; padding-bottom: 30px;\">" + title + "</div>\
