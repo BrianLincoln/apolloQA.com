@@ -32,6 +32,7 @@ app.use(morgan('dev')); // log every request to the console
 app.use(cookieParser()); // read cookies (needed for auth)
 app.use(bodyParser()); // get information from html forms
 
+app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs'); // set up ejs for templating
 
 // required for passport
@@ -39,8 +40,8 @@ app.use(session({ secret: config.sessionSecret })); // session secret
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
-app.use(express.static('./flow-builder/dist'));
-app.use(express.static('./resources'));
+app.use(express.static(__dirname + '/flow-builder/dist'));
+app.use(express.static(__dirname + '/resources'));
 
 // routes ======================================================================
 
