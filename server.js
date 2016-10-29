@@ -69,7 +69,7 @@ require('./app/routes/subscription/renew-cancelled-subscription.js')(app, subscr
 require('./app/routes/flow-management.js')(app, subscriptionValidator, FlowSchema, StepSchema);
 
 //test runner
-require('./app/routes/test-runner.js')(app, http, TestSchema);
+require('./app/routes/test-runner.js')(app, config, http, TestSchema);
 
 
 // launch ======================================================================

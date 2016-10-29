@@ -1,4 +1,4 @@
-module.exports = function(app, http, Test) {
+module.exports = function(app, config, http, Test) {
     //start test
     app.post('/api/test-runner', function (req, res, next) {
         var postData = JSON.stringify(req.body);
@@ -7,8 +7,8 @@ module.exports = function(app, http, Test) {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            host: 'localhost',
-            port: 8181,
+            host: config.testRunnerHost,
+            port: config.testRunnerPort ?  config.testRunnerPort : undefined,
             path: '/',
             method: 'POST'
         };
