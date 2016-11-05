@@ -52,6 +52,9 @@ require('./app/routes/health-check.js')(app);
 require('./app/routes/stripe-webhooks.js')(app, config, sendEmail, UserSchema);
 require('./app/routes/help/selectors.js')(app);
 
+// api ==============================================================
+require('./app/routes/api/test.js')(app, TestSchema);
+
 //account management
 require('./app/routes/account/login.js')(app, passport);
 require('./app/routes/account/logout.js')(app, passport);

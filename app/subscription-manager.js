@@ -58,12 +58,10 @@ module.exports = {
             scope.getStripeCustomer(existingCustomerId)
             .then(function(customer) {
                 if (customer && customer.subscriptions.data.length > 0) {
-                    console.log("~~~1");
                     //customer exists, and they have an active subscription.
                     result.reasonCode = "duplicate-subscription";
                     resolve(result);
                 } else {
-                    console.log("~~~2");
                     stripe.customers.create({
                         source: token,
                         plan: "basic",
