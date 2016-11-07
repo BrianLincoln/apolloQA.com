@@ -255,10 +255,23 @@ h2 {
 
 
 .flow-manager {
-    background: #fff;
+    background: rgba(255, 255, 255, .8);
     box-shadow: 0px 1px 3px #ccc;
     margin-top: 200px;
     padding: 30px;
+    position: relative;
+}
+
+.flow-manager.fetching:before {
+    background: rgba(255,255,255,.8);
+    content: " ";
+    height: 100%;
+    width: 100%;
+    z-index: 2;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 .flow-manager h1 {
