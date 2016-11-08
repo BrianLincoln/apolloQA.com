@@ -101,9 +101,7 @@ module.exports = function(app, subscriptionValidator, Flow, Step) {
 
     //update a flow
     app.put('/api/flows/:flowId', function (req, res, next) {
-
         Flow.findById(req.params.flowId, function (err, flow) {
-
             var name = flow.name;
             flow.name = req.body.name;
             flow.save(function (err) {
