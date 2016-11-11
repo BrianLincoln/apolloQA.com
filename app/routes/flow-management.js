@@ -50,7 +50,7 @@ module.exports = function(app, subscriptionValidator, Flow, Step) {
         });
     });
 
-    //TODO --------------- this probably doesn't make sense as a get. refactor at some point
+    //TODO --------------- this doesn't make sense as a get. refactor at some point
     app.get('/flow/:flowId/delete', subscriptionValidator, function (req, res, next) {
         var query = {_id: req.params.flowId};
         Flow.remove(query,
