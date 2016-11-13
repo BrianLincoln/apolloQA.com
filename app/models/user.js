@@ -16,9 +16,10 @@ var userSchema = mongoose.Schema({
     resetPasswordToken: String,
     resetPasswordExpiration: Date,
     trialExpirationDate: Date,
+    pendingPaymentGracePeriodExpirationDate: Date,
+    subscriptionExpirationDate: Date,
     stripeCustomerId: String,
-    lastStripePaymentId: String,
-    subscriptionExpirationDate: Date
+    lastStripePaymentId: String
 });
 
 // methods ======================

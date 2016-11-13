@@ -1,4 +1,5 @@
 var AWS = require('aws-sdk');
+var Exception = require('./models/exception');
 var emailTemplate = require('./email-template.js');
 var config = require('./../config/config.js');
 var ses = new AWS.SES({
@@ -13,8 +14,10 @@ module.exports = function(to, from, subject, bodyTitle, bodyMainContent) {
     var toFormatted = [];
 
     if (config.emailTestMode === true) {
-            toFormatted.push(config.emailTestAddress);
+        console.log("sent to test email");
+        toFormatted.push(config.emailTestAddress);
     } else {
+        console.log("sent to actual email");
         if (to.isArray) {
             toFormatted = to;
         } else {
@@ -39,9 +42,13 @@ module.exports = function(to, from, subject, bodyTitle, bodyMainContent) {
                 }
             }
         }
-    }, function(err, data) {
-        if(err) {
-            console.log(err);
+    }, function(error, data) {
+        if(error) {
+            var exception = new Exception({
+                description: "Send Email failed",
+                date: new Date()
+            });
+            exception.save(function (error, exception) {});
         }
     });
 

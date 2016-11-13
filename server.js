@@ -12,7 +12,7 @@ var bodyParser   = require('body-parser');
 var session      = require('express-session');
 
 var config = require('./config/config.js');
-var sendEmail = require('./app/send-email.js');
+var sendEmail = require('./app/send-email.js')(app);
 var subscriptionManager = require('./app/subscription-manager.js');
 var subscriptionValidator = require('./app/subscription-validator.js');
 

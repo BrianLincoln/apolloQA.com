@@ -148,7 +148,6 @@ module.exports = {
                             function(err, subscription) {
                                 if (!err && subscription) {
                                     resolve(subscription);
-                                    resolve(subscription);
                                 } else {
                                     console.log("ERROR: failed to renew cancelled subscription: " + subscription.id);
                                     reject(err);
@@ -206,6 +205,8 @@ module.exports = {
     updateUserWithStripeCustomerId: function(userId, stripeCustomerId) {
         return new Promise(function(resolve, reject) {
             User.findById(userId, function (err, user) {
+                user.pendingPaymentGracePeriodExpirationDate = new Date();
+                user.pendingPaymentGracePeriodExpirationDate.setTime( user.pendingPaymentGracePeriodExpirationDate.getTime() + config.pendingPaymentGracePeriodInDays * 86400000 );
                 user.stripeCustomerId = stripeCustomerId;
 
                 user.save(function (err) {
