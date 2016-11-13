@@ -20,6 +20,7 @@ var UserSchema = require('./app/models/user');
 var FlowSchema = require('./app/models/flow');
 var StepSchema = require('./app/models/step');
 var TestSchema = require('./app/models/test');
+var ErrorSchema = require('./app/models/error');
 
 // configuration ===============================================================
 mongoose.connect(config.dbUrl); // connect to our database
