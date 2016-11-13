@@ -1,5 +1,6 @@
 var config = require('./../config/config.js');
 var subscriptionManager = require('./subscription-manager.js');
+var Exception = require('./models/exception');
 
 // app/routes.js
 module.exports = function(req, res, next) {
@@ -15,6 +16,14 @@ module.exports = function(req, res, next) {
 
                 if (subscription) {
                     return next();
+                } else {
+                    var exception = new Exception({
+                        description: "Stripe customerID not found: " + req.user.stripeCustomerId,
+                        date: new Date()
+                    });
+                    exception.save(function (error, exception) {
+                        res.redirect("/error");
+                    });
                 }
             } else {
                 res.redirect("/profile");

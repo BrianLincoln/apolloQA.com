@@ -35,19 +35,14 @@ module.exports = function(app, config, http, Test) {
     });
 
     app.put('/api/tests/:flowId/cancel', function(req, res) {
-        console.log("cancel");
-        console.log(req.params.flowId);
-
         var query = {flowId: req.params.flowId};
         var update = {status: "stopped"};
 
         Test.update(query, update, {multi: true},
             function(err, updated) {
                 if (err) {
-                    console.log(err);
                     res.send(err);
                 }
-                console.log("success");
                 res.send("success");
             }
         );

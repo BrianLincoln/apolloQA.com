@@ -20,7 +20,7 @@ var UserSchema = require('./app/models/user');
 var FlowSchema = require('./app/models/flow');
 var StepSchema = require('./app/models/step');
 var TestSchema = require('./app/models/test');
-var ErrorSchema = require('./app/models/error');
+var ExceptionSchema = require('./app/models/exception');
 
 // configuration ===============================================================
 mongoose.connect(config.dbUrl); // connect to our database
@@ -74,6 +74,9 @@ require('./app/routes/flow-management.js')(app, subscriptionValidator, FlowSchem
 
 //test runner
 require('./app/routes/test-runner.js')(app, config, http, TestSchema);
+
+//error page
+require('./app/routes/error.js')(app, config);
 
 
 // launch ======================================================================
