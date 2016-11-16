@@ -6,28 +6,41 @@ var Exception = require('./models/exception');
 module.exports = function(req, res, next) {
     if (req.user) {
         var today = new Date();
+        var failedPayment = false;
 
+        //Active by valid subscription
         if (req.user.subscriptionExpirationDate) {
             var subscriptionDaysRemaining = daysRemaininginPeriod(req.user.subscriptionExpirationDate, today);
 
             if (subscriptionDaysRemaining > 0) {
                 console.log("active sub");
+                req.userStatus = "subscriptionActive";
+                req.subscriptionDaysRemaining = subscriptionDaysRemaining;
                 return next();
             }
         }
+        //Active by grace period after first payment
         if (req.user.pendingPaymentGracePeriodExpirationDate) {
             var gracePeriodDaysRemaining = daysRemaininginPeriod(req.user.pendingPaymentGracePeriodExpirationDate, today);
 
             if (gracePeriodDaysRemaining > 0) {
                 console.log("grace period");
+                req.userStatus = "gracePeriodActive";
+                req.trialPeriodDaysRemaining = trialPeriodDaysRemaining;
                 return next();
+            } else {
+                req.user.failedPayment = true;
             }
         }
+        //Active by trial period
         if (req.user.trialExpirationDate) {
             var trialPeriodDaysRemaining = daysRemaininginPeriod(req.user.trialExpirationDate, today);
 
             if (trialPeriodDaysRemaining > 0) {
                 console.log("trial period");
+                req.userStatus = "trialPeriodActive";
+                req.trialPeriodDaysRemaining = trialPeriodDaysRemaining;
+                req.failedPayment = true;
                 return next();
             }
         }

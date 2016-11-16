@@ -5,6 +5,7 @@ var mongoose = require('mongoose');
 var passport = require('passport');
 var flash    = require('connect-flash');
 var http = require('http');
+var moment = require('moment')
 
 var morgan       = require('morgan');
 var cookieParser = require('cookie-parser');
@@ -61,7 +62,7 @@ require('./app/routes/account/login.js')(app, passport);
 require('./app/routes/account/logout.js')(app, passport);
 require('./app/routes/account/signup.js')(app, passport, config);
 require('./app/routes/account/reset-password.js')(app, config, sendEmail, UserSchema);
-require('./app/routes/account/profile.js')(app, config, subscriptionManager, UserSchema);
+require('./app/routes/account/profile.js')(moment, app, config, subscriptionValidator, subscriptionManager, UserSchema);
 
 //subscription management
 require('./app/routes/subscription/subscribe.js')(app, config, subscriptionManager, UserSchema);

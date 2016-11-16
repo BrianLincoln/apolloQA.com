@@ -1,67 +1,155 @@
-module.exports = function(app, config, subscriptionManager, UserSchema) {
+module.exports = function(moment, app, config, subscriptionValidator, subscriptionManager, UserSchema) {
     app.get('/profile', function(req, res) {
         if (!req.isAuthenticated()) {
-            res.redirect('/');
-            return;
+            return res.redirect('/');
         }
 
+        var today = new Date();
         var stripeCustomerId = req.user.stripeCustomerId;
-        var copy = {}
         var properties = {
             isLoggedInUser: req.isAuthenticated(),
-            copy: {},
+            copy: {
+                title: "",
+                subTitle: ""
+            },
             email: req.user.local.email,
-            isTrialUser: true,
-            trialDaysRemaining: trialDaysRemaining,
+            isTrialUser: false,
+            trialDaysRemaining: 0,
             showSubscribeButton: true,
             showSubscriptionSection: false,
             cancelAtPeriodEnd: false,
             maskedLast4: undefined
-        }
+        };
 
-        if (!stripeCustomerId) {
-            //no stripeCustomerId, assume trial user
-            var trialDaysRemaining = req.user.trialDaysRemaining(req.user.trialExpirationDate, new Date());
+        //subscription exists or existed at some point
+        if (req.user.subscriptionExpirationDate) {
+            console.log("1");
+            var subscriptionDaysRemaining = daysRemaininginPeriod(req.user.subscriptionExpirationDate, today);
 
-            if (trialDaysRemaining > 0) {
-                //active trial
-                properties.copy.title = trialDaysRemaining + " days remaining in your trial";
+            if (subscriptionDaysRemaining > 0) {
+                console.log("2");
+                subscriptionManager.getStripeCustomer(stripeCustomerId)
+                .then(function(customer) {
+                    var subscription = subscriptionManager.getStripeCustomerSubscription(customer);
+
+                    if (subscription) {
+                        console.log("3");
+                        if (subscription.cancel_at_period_end) {
+                            properties = getPropertiesForCancelledButStillActiveUser(properties);
+                            return res.render('profile.ejs', properties);
+                        } else {
+                            console.log("4");
+                            var payPeriodEndDate = new Date(subscription.current_period_end * 1000).toDateString();
+
+                            properties = getPropertiesForSubscribedUser(properties, payPeriodEndDate, customer);
+                            return res.render('profile.ejs', properties);
+                        }
+                    } else {
+                        console.log("5");
+                        properties.copy.title = "Expired Subscription";
+                        return res.render('profile.ejs', properties);
+                    }
+
+                    properties = getPropertiesForSubscribedUser(properties, subscription);
+                    return res.render('profile.ejs', properties);
+                });
             } else {
-                //expired trial
-                properties.copy.title = "Trial Expired";
-                properties.copy.subTitle = "Get full access for just $25 /month.";
+                properties = getPropertiesForExpiredSubscriptionUser(properties);
+                return res.render('profile.ejs', properties);
             }
 
-            res.render('profile.ejs', properties);
         } else {
-            //stripeCustomerId found, get customer and check subscription
-            subscriptionManager.getStripeCustomer(stripeCustomerId)
-            .then(function(customer) {
-                var subscription = subscriptionManager.getStripeCustomerSubscription(customer);
+            if (req.user.pendingPaymentGracePeriodExpirationDate) {
+                var gracePeriodDaysRemaining = daysRemaininginPeriod(req.user.pendingPaymentGracePeriodExpirationDate, today);
 
-                if (subscription) {
-                    var periodEndDate = new Date(subscription.current_period_end * 1000).toDateString();
+                if (gracePeriodDaysRemaining > 0) {
+                    properties = getPropertiesForGracePeriodUser(properties);
 
-                    if (subscription.cancel_at_period_end) {
-                        //cancelled but valid until pay period expires
-                        properties.copy.title = "Cancelled Subscription";
-                        properties.copy.subTitle = "You have access to your account until: " + periodEndDate;
-                        properties.showSubscribeButton = false;
-                        properties.cancelAtPeriodEnd = true;
-                    } else {
-                        //normal, active account
-                        properties.copy.title = "Active Subscription";
-                        properties.showSubscribeButton = false;
-                        properties.showSubscriptionSection = true;
-                        properties.nextPaymentDate = periodEndDate;
-                        properties.maskedLast4 = subscriptionManager.getStripeCustomerMaskedPaymentMethod(customer);
-                    }
+                    return res.render('profile.ejs', properties);
                 } else {
-                    copy.title = "Expired Subscription";
+                    //failed payment -- what should I do with this?
                 }
+            }
 
-                res.render('profile.ejs', properties);
-            });
+            if (req.user.trialExpirationDate) {
+                properties = getPropertiesForTrialUser(properties, req.user);
+                return res.render('profile.ejs', properties);
+            }
         }
     });
+
+    function getPropertiesForSubscribedUser(properties, payPeriodEndDate, customer) {
+        //normal, active account
+        var newproperties = properties;
+
+        newproperties.copy.title = "Active Subscription";
+        newproperties.showSubscribeButton = false;
+        newproperties.showSubscriptionSection = true;
+        newproperties.nextPaymentDate = payPeriodEndDate;
+        newproperties.maskedLast4 = subscriptionManager.getStripeCustomerMaskedPaymentMethod(customer);
+
+        return newproperties;
+    }
+
+    function getPropertiesForGracePeriodUser(properties) {
+        //normal, active account
+        var newproperties = properties;
+
+        newproperties.copy.title = "Active Subscription";
+        newproperties.copy.subTitle = "Processing your payment";
+        newproperties.showSubscribeButton = false;
+        newproperties.showSubscriptionSection = false;
+
+        return newproperties;
+    }
+
+    function getPropertiesForCancelledButStillActiveUser(properties) {
+        //cancelled but valid until pay period expires
+        var newproperties = properties;
+
+        newproperties.copy.title = "Cancelled Subscription";
+        newproperties.copy.subTitle = "You have access to your account until: " + periodEndDate;
+        newproperties.showSubscribeButton = false;
+        newproperties.cancelAtPeriodEnd = true;
+
+        return newproperties;
+    }
+
+    function getPropertiesForExpiredSubscriptionUser(properties) {
+        var newproperties = properties;
+
+        newproperties.copy.title = "Expired Subscription";
+        newproperties.showSubscribeButton = true;
+
+        return newproperties;
+    }
+
+    function getPropertiesForTrialUser(properties, user) {
+        var newproperties = properties;
+        var trialDaysRemaining = user.trialDaysRemaining(user.trialExpirationDate, new Date());
+
+        if (trialDaysRemaining > 0) {
+            //active trial
+            newproperties.copy.title = trialDaysRemaining + " days remaining in your trial";
+        } else {
+            //expired trial
+            newproperties.copy.title = "Trial Expired";
+            newproperties.copy.subTitle = "Get full access for just $25 /month.";
+        }
+        return newproperties;
+    }
+
+    function getPropertiesForInactiveUser(properties) {
+        var newproperties = properties;
+        newproperties.copy.title = "Expired Subscription";
+
+        return newproperties;
+    }
+
+    function daysRemaininginPeriod(endDate, currentDate) {
+        var periodEndDate = moment(endDate);
+        var currentDate = moment(currentDate);
+
+        return periodEndDate.diff(currentDate, 'days');
+    };
 }
