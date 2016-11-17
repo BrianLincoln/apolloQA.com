@@ -13,7 +13,6 @@ module.exports = function(req, res, next) {
             var subscriptionDaysRemaining = daysRemaininginPeriod(req.user.subscriptionExpirationDate, today);
 
             if (subscriptionDaysRemaining > 0) {
-                console.log("active sub");
                 req.userStatus = "subscriptionActive";
                 req.subscriptionDaysRemaining = subscriptionDaysRemaining;
                 return next();
@@ -24,7 +23,6 @@ module.exports = function(req, res, next) {
             var gracePeriodDaysRemaining = daysRemaininginPeriod(req.user.pendingPaymentGracePeriodExpirationDate, today);
 
             if (gracePeriodDaysRemaining > 0) {
-                console.log("grace period");
                 req.userStatus = "gracePeriodActive";
                 req.trialPeriodDaysRemaining = trialPeriodDaysRemaining;
                 return next();
@@ -37,7 +35,6 @@ module.exports = function(req, res, next) {
             var trialPeriodDaysRemaining = daysRemaininginPeriod(req.user.trialExpirationDate, today);
 
             if (trialPeriodDaysRemaining > 0) {
-                console.log("trial period");
                 req.userStatus = "trialPeriodActive";
                 req.trialPeriodDaysRemaining = trialPeriodDaysRemaining;
                 req.failedPayment = true;

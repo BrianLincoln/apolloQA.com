@@ -1,3 +1,7 @@
+* {
+    box-sizing: content-box;
+}
+
 html {
     height: 100%;
 }
@@ -5,7 +9,9 @@ html {
 body {
     background: #fafafa;
     height: 100%;
+    overflow-x: hidden;
 }
+
 .page-container {
     padding-top: 100px;
     z-index: 2;
@@ -175,6 +181,13 @@ h2 {
 
 
 
+.early-access-section {
+    background: #0087ff;
+    padding: 10vh 30px;
+}
+.early-access-section h2 {
+    color: white;
+}
 
 
 

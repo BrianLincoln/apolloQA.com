@@ -21,6 +21,7 @@ var UserSchema = require('./app/models/user');
 var FlowSchema = require('./app/models/flow');
 var StepSchema = require('./app/models/step');
 var TestSchema = require('./app/models/test');
+var preLaunchSignupSchema = require('./app/models/pre-launch-signup');
 var ExceptionSchema = require('./app/models/exception');
 
 // configuration ===============================================================
@@ -56,6 +57,8 @@ require('./app/routes/help/selectors.js')(app);
 
 // api ==============================================================
 require('./app/routes/api/test.js')(app, TestSchema);
+
+require('./app/routes/pre-launch-signup.js')(app, preLaunchSignupSchema);
 
 //account management
 require('./app/routes/account/login.js')(app, passport);

@@ -23,29 +23,24 @@ module.exports = function(moment, app, config, subscriptionValidator, subscripti
 
         //subscription exists or existed at some point
         if (req.user.subscriptionExpirationDate) {
-            console.log("1");
             var subscriptionDaysRemaining = daysRemaininginPeriod(req.user.subscriptionExpirationDate, today);
 
             if (subscriptionDaysRemaining > 0) {
-                console.log("2");
                 subscriptionManager.getStripeCustomer(stripeCustomerId)
                 .then(function(customer) {
                     var subscription = subscriptionManager.getStripeCustomerSubscription(customer);
 
                     if (subscription) {
-                        console.log("3");
                         if (subscription.cancel_at_period_end) {
                             properties = getPropertiesForCancelledButStillActiveUser(properties);
                             return res.render('profile.ejs', properties);
                         } else {
-                            console.log("4");
                             var payPeriodEndDate = new Date(subscription.current_period_end * 1000).toDateString();
 
                             properties = getPropertiesForSubscribedUser(properties, payPeriodEndDate, customer);
                             return res.render('profile.ejs', properties);
                         }
                     } else {
-                        console.log("5");
                         properties.copy.title = "Expired Subscription";
                         return res.render('profile.ejs', properties);
                     }

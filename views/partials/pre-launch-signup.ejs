@@ -1,0 +1,33 @@
+<div class="row early-access-section" id="pre-launch">
+    <div class="col-xs-12">
+        <h2 class="text-center">Sign up for early access:</h2>
+    </div>
+    <div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-md-4 col-offset-3 col-lg-4 col-lg-offset-4">
+
+        <form class="form-inline text-center" action="/pre-launch-signup" method="post">
+            <div class="form-group">
+                <input required type="email" placeholder="jane.doe@example.com" class="form-control" name="email">
+            </div>
+            <button type="submit" class="btn btn-secondary btn-lg">Sign up</button>
+        </form>
+    </div>
+</div>
+<script>
+    var earlyAccessCompleted = getParameterByName("earlyAccessSignupComplete");
+
+    if (earlyAccessCompleted) {
+        $(".early-access-section").html("<h2 class='col-xs-12 text-center'>Awesome, we'll be in touch</h2>");
+    }
+
+    function getParameterByName(name, url) {
+        if (!url) {
+          url = window.location.href;
+        }
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+</script>
