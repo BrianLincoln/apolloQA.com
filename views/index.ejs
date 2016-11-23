@@ -1,5 +1,3 @@
-
-
 <!doctype html>
 <html>
     <head>
@@ -9,67 +7,65 @@
     </head>
     <body>
         <% include ./partials/header %>
-        <div class="page-container">
-            <div class="homepage-hero clearfix">
+            <div class="homepage-hero">
                 <div class="homepage-hero-content">
-                    <div class="row">
-                        <div class="col-xs-offset-1 col-xs-11 col-sm-8 col-md-8 col-lg-5">
-                            <h1>Automated testing for everyone.</h1>
-                            <h2>Automate your website testing without writing code.</h2>
-                            <div>
-                                <a href="#pre-launch" class="btn btn-lg btn-primary"><span class="fa fa-heart"></span> Get Early Access</a>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xs-11 col-md-8 col-lg-5">
+                                <h1>Automated testing for everyone.</h1>
+                                <p>Automate your website testing without writing code.</p>
+                                <a href="#pre-launch" class="button button_valencia" data-early-access-link="true"><span class="fa fa-heart"></span> Get Early Access</a>
                                 <!--<a href="/signup" class="btn btn-lg btn-primary" data-tar="signup"><span class="fa fa-heart"></span> try it for free</a>-->
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="homepage-perks">
-                <div class="container ">
+            <div class="homepage-perks clearfix">
+                <div class="homepage-perks-content container">
                     <div class="row">
-                    <div class="col-xs-12 col-sm-4 text-center">
-                        <div class="col-xs-12 ">
-                            <h1><span class="fa fa-bug"></span></h1>
-                            <h3>Find bugs faster</h3>
-                            <p>Automate your QA process by eleminating manual testing of common functionality.</p>
+                        <div class="col-xs-12 col-lg-4 homepage-perk">
+                            <div class="col-xs-12 ">
+                                <h1><span class="fa fa-bug"></span></h1>
+                                <h3>Find bugs faster</h3>
+                                <p>Automate your QA process by eleminating manual testing of common functionality.</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-xs-12 col-sm-4 text-center">
-                        <div class="col-xs-12 ">
-                            <h1><span class="fa fa-rocket"></span></h1>
-                            <h3>Speed up your release process</h3>
-                            <p>Check that all of your website's functionality is working as intended in minutes.</p>
+                        <div class="col-xs-12 col-lg-4 homepage-perk">
+                            <div class="col-xs-12 ">
+                                <h1><span class="fa fa-rocket"></span></h1>
+                                <h3>Speed up your release process</h3>
+                                <p>Check that all of your website's functionality is working as intended in minutes.</p>
+                            </div>
                         </div>
-                    </div>
-                        <div class="col-xs-12 col-sm-4 text-center">
-                            <div class="col-xs-12">
-                                <h1><span class="fa fa-heartbeat"></span></h1>
-                                <h3>All systems go</h3>
-                                <p>By testing what users actually experience, you can be sure that every system your application depends on is doing it's part.</p>
+                            <div class="col-xs-12 col-lg-4 homepage-perk">
+                                <div class="col-xs-12">
+                                    <h1><span class="fa fa-heartbeat"></span></h1>
+                                    <h3>All systems go</h3>
+                                    <p>By testing what users actually experience, you can be sure that every system your application depends on is doing it's part.</p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="homepage-howitworks">
-                <div class="homepage-howitworks-content">
-                    <div class="container ">
-                        <div class="row">
-                            <div class="col-xs-12 col-md-8 col-md-offset-2 text-center">
-                                <h1>How it works</h1>
-                                <p>No more tedious manual regression testing. Apollo makes functional testing quick and easy.</p>
-                            </div>
+                <div class="homepage-howitworks-content container">
+                    <div class="row">
+                        <div class="col-xs-12 col-md-8 col-md-offset-2 text-center">
+                            <h1>How it works</h1>
+                            <p>No more tedious manual regression testing. Apollo makes functional testing quick and easy.</p>
                         </div>
-                        <div class="homepage-howitworks-section row">
-                            <div class="homepage-howitworks-steps col-xs-12 col-sm-8 col-sm-offset-2">
-                                <div class="homepage-howitworks-step">
-                                    <div class="fa fa-list-ol homepage-howitworks-step-icon"></div>
-                                    <h4>Map out the flows your flows you want to keep an eye on.</h4>
-                                </div>
-                                <div class="homepage-howitworks-step">
-                                    <div class="fa fa-bullseye homepage-howitworks-step-icon"></div>
-                                    <h4>Trigger tests on demand for feature or release testing.</h4>
-                                </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-8 col-sm-offset-2">
+                            <div class="homepage-howitworks-step">
+                                <div class="fa fa-list-ol homepage-howitworks-step-icon"></div>
+                                <p>Map out the flows your flows you want to keep an eye on.</p>
+                            </div>
+                            <div class="homepage-howitworks-step">
+                                <div class="fa fa-bullseye homepage-howitworks-step-icon"></div>
+                                <p>Trigger tests on demand for feature or release testing.</p>
                             </div>
                         </div>
                     </div>
@@ -86,7 +82,6 @@
             -->
 
             <% include ./partials/pre-launch-signup %>
-        </div>
         <% include ./partials/footer %>
     </body>
 </html>

@@ -1,18 +1,21 @@
-<div class="row early-access-section" id="pre-launch">
-    <div class="col-xs-12">
-        <h2 class="text-center">Sign up for early access:</h2>
-    </div>
-    <div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-md-4 col-offset-3 col-lg-4 col-lg-offset-4">
-
-        <form class="form-inline text-center" action="/pre-launch-signup" method="post">
-            <div class="form-group">
-                <input required type="email" placeholder="jane.doe@example.com" class="form-control" name="email">
-            </div>
-            <button type="submit" class="btn btn-secondary btn-lg">Sign up</button>
+<div class="early-access-section">
+    <div class="container">
+        <h2>Sign up for early access:</h2>
+        <form class="row" action="/pre-launch-signup" method="post">
+            <input class="pre-launch-email-field col-xs-8 col-xs-offset-2" id="pre-launch-email-field" required type="email" placeholder="jane.doe@example.com" class="form-control" name="email">
+            <button type="submit" class="button button_valencia col-xs-4 col-xs-offset-4">Sign up</button>
         </form>
     </div>
 </div>
+
 <script>
+    $('*[data-early-access-link="true"]').on("click", function() {
+        $('html, body').animate({
+            scrollTop: $(".early-access-section").offset().top
+        }, 1000);
+        $("#pre-launch-email-field").focus();
+    });
+
     var earlyAccessCompleted = getParameterByName("earlyAccessSignupComplete");
 
     if (earlyAccessCompleted) {

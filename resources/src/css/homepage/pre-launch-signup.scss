@@ -1,0 +1,22 @@
+@import "./../sprak-variables.scss";
+
+.early-access-section {
+    background: $color-bluewood;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 50vh;
+    padding: $space-xl $space-md;
+    text-align: center;
+}
+.early-access-section h2 {
+    color: $color-white;
+    margin-bottom: $space-md;
+}
+
+.pre-launch-email-field {
+    padding: $space-sm;
+    border: 0px;
+    box-shadow: none;
+    margin-bottom: $space-sm;
+}

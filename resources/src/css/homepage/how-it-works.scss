@@ -1,0 +1,30 @@
+@import "./../sprak-variables.scss";
+
+.homepage-howitworks {
+    background-image: url(../../images/assembly.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+.homepage-howitworks-content {
+    background: rgba(0, 0, 0, .7);
+    color: $color-white;
+    padding: $space-xl;
+}
+.homepage-howitworks-steps {
+    color: white;
+    padding: $space-md;
+}
+.homepage-howitworks-step {
+    align-items: center;
+    display: flex;
+    font-family: $font-family-serif;
+    margin-bottom: $space-md;
+}
+.homepage-howitworks-step:last-child {
+    margin-bottom: 0;
+}
+.homepage-howitworks-step-icon {
+    font-size: 50px;
+    padding-right: $space-md;
+}

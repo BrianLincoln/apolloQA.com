@@ -1,20 +1,21 @@
-<nav class="navbar navbar-default navbar-fixed-top">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-nav" aria-expanded="false">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand header-logo" href="/"><span class="fa fa-star header-logo-icon"></span> <span class="header-logo-text">apollo</span></a>
-        </div>
-        <div class="collapse navbar-collapse" id="header-nav">
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="/login" data-tar="login"><span class="fa fa-user"></span> Login</a></li>
-                <li><a href="/#pre-launch"><span class="fa fa-heart"></span> Get Early Access</a></li>
-                <!--<li><a href="/signup" data-tar="signup"><span class="fa fa-user"></span> Signup</a></li> -->
-            </ul>
+<header class="site-header">
+    <input class="header-nav-toggle-checkbox" type="checkbox" id="header-nav-toggle-checkbox">
+    <div class="site-header-content container">
+        <div class="row">
+            <a class="col-xs-3 header-logo" href="/"><span class="fa fa-star header-logo-icon"></span> <span class="header-logo-text">apollo</span></a>
+            <div class="header-nav-wrapper col-xs-9 hide-md">
+                <label class="header-nav-toggle header-nav-toggle-open" for="header-nav-toggle-checkbox">
+                    <div class="fa fa-bars"></div>
+                </label>
+                <label class="header-nav-toggle header-nav-toggle-close " for="header-nav-toggle-checkbox">
+                    <div class="fa fa-times"></div>
+                </label>
+            </div>
+            <nav class="header-nav col-xs-12 col-sm-9">
+                <!--<li><a class="header-nav-item" href="/login" data-tar="login"><span class="fa fa-user"></span> Login</a></li>-->
+                <a class="header-nav-item button_sm button_valencia" data-early-access-link="true" href="/#pre-launch"><span class="fa fa-heart"></span> Get Early Access</a>
+                <!--<a href="/signup" data-tar="signup"><span class="fa fa-user"></span> Signup</a> -->
+            </nav>
         </div>
     </div>
-</nav>
+</header>

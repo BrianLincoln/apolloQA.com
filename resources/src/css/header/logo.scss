@@ -1,0 +1,14 @@
+@import "./../sprak-variables.scss";
+
+a.header-logo, a.header-logo:visited {
+    align-items: center;
+    color: $color-bluewood;
+    display: flex;
+    font-family: $font-family-serif;
+    font-size: $space-lg;
+}
+
+.header-logo-icon {
+    color: $color-mariner;
+    margin-right: $space-sm;
+}

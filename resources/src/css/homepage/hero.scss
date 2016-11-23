@@ -1,0 +1,20 @@
+@import "./../sprak-variables.scss";
+
+.homepage-hero {
+    background-image: url(../../images/earth-bottom.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: bottom right;
+}
+.homepage-hero-content {
+    background: linear-gradient(to right, rgba(0, 0, 0, .8), rgba(0, 0, 0, .5));
+    color: $color-white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 600px;
+    padding: $space-xl 0;
+}
+.homepage-hero-icon {
+    font-size: 200px;
+}

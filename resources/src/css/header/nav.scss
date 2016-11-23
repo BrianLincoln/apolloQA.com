@@ -1,0 +1,44 @@
+@import "./../sprak-variables.scss";
+
+//nav closed
+.header-nav-toggle-close {
+    display: none;
+}
+
+.header-nav-toggle-checkbox {
+    display: none;
+}
+
+.header-nav {
+   display: none;
+}
+
+//nav open
+.header-nav-toggle-checkbox:checked ~ .site-header-content{
+    .header-nav {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: $space-md;
+    }
+    .header-nav-toggle-close {
+       display: block;
+    }
+    .header-nav-toggle-open {
+        display: none;
+    }
+}
+
+.header-nav-toggle {
+    cursor: pointer;
+    float: right;
+}
+
+@media screen and (min-width: $breakpoint-sm) {
+    .header-nav-toggle {
+        display: none;
+    }
+    .header-nav {
+        display: flex;
+        justify-content: flex-end;
+    }
+}

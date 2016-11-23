@@ -1,0 +1,72 @@
+//import this file in sass files that need to use Sprak variables.
+$breakpoint-xs: 480px;
+$breakpoint-sm: 768px;
+$breakpoint-md: 960px;
+$breakpoint-lg: 1224px;
+
+$color-white: #FFFFFF;
+$color-black: #222222;
+$color-bluewood: #2C3E50;
+$color-valencia: #E74C3C;
+$color-porcelain: #ECF0F1;
+$color-mariner: #3498DB;
+
+$space-xs: 5px;
+$space-sm: 10px;
+$space-md: 15px;
+$space-lg: 30px;
+$space-xl: 60px;
+
+
+$font-family-serif: Courier New, monospace;
+$font-family-sans: arial, sans-serif;
+
+%font-title-lg {
+    font-family: $font-family-serif;
+    font-size: 35px;
+    font-weight: normal;
+    line-height: 44px;
+}
+
+%font-title-md {
+    font-family: $font-family-sans;
+    font-size: 28px;
+    font-weight: normal;
+    line-height: 35px;
+}
+
+%font-title-sm {
+    font-family: $font-family-serif;
+    font-size: 22px;
+    font-weight: bold;
+    line-height: 18px;
+}
+
+%font-base {
+    font-family: $font-family-sans;
+    font-size: 16px;
+    font-weight: normal;
+    line-height: 22px;
+}
+
+%font-base-alt {
+    font-family: $font-family-serif;
+    font-size: 16px;
+    font-weight: normal;
+    line-height: 22px;
+}
+
+%font-sm {
+    font-family: $font-family-sans;
+    font-size: 11px;
+    font-weight: bold;
+    line-height: 11px;
+    text-transform: uppercase;
+}
+
+@media (min-width: $breakpoint-sm) {
+    %font-title-lg {
+        font-size: 53px;
+        line-height: 64px;
+    }
+}
