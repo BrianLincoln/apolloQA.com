@@ -106,7 +106,7 @@ a.header-logo, a.header-logo:visited {
   padding: 60px 15px;
   text-align: center; }
 
-.early-access-section h2 {
+.early-access-section h2, .early-access-section p {
   color: #FFFFFF;
   margin-bottom: 15px; }
 
