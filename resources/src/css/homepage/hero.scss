@@ -2,7 +2,9 @@
 
 .homepage-hero {
     background-color: $color-black;
-    background-image: url(../../images/earth-bottom.jpg);
+}
+body.loaded .homepage-hero {
+    background-image: url(../../images/earth-vert.jpg);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: bottom right;
@@ -20,10 +22,8 @@
     font-size: 200px;
 }
 
-
-
 @media screen and (min-width: $breakpoint-sm) {
-    .homepage-hero {
-        background-image: url(../../images/earth-xs.jpg);
+    body.loaded .homepage-hero {
+        background-image: url(../../images/earth.jpg);
     }
 }

@@ -45,14 +45,16 @@ a.header-logo, a.header-logo:visited {
   padding: 10px; }
 
 .homepage-hero {
-  background-color: #2C3E50;
-  background-image: url(../../images/earth-bottom.jpg);
+  background-color: #222222; }
+
+body.loaded .homepage-hero {
+  background-image: url(../../images/earth-vert.jpg);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: bottom right; }
 
 .homepage-hero-content {
-  background: linear-gradient(to right, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.1) 50%);
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.1));
   color: #FFFFFF;
   display: flex;
   flex-direction: column;
@@ -64,8 +66,8 @@ a.header-logo, a.header-logo:visited {
   font-size: 200px; }
 
 @media screen and (min-width: 768px) {
-  .homepage-hero {
-    background-image: url(../../images/earth-xs.jpg); } }
+  body.loaded .homepage-hero {
+    background-image: url(../../images/earth.jpg); } }
 
 .homepage-perks {
   background: #ECF0F1; }
@@ -75,6 +77,9 @@ a.header-logo, a.header-logo:visited {
   text-align: center; }
 
 .homepage-howitworks {
+  background: #222222; }
+
+.loaded .homepage-howitworks {
   background-image: url(../../images/assembly.jpg);
   background-repeat: no-repeat;
   background-size: cover;

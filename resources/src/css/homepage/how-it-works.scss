@@ -1,6 +1,10 @@
 @import "./../sprak-variables.scss";
 
 .homepage-howitworks {
+    background: $color-black;
+}
+
+.loaded .homepage-howitworks {
     background-image: url(../../images/assembly.jpg);
     background-repeat: no-repeat;
     background-size: cover;

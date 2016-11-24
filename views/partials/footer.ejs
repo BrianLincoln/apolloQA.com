@@ -8,4 +8,10 @@
   ga('create', 'UA-85295856-1', 'auto');
   ga('send', 'pageview');
 
+  function addLoadedClass() {
+      $("body").addClass("loaded");      
+  }
+
+  window.onload = addLoadedClass();
+
 </script>
