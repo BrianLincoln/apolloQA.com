@@ -45,13 +45,14 @@ a.header-logo, a.header-logo:visited {
   padding: 10px; }
 
 .homepage-hero {
+  background-color: #2C3E50;
   background-image: url(../../images/earth-bottom.jpg);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: bottom right; }
 
 .homepage-hero-content {
-  background: linear-gradient(to right, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.5));
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.1) 50%);
   color: #FFFFFF;
   display: flex;
   flex-direction: column;
@@ -61,6 +62,10 @@ a.header-logo, a.header-logo:visited {
 
 .homepage-hero-icon {
   font-size: 200px; }
+
+@media screen and (min-width: 768px) {
+  .homepage-hero {
+    background-image: url(../../images/earth-xs.jpg); } }
 
 .homepage-perks {
   background: #ECF0F1; }
