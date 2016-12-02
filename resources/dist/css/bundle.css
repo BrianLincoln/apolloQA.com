@@ -1,3 +1,9 @@
+.login-form-bottom > p {
+  font-family: Courier New, monospace;
+  font-size: 16px;
+  font-weight: normal;
+  line-height: 22px; }
+
 a.header-logo, a.header-logo:visited {
   align-items: center;
   color: #2C3E50;
@@ -8,6 +14,12 @@ a.header-logo, a.header-logo:visited {
 .header-logo-icon {
   color: #3498DB;
   margin-right: 10px; }
+
+.login-form-bottom > p {
+  font-family: Courier New, monospace;
+  font-size: 16px;
+  font-weight: normal;
+  line-height: 22px; }
 
 .header-nav-toggle-close {
   display: none; }
@@ -44,11 +56,23 @@ a.header-logo, a.header-logo:visited {
   background-color: #ECF0F1;
   padding: 10px; }
 
+.login-form-bottom > p {
+  font-family: Courier New, monospace;
+  font-size: 16px;
+  font-weight: normal;
+  line-height: 22px; }
+
+.login-form-bottom > p {
+  font-family: Courier New, monospace;
+  font-size: 16px;
+  font-weight: normal;
+  line-height: 22px; }
+
 .homepage-hero {
   background-color: #222222; }
 
 body.loaded .homepage-hero {
-  background-image: url(../../images/earth-vert.jpg);
+  background-image: url(../../images/earth-sm.jpg);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: bottom right; }
@@ -69,12 +93,24 @@ body.loaded .homepage-hero {
   body.loaded .homepage-hero {
     background-image: url(../../images/earth.jpg); } }
 
+.login-form-bottom > p {
+  font-family: Courier New, monospace;
+  font-size: 16px;
+  font-weight: normal;
+  line-height: 22px; }
+
 .homepage-perks {
   background: #ECF0F1; }
 
 .homepage-perks-content {
   padding: 60px;
   text-align: center; }
+
+.login-form-bottom > p {
+  font-family: Courier New, monospace;
+  font-size: 16px;
+  font-weight: normal;
+  line-height: 22px; }
 
 .homepage-howitworks {
   background: #222222; }
@@ -107,6 +143,12 @@ body.loaded .homepage-hero {
   font-size: 50px;
   padding-right: 15px; }
 
+.login-form-bottom > p {
+  font-family: Courier New, monospace;
+  font-size: 16px;
+  font-weight: normal;
+  line-height: 22px; }
+
 .early-access-section {
   background: #2C3E50;
   display: flex;
@@ -125,6 +167,40 @@ body.loaded .homepage-hero {
   border: 0px;
   box-shadow: none;
   margin-bottom: 10px; }
+
+.login-form-bottom > p {
+  font-family: Courier New, monospace;
+  font-size: 16px;
+  font-weight: normal;
+  line-height: 22px; }
+
+.login-page {
+  background-color: #222222;
+  height: 100vh; }
+
+body.loaded.login-page {
+  background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.1)), url(../../images/earth-sm.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: bottom right; }
+
+.login-page-header {
+  color: #FFFFFF;
+  padding: 60px 0; }
+
+.login-form {
+  color: #FFFFFF;
+  margin-bottom: 60px; }
+
+.login-form-bottom > p {
+  color: #FFFFFF; }
+
+@media screen and (min-width: 768px) {
+  body.loaded.login-page {
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.1)), url(../../images/earth.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: bottom right; } }
 
 .font-title-lg, h1 {
   font-family: Courier New, monospace;
@@ -150,7 +226,7 @@ body.loaded .homepage-hero {
   font-weight: normal;
   line-height: 22px; }
 
-.font-base-alt {
+.font-base-alt, .form-group label {
   font-family: Courier New, monospace;
   font-size: 16px;
   font-weight: normal;
@@ -201,7 +277,7 @@ body.loaded .homepage-hero {
   font-weight: normal;
   line-height: 22px; }
 
-.font-base-alt {
+.font-base-alt, .form-group label {
   font-family: Courier New, monospace;
   font-size: 16px;
   font-weight: normal;
@@ -279,7 +355,7 @@ body.loaded .homepage-hero {
   font-weight: normal;
   line-height: 22px; }
 
-.font-base-alt {
+.font-base-alt, .form-group label {
   font-family: Courier New, monospace;
   font-size: 16px;
   font-weight: normal;
@@ -321,7 +397,7 @@ body.loaded .homepage-hero {
   font-weight: normal;
   line-height: 22px; }
 
-.font-base-alt {
+.font-base-alt, .form-group label {
   font-family: Courier New, monospace;
   font-size: 16px;
   font-weight: normal;
@@ -393,7 +469,7 @@ body.loaded .homepage-hero {
   font-weight: normal;
   line-height: 22px; }
 
-.font-base-alt {
+.font-base-alt, .form-group label {
   font-family: Courier New, monospace;
   font-size: 16px;
   font-weight: normal;
@@ -471,7 +547,7 @@ body.loaded .homepage-hero {
   font-weight: normal;
   line-height: 22px; }
 
-.font-base-alt {
+.font-base-alt, .form-group label {
   font-family: Courier New, monospace;
   font-size: 16px;
   font-weight: normal;
@@ -520,7 +596,7 @@ body.loaded .homepage-hero {
   font-weight: normal;
   line-height: 22px; }
 
-.font-base-alt {
+.font-base-alt, .form-group label {
   font-family: Courier New, monospace;
   font-size: 16px;
   font-weight: normal;
@@ -1187,7 +1263,7 @@ body.loaded .homepage-hero {
   font-weight: normal;
   line-height: 22px; }
 
-.font-base-alt {
+.font-base-alt, .form-group label {
   font-family: Courier New, monospace;
   font-size: 16px;
   font-weight: normal;
@@ -1267,7 +1343,7 @@ body.loaded .homepage-hero {
   font-weight: normal;
   line-height: 22px; }
 
-.font-base-alt {
+.font-base-alt, .form-group label {
   font-family: Courier New, monospace;
   font-size: 16px;
   font-weight: normal;
@@ -1362,7 +1438,7 @@ body.loaded .homepage-hero {
   font-weight: normal;
   line-height: 22px; }
 
-.font-base-alt {
+.font-base-alt, .form-group label {
   font-family: Courier New, monospace;
   font-size: 16px;
   font-weight: normal;
@@ -1415,7 +1491,62 @@ body.loaded .homepage-hero {
   font-weight: normal;
   line-height: 22px; }
 
-.font-base-alt {
+.font-base-alt, .form-group label {
+  font-family: Courier New, monospace;
+  font-size: 16px;
+  font-weight: normal;
+  line-height: 22px; }
+
+.font-sm, .button, .button_md, .button_sm, .button_mariner, a.button_mariner:visited, .list-item-label, .list-item-value {
+  font-family: arial, sans-serif;
+  font-size: 11px;
+  font-weight: bold;
+  line-height: 11px;
+  text-transform: uppercase; }
+
+@media (min-width: 768px) {
+  .font-title-lg, h1 {
+    font-size: 53px;
+    line-height: 64px; } }
+
+.form-group {
+  margin-bottom: 10px; }
+
+.form-group label {
+  display: block; }
+
+.form-group input,
+.form-group select {
+  border-radius: 5px;
+  border-width: 0px;
+  padding: 5px;
+  width: 100%; }
+
+.font-title-lg, h1 {
+  font-family: Courier New, monospace;
+  font-size: 35px;
+  font-weight: normal;
+  line-height: 44px; }
+
+.font-title-md, .card-heading, h2 {
+  font-family: arial, sans-serif;
+  font-size: 28px;
+  font-weight: normal;
+  line-height: 35px; }
+
+.font-title-sm, h3 {
+  font-family: Courier New, monospace;
+  font-size: 22px;
+  font-weight: bold;
+  line-height: 18px; }
+
+.font-base, p {
+  font-family: arial, sans-serif;
+  font-size: 16px;
+  font-weight: normal;
+  line-height: 22px; }
+
+.font-base-alt, .form-group label {
   font-family: Courier New, monospace;
   font-size: 16px;
   font-weight: normal;
@@ -1471,7 +1602,7 @@ body.loaded .homepage-hero {
   font-weight: normal;
   line-height: 22px; }
 
-.font-base-alt {
+.font-base-alt, .form-group label {
   font-family: Courier New, monospace;
   font-size: 16px;
   font-weight: normal;
