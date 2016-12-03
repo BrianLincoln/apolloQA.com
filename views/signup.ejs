@@ -5,33 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <% include ./partials/resources %>
 </head>
-<body class="page-full-bg bg-top signup-page">
+<body class="page-full-bg signup-page">
     <% include ./partials/header %>
-    <div class="page-container">
-        <h1 class="signup-page-header text-center"><span class="fa fa-sign-in"></span> Signup</h1>
-        <div class="narrow-form col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-md-4 col-offset-3 col-lg-4 col-lg-offset-4">
-            <!-- show any messages that come back with authentication -->
-            <% if (message.length > 0) { %>
-                <div class="alert alert-danger"><%= message %></div>
-            <% } %>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-8 col-sm-offset-1 col-md-5">
+                <h1 class="signup-page-header"><span class="fa fa-sign-in"></span> Signup</h1>
 
-            <!-- Sign up FORM -->
-            <form action="/signup" method="post" id="signup-form">
-                <span class="payment-errors"></span>
-                <div class="form-group">
-                    <label>Email</label>
-                    <input type="text" class="form-control" name="email">
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" class="form-control" name="password">
-                </div>
+                <!-- show any messages that come back with authentication -->
+                <% if (message.length > 0) { %>
+                    <div class="alert alert-danger"><%= message %></div>
+                <% } %>
 
-                <button type="submit" class="btn btn-primary">Signup</button>
-            </form>
-            <hr>
-            <p>Already have an account? <a href="/login">Login</a></p>
+                <!-- Sign up FORM -->
+                <form class="signup-form" action="/signup" method="post" id="signup-form">
+                    <span class="payment-errors"></span>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="text" class="form-control" name="email">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" class="form-control" name="password">
+                    </div>
+
+                    <button type="submit" class="button button_valencia button_sm">Signup</button>
+                </form>
+                <hr>
+                <div class="signup-form-bottom">
+                    <p>Already have an account? <a href="/login">Login</a></p>
+                </div<
+            </div>
         </div>
     </div>
+    <% include ./partials/footer %>
 </body>
 </html>
