@@ -41,4 +41,8 @@
         display: flex;
         justify-content: flex-end;
     }
+    a.header-nav-link, a.header-nav-link:visited {
+        color: $color-bluewood;
+        padding-left: $space-sm;
+    }
 }
