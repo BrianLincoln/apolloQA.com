@@ -1,0 +1,59 @@
+@import "./../sprak-variables.scss";
+
+.flowlist-page {
+    background-color: $color-black;
+    height: 100vh;
+}
+
+body.loaded.flowlist-page {
+    background:
+    linear-gradient(rgba(0, 0, 0, .4), rgba(0, 0, 0, .9)),
+    url(../../images/earth-sm.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: bottom right;
+}
+
+.flowlist-page-header {
+    color: $color-white;
+    padding: $space-xl 0;
+}
+
+.flows-form {
+    margin-bottom: $space-xl;
+}
+
+.flows-empty {
+    color: $color-white;
+    text-align: center;
+}
+
+.flows-empty-arrow {
+    font-size: 100px;
+}
+
+a.flow-list-item, a.flow-list-item:visited {
+    color: $color-black;
+}
+
+@media screen and (min-width: $breakpoint-sm) {
+    body.loaded.flowlist-page {
+        background:
+        linear-gradient(to right, rgba(0, 0, 0, .8), rgba(0, 0, 0, .8), rgba(0, 0, 0, .1)),
+        url(../../images/earth.jpg);
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: bottom right;
+    }
+}
+
+@media screen and (min-width: $breakpoint-md) {
+    body.loaded.flowlist-page {
+        background:
+        linear-gradient(to right, rgba(0, 0, 0, .8), rgba(0, 0, 0, .3)),
+        url(../../images/earth.jpg);
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: bottom right;
+    }
+}

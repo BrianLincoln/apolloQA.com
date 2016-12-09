@@ -8,34 +8,34 @@
 <body class="page-full-bg bg-top flowlist-page">
     <% include ./partials/header %>
     <div class="page-container ">
-
-        <div class="col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-offset-1">
-            <div class="flowlist-header">
-                <% if (typeof trialPeriodRemaining != 'undefined') { %>
-                    <h2 class="trial-limit-disclaimer"><%= trialPeriodRemaining %> days left in your free trial <a class="subhead-button" href="/subscription" data-tar="subscribe">buy a subscription</span></a></h2>
-                <% } %>
-                <h1><span class="fa fa-exchange"></span> User Flows</h1>
-            </div>
-            <div class="list-group">
-                <form class="list-group-item list-group-item-info" action="/flow" method="post">
-                    <div class="input-group">
-                        <input type="text" class="form-control" data-tar="newflow-name-field" name="name" placeholder="E.g. contact us form" required>
-                        <span class="input-group-btn">
-                            <button type="submit" class="btn btn-primary">Create Flow</button>
-                        </span>
+        <div class="col-xs-12 col-sm-8 col-sm-offset-1 flowlist-page-header">
+            <% if (typeof trialPeriodRemaining != 'undefined') { %>
+                <h2 class="trial-limit-disclaimer"><%= trialPeriodRemaining %> days left in your free trial <a class="subhead-button" href="/subscription" data-tar="subscribe">buy a subscription</span></a></h2>
+            <% } %>
+            <h1><span class="fa fa-exchange"></span> User Flows</h1>
+        </div>
+        <div class="col-xs-12 col-sm-8 col-sm-offset-1 col-md-4 list-group">
+            <div class="card">
+                <form class="flows-form" action="/flow" method="post">
+                    <div class="form-group">
+                        <input type="text" class="form-control" data-tar="newflow-name-field" name="name" placeholder="E.g. search, contact us, etc." required>
                     </div>
+                    <button type="submit" class="button button_valencia button_sm">Create Flow</button>
                 </form>
 
                 <% if (flows.length <= 0) { %>
-                    <div class="flows-empty text-center">
+                    <div class="flows-empty">
                         <div class="flows-empty-arrow"><span class="fa fa-hand-o-up"></span></div>
                         <h2>Make a user flow to get started</h2>
                     </div>
+                <% } else { %>
+                    <h3 class="card-heading">Your flows:</h3>
+                    <div class="list-group">
+                        <% flows.forEach( function ( flow ){ %>
+                            <a class="list-item flow-list-item" data-tar="flow-<%= flow._id %>" href="/flow/<%= flow._id %>"><%= flow.name %></a>
+                        <% }); %>
+                    </div>
                 <% } %>
-
-                <% flows.forEach( function ( flow ){ %>
-                    <a class="list-group-item" data-tar="flow-<%= flow._id %>" href="/flow/<%= flow._id %>"><%= flow.name %></a>
-                <% }); %>
             </div>
         </div>
     </div>

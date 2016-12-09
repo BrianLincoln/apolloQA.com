@@ -212,6 +212,87 @@ body.loaded.account-page {
     background-size: cover;
     background-position: bottom right; } }
 
+.account-form-bottom > p {
+  font-family: Courier New, monospace;
+  font-size: 16px;
+  font-weight: normal;
+  line-height: 22px; }
+
+.flowlist-page {
+  background-color: #222222;
+  height: 100vh; }
+
+body.loaded.flowlist-page {
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.9)), url(../../images/earth-sm.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: bottom right; }
+
+.flowlist-page-header {
+  color: #FFFFFF;
+  padding: 60px 0; }
+
+.flows-form {
+  margin-bottom: 60px; }
+
+.flows-empty {
+  color: #FFFFFF;
+  text-align: center; }
+
+.flows-empty-arrow {
+  font-size: 100px; }
+
+a.flow-list-item, a.flow-list-item:visited {
+  color: #222222; }
+
+@media screen and (min-width: 768px) {
+  body.loaded.flowlist-page {
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.1)), url(../../images/earth.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: bottom right; } }
+
+@media screen and (min-width: 960px) {
+  body.loaded.flowlist-page {
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.3)), url(../../images/earth.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: bottom right; } }
+
+.account-form-bottom > p {
+  font-family: Courier New, monospace;
+  font-size: 16px;
+  font-weight: normal;
+  line-height: 22px; }
+
+.flow-page {
+  background-color: #222222;
+  height: 100vh; }
+
+body.loaded.flow-page {
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.9)), url(../../images/earth-sm.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: bottom right; }
+
+.flow-page-header {
+  color: #FFFFFF;
+  padding: 60px 0; }
+
+@media screen and (min-width: 768px) {
+  body.loaded.flow-page {
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.1)), url(../../images/earth.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: bottom right; } }
+
+@media screen and (min-width: 960px) {
+  body.loaded.flow-page {
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.3)), url(../../images/earth.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: bottom right; } }
+
 .font-title-lg, h1 {
   font-family: Courier New, monospace;
   font-size: 35px;

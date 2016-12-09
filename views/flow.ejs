@@ -4,21 +4,19 @@
     <title><%= flow.name %></title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <% include ./partials/resources %>
-</head>>
+</head>
 <body class="page-full-bg bg-top flow-page">
     <% include ./partials/header %>
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-12">
-                <div id="content"><div class="loader">Loading...</div></div>
-            </div>
+    <div class="page-container">
+        <div class="col-xs-12 col-sm-8 col-sm-offset-1">
+            <div id="content"><div class="loader">Loading...</div></div>
         </div>
     </div>
     <script>
         window.GLOBAL = window.GLOBAL || {};
         window.GLOBAL.flowId = "<%= flow._id %>";
     </script>
-    <script src="../app.bundle.js"></script>
+    <script src="../dist/js/app.bundle.js"></script>
     <% include ./partials/footer %>
 </body>
 </html>
