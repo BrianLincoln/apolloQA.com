@@ -16,8 +16,9 @@
 //nav open
 .header-nav-toggle-checkbox:checked ~ .site-header-content{
     .header-nav {
+        border-top: solid 1px $color-bluewood;
         display: flex;
-        justify-content: flex-end;
+        flex-direction: column;
         margin-top: $space-md;
     }
     .header-nav-toggle-close {
@@ -33,16 +34,28 @@
     float: right;
 }
 
+a.header-nav-link, a.header-nav-link:visited {
+    @extend %font-sm;
+    color: $color-bluewood;
+    display: block;
+    padding: $space-lg;
+    text-align: center;
+}
+
 @media screen and (min-width: $breakpoint-sm) {
     .header-nav-toggle {
         display: none;
     }
     .header-nav {
+        border: 0px;
         display: flex;
+        flex-direction: row;
         justify-content: flex-end;
     }
-    a.header-nav-link, a.header-nav-link:visited {
-        color: $color-bluewood;
-        padding-left: $space-sm;
+
+    a.header-nav-link {
+        padding: $space-sm;
+        text-align: right;
     }
+
 }

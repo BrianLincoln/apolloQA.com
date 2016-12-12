@@ -1,10 +1,21 @@
-<header class="site-header row">
-    <a class="col-xs-12 col-sm-3 header-logo" href="/"><span class="fa fa-star header-logo-icon"></span> <span class="header-logo-text">apollo</span></a>
-    <nav class="col-xs-12 col-sm-9">
-        <ul class="header-nav">
-            <li><a class="header-nav-link" href="/flows" data-tar="header-flows"><span class="fa fa-exchange"></span> Flows</a></li>
-            <li><a class="header-nav-link" href="/profile" data-tar="header-profile"><span class="fa fa-user"></span> Account</a></li>
-            <li><a class="header-nav-link" href="/logout" data-tar="header-logout"><span class="fa fa-eject"></span> Logout</a></li>
-        </ul>
-    </nav>
+<header class="site-header">
+    <input class="header-nav-toggle-checkbox" type="checkbox" id="header-nav-toggle-checkbox">
+    <div class="site-header-content container">
+        <div class="row">
+            <a class="col-xs-3 header-logo" href="/"><span class="fa fa-star header-logo-icon"></span> <span class="header-logo-text">apollo</span></a>
+            <div class="header-nav-wrapper col-xs-9 hide-md">
+                <label class="header-nav-toggle header-nav-toggle-open" for="header-nav-toggle-checkbox">
+                    <div class="fa fa-bars"></div>
+                </label>
+                <label class="header-nav-toggle header-nav-toggle-close " for="header-nav-toggle-checkbox">
+                    <div class="fa fa-times"></div>
+                </label>
+            </div>
+            <nav class="header-nav col-xs-12 col-md-9">
+                <a class="header-nav-link" href="/flows" data-tar="header-flows"><span class="fa fa-exchange"></span> Flows</a>
+                <a class="header-nav-link" href="/profile" data-tar="header-profile"><span class="fa fa-user"></span> Account</a>
+                <a class="header-nav-link" href="/logout" data-tar="header-logout"><span class="fa fa-eject"></span> Logout</a>
+            </nav>
+        </div>
+    </div>
 </header>

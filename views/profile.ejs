@@ -5,47 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <% include ./partials/resources %>
 </head>
-<body class="page-full-bg bg-top profile-page">
+<body class="account-page">
     <% include ./partials/header %>
-    <div class="page-container">
-        <div class="container col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-1">
-            <h1><%= copy.title %></h1>
-            <% if (typeof copy.subTitle !== 'undefined') { %>
-                <h2><%= copy.subTitle %></h2>
-            <% } %>
-            <% if (showSubscribeButton === true) { %>
-                <a class="btn btn-primary btn-lg" href="/subscription">Buy a subscription</a>
-            <% } %>
-            <% if (cancelAtPeriodEnd === true) { %>
-                <form action="/renew-cancelled-subscription" method="post">
-                    <button type="submit" class="btn btn-primary btn-lg">renew subscribtion</button>
-                </form>
-            <% } %>
-
-
-            <div class="profile-info">
-                <div class="profile-info-item">
-                    <label><%= email %></label>
-                    <div><a href="/reset-password">change password</a></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-8 col-sm-offset-1 col-md-5">
+                <h1 class="profile-page-header"><%= copy.title %></h1>
+                <% if (typeof copy.subTitle !== 'undefined') { %>
+                    <h2 class="profile-page-subheader"><%= copy.subTitle %></h2>
+                <% } %>
+                <% if (showSubscribeButton === true) { %>
+                    <a class="button button_valencia button_sm" href="/subscription">Buy a subscription</a>
+                <% } %>
+                <% if (cancelAtPeriodEnd === true) { %>
+                    <form action="/renew-cancelled-subscription" method="post">
+                        <button type="submit" class="button button_valencia button_sm">renew subscribtion</button>
+                    </form>
+                <% } %>
+                <div class="profile-info">
+                    <div class="profile-info-item">
+                        <label><%= email %></label>
+                        <div><a href="/reset-password">change password</a></div>
+                    </div>
                 </div>
+                <% if (showSubscriptionSection === true) { %>
+                    <div class="profile-info-item">
+                        <label>Next Charge:</label>
+                        <span><%= nextPaymentDate %></span>
+                    </div>
+                    <div class="profile-info-item">
+                        <label>
+                            Payment method:
+                            <% if (typeof maskedLast4 !== 'undefined') { %>
+                                <span><%= maskedLast4 %></span>
+                            <% } %>
+                        </label>
+                        <div><a href="/change-payment">change</a></div>
+                    </div>
+                    <a class="button button_valencia button_sm" href="/cancel-subscription">cancel subscription</a>
+                <% } %>
             </div>
-            <% if (showSubscriptionSection === true) { %>
-                <div class="profile-info-item">
-                    <label>Next Charge:</label>
-                    <span><%= nextPaymentDate %></span>
-                </div>
-                <div class="profile-info-item">
-                    <label>
-                        Payment method:
-                        <% if (typeof maskedLast4 !== 'undefined') { %>
-                            <span><%= maskedLast4 %></span>
-                        <% } %>
-                    </label>
-                    <div><a href="/change-payment">change</a></div>
-                </div>
-                <a class="btn btn-sm btn-danger" href="/cancel-subscription">cancel subscription</a>
-            <% } %>
         </div>
     </div>
+    <% include ./partials/footer %>
 </body>
 </html>
